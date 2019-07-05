@@ -1,0 +1,137 @@
+<meta charset="UTF-8">
+<style>
+    .mt-25 {
+        padding-top: 25px !important; 
+    }
+</style>
+<div class="tab-pane">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-if="fundoCtrl.abas.prestadorServicoFundos.erros.length">
+						<span ng-repeat="erro in fundoCtrl.abas.prestadorServicoFundos.erros" class="block">{{erro.mensagem}}</br></span>
+					</div>
+					
+					<div class="row">
+					
+						<div ng-if="fundoCtrl.acao != 'V'"> 
+							<div class="col-lg-2 col-md-2">
+								<label>Papel:</label> 
+								<div class="form-group">
+									<ui-select theme="bootstrap" ng-model="prestadorServicoFundosCtrl.papelPrestadorSelecionado" ng-disabled="fundoCtrl.acao == 'V'" ng-change="prestadorServicoFundosCtrl.selecionaPapelPrestadorServico()">
+										<ui-select-match placeholder="Selecione">
+											{{$select.selected.descricao ? $select.selected.descricao : $select.selected}}
+										</ui-select-match>         
+										<ui-select-choices repeat="papel as papel in prestadorServicoFundosCtrl.papeis | filter : $select.search | filter : {tipoCadastro : 'PRESTADOR DE SERVICO'}">
+											<div ng-bind-html="papel.descricao ? papel.descricao : papel | highlight: $select.search"></div>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+						</div>
+
+
+						<div ng-if="fundoCtrl.acao != 'V'"> 
+							<div class="col-lg-3 col-md-3">
+								<label>Nome/Razão Social:</label>
+								<div class="form-group">
+									<ui-select theme="bootstrap" ng-model="prestadorServicoFundosCtrl.prestadorSelecionado" ng-disabled="fundoCtrl.acao == 'V'" ng-change="prestadorServicoFundosCtrl.selecionaNomePrestadorServico()">
+										<ui-select-match placeholder="Selecione">
+											{{$select.selected.pessoa.nomeRazao ? $select.selected.pessoa.nomeRazao : $select.selected}}
+										</ui-select-match>         
+										<ui-select-choices repeat="prestador as prestador in prestadorServicoFundosCtrl.prestadores | filter : $select.search ">
+											<div ng-bind-html="prestador.pessoa.nomeRazao ? prestador.pessoa.nomeRazao : prestador | highlight: $select.search"></div>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+						</div>
+
+						<div ng-if="fundoCtrl.acao != 'V'"> 
+							<div class="col-lg-3 col-md-3">
+								<label>CPF/CNPJ:</label>
+								<div class="form-group">
+									<ui-select theme="bootstrap" ng-model="prestadorServicoFundosCtrl.identificadorPrestadorSelecionado" ng-disabled="fundoCtrl.acao == 'V'" ng-change="prestadorServicoFundosCtrl.selecionaIdentificadorPrestadorServico()">
+										<ui-select-match placeholder="Selecione">
+											{{$select.selected.pessoa.identificador ? $select.selected.pessoa.identificador : $select.selected }}
+										</ui-select-match>         
+										<ui-select-choices repeat="prestador as prestador in prestadorServicoFundosCtrl.prestadoresIdentificador | filter : $select.search">
+											<div ng-bind-html="prestador.pessoa.identificador ? prestador.pessoa.identificador : prestador | highlight: $select.search"></div>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+						</div>
+						<div ng-if="fundoCtrl.acao != 'V' && prestadorServicoFundosCtrl.papelPrestadorSelecionado.id == 182"> 
+							<div class="col-lg-2 col-md-2">
+	                        	<label>Ativo?</label>
+		                        <div class="btn-group btn-group-md form-group" style="display: block !important;" role="group">
+									<button type="button" tabindex="17" ng-model="prestadorServicoFundosCtrl.pessoaRelacionada.ativo" btn-radio="true" ng-class="prestadorServicoFundosCtrl.pessoaRelacionada.ativo ? 'btn btn-primary' : 'btn btn-default'">Sim</button>
+									<button type="button" tabindex="18" ng-model="prestadorServicoFundosCtrl.pessoaRelacionada.ativo" btn-radio="false" ng-class="!prestadorServicoFundosCtrl.pessoaRelacionada.ativo ? 'btn btn-primary' : 'btn btn-default'">Não</button>
+								</div>
+		                    </div>
+						</div>
+						<div ng-if="fundoCtrl.acao != 'V'">
+							<div class="col-lg-2 col-md-2">
+								<label>&nbsp;</label>
+								<div class="form-group">
+									<button type="button" class="btn btn-primary" ng-if="prestadorServicoFundosCtrl.acao == 'I'" 
+									ng-disabled="!prestadorServicoFundosCtrl.prestadorSelecionado || !prestadorServicoFundosCtrl.papelPrestadorSelecionado || !prestadorServicoFundosCtrl.identificadorPrestadorSelecionado
+									|| prestadorServicoFundosCtrl.disableIncluirAlterar" 
+									ng-click="prestadorServicoFundosCtrl.confirmarInclusaoCertificadora()">Incluir</button>
+									<button type="button" class="btn btn-primary" ng-if="prestadorServicoFundosCtrl.acao == 'E'" ng-click="prestadorServicoFundosCtrl.confirmarAlteracaoCertificadora()" 
+									ng-disabled="!prestadorServicoFundosCtrl.prestadorSelecionado.id || !prestadorServicoFundosCtrl.papelPrestadorSelecionado.id || !prestadorServicoFundosCtrl.identificadorPrestadorSelecionado.id
+									|| prestadorServicoFundosCtrl.disableIncluirAlterar"
+									>Alterar</button>
+									<button type="button" class="btn btn-default" style="margin-left: 10px" ng-if="prestadorServicoFundosCtrl.acao == 'E'" ng-click="prestadorServicoFundosCtrl.cancel()">Cancelar</button>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="row">
+						<div class="col-lg-12 col-md-12">
+							<table class="table table-striped" style="margin-top: 15px">
+								<thead>
+									<th>Papel</th>
+									<th>Nome/Razão Social</th>
+									<th>CPF/CNPJ</th>
+									<th>Contato</th>
+									<th>Ativo *</th>
+									<th></th>
+								</thead>
+								<tbody>
+									<tr ng-if="!prestadorServicoFundosCtrl.relacionadas.length">
+										<td colspan="5">Não há registros encontrados.</td>
+									</tr>
+									<tr ng-repeat="relacionada in prestadorServicoFundosCtrl.relacionadas">
+										<td>{{relacionada.id.papel.descricao}}</td>
+										<td>{{relacionada.id.pessoaRelacionada.nomeRazao}}</td>
+										<td>{{relacionada.id.pessoaRelacionada.identificador | cpfcnpj: relacionada.id.pessoaRelacionada.tipoPessoa}}</td>
+										<td>
+											<a href="" ng-click="prestadorServicoFundosCtrl.exibirContatoPrestadorServico(relacionada.id.pessoaRelacionada.identificador)">
+												Visualizar contatos
+											</a>
+                                    	</td>
+                                    	<td ng-if="relacionada.id.papel.id == 182">{{relacionada.ativo ? 'Sim' : 'Não'}}</td>
+                                    	<td ng-if="relacionada.id.papel.id != 182">-</td>
+	                                    <td style="text-align: center">
+	                                        <a href="" class="btn btn-default btn-xs" ng-disabled="prestadorServicoFundosCtrl.habilitarAcao" ng-click="prestadorServicoFundosCtrl.preparaAtualizacao(relacionada)" ng-if="fundoCtrl.acao != 'V'">
+	                                            <span class="glyphicon glyphicon-pencil"></span>
+	                                        </a>
+	                                        <a href="" class="btn btn-default btn-xs" ng-disabled="prestadorServicoFundosCtrl.habilitarAcao" ng-click="prestadorServicoFundosCtrl.confirmaDeleteCertificadora(relacionada)" ng-if="fundoCtrl.acao != 'V'">
+	                                            <span class="glyphicon glyphicon-trash"></span>
+	                                        </a>
+	                                    </td>
+                                	</tr>
+                            	</tbody>
+                        	</table>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>

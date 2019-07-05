@@ -1,0 +1,77 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724562">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="panel-content">
+						<div class="form" ng-if="pessoaCtrl.pessoa.tipoPessoa == 'F'">
+							<div class="row col-lg-12">
+								<div class="col-md-2" style="padding-left: 0px">
+									<div class="form-group">
+										<label>CNPJ da empresa:</label> 
+										<input uppercased type="text" ui-mask="99.999.999/9999-99"  ng-blur="dadosProfissionaisEmpresariaisCtrl.validarCNPJ()" ng-model="dadosProfissionaisEmpresariaisCtrl.dadosProfissionais.cnpjEmpresa" class="form-control">
+									</div>
+								</div>
+								<div class="col-md-5" >
+									<div class="form-group">
+										<label>Empresa em que trabalha:</label> 
+										<input uppercased type="text" ng-blur="dadosProfissionaisEmpresariaisCtrl.salvar()" ng-model="dadosProfissionaisEmpresariaisCtrl.dadosProfissionais.nomeEmpresa" class="form-control" maxlength="100">
+									</div>
+								</div>
+							</div>
+							<div class="row col-lg-12">
+								<div class="col-md-2" style="padding-left: 0px">
+									<div class="form-group">
+										<label>Profissão:</label> 
+										<input uppercased type="text" ng-blur="dadosProfissionaisEmpresariaisCtrl.salvar()" ng-model="dadosProfissionaisEmpresariaisCtrl.dadosProfissionais.profissao" class="form-control" style="width: 100%" maxlength="25">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label>Cargo:</label>
+										<input uppercased type="text" ng-blur="dadosProfissionaisEmpresariaisCtrl.salvar()" ng-model="dadosProfissionaisEmpresariaisCtrl.dadosProfissionais.cargo" class="form-control" style="width: 100%" maxlength="25">
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label>Escolaridade:</label> 
+										<select ng-change="dadosProfissionaisEmpresariaisCtrl.salvar()" class="form-control"style="width: 100%" ng-model="dadosProfissionaisEmpresariaisCtrl.dadosProfissionais.escolaridade" ng-options="escolaridade.nome as escolaridade.nome for escolaridade in dadosProfissionaisEmpresariaisCtrl.escolaridades">
+											<option value="">Selecione</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form" ng-if="pessoaCtrl.pessoa.tipoPessoa == 'J'">
+							<div class="col-md-3" style="padding-left: 0px">
+								<div class="form-group">
+									<label>CNAE principal:</label> 
+									<input uppercased type="text" ui-mask="9999-9/99" ng-blur="dadosProfissionaisEmpresariaisCtrl.buscarRamoAtividade('primario')" ng-model="dadosProfissionaisEmpresariaisCtrl.ramoAtividade.cnaePrincipal" class="form-control" style="width: 100%">
+								</div>
+							</div>
+							<div class="col-md-9">
+								<div class="form-group">
+									<label>Ramo de atividade principal:</label> 
+									<input uppercased type="text" ng-model="dadosProfissionaisEmpresariaisCtrl.ramoAtividade.ramoAtividadePrincipal" class="form-control" ng-disabled="true">
+								</div>
+							</div>
+							<div class="col-md-3" style="padding-left: 0px">
+								<div class="form-group">
+									<label>CNAE secundário:</label>
+									<input uppercased type="text" ui-mask="9999-9/99" ng-blur="dadosProfissionaisEmpresariaisCtrl.buscarRamoAtividade('secundario')" ng-model="dadosProfissionaisEmpresariaisCtrl.ramoAtividade.cnaeSecundario" class="form-control" style="width: 100%">
+								</div>
+							</div>
+							<div class="col-md-9">
+								<div class="form-group">
+									<label>Ramo de atividade secundário:</label> 
+									<input uppercased type="text" ng-model="dadosProfissionaisEmpresariaisCtrl.ramoAtividade.ramoAtividadeSecundario" class="form-control" ng-disabled="true">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

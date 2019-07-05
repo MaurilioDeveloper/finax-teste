@@ -1,0 +1,148 @@
+<meta charset="UTF-8">
+<style>
+    .datepicker-popup-wrapper.placement-top [datepicker-popup-wrap] {
+        transform: translate(0px, -318px);
+    }
+</style>
+<div class="tab-pane">
+    <div class="tab-content">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form name="dadosBasicosFundosCtrl.form">
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-3" ng-class="{'erro': dadosBasicosFundosCtrl.form.cnpj.$invalid && ( dadosBasicosFundosCtrl.form.cnpj.$dirty || dadosBasicosFundosCtrl.form.$submitted)}"
+                        tooltip="{{ dadosBasicosFundosCtrl.form.cnpj.$invalid && ( dadosBasicosFundosCtrl.form.cnpj.$dirty || dadosBasicosFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                            <label>CNPJ:</label>
+                            <input uppercased required id="cnpj" name="cnpj" ng-model="dadosBasicosFundosCtrl.pessoaFundo.pessoa.identificador" ng-disabled="dadosBasicosFundosCtrl.acao == 'E' || fundoCtrl.acao == 'V'" style="width: 100%;" ui-mask="99.999.999/9999-99" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-lg-3 col-md-3" ng-class="{'erro': dadosBasicosFundosCtrl.form.nomeRazao.$invalid && ( dadosBasicosFundosCtrl.form.nomeRazao.$dirty || dadosBasicosFundosCtrl.form.$submitted)}"
+                        tooltip="{{ dadosBasicosFundosCtrl.form.nomeRazao.$invalid && ( dadosBasicosFundosCtrl.form.nomeRazao.$dirty || dadosBasicosFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                            <label>Razão Social:</label>
+                            <input ng-disabled="fundoCtrl.acao == 'V'" uppercased required id="nomeRazao" style="width: 100%;" name="nomeRazao" ng-model="dadosBasicosFundosCtrl.pessoaFundo.pessoa.nomeRazao" ng-blur="dadosBasicosFundosCtrl.salvar()" type="text" maxlength="50" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3" ng-class="{'erro': dadosBasicosFundosCtrl.form.nomeReduzido.$invalid && ( dadosBasicosFundosCtrl.form.nomeReduzido.$dirty || dadosBasicosFundosCtrl.form.$submitted)}"
+                        tooltip="{{ dadosBasicosFundosCtrl.form.nomeReduzido.$invalid && ( dadosBasicosFundosCtrl.form.nomeReduzido.$dirty || dadosBasicosFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                            <label>Nome Reduzido:</label>
+                            <input uppercased maxlength="5" required id="nomeReduzido" name="nomeReduzido" style="width: 100%" ng-blur="dadosBasicosFundosCtrl.salvar()" min="5" maxlength="5" ng-model="dadosBasicosFundosCtrl.pessoaFundo.nomeReduzido" type="text" ng-disabled="fundoCtrl.acao == 'V'" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3" ng-class="{'erro': dadosBasicosFundosCtrl.form.codigo.$invalid && ( dadosBasicosFundosCtrl.form.codigo.$dirty || dadosBasicosFundosCtrl.form.$submitted)}"
+                        tooltip="{{ dadosBasicosFundosCtrl.form.codigo.$invalid && ( dadosBasicosFundosCtrl.form.codigo.$dirty || dadosBasicosFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                            <label>Código:</label>
+                            <input uppercased required id="codigo" name="codigo" ng-blur="dadosBasicosFundosCtrl.salvar()" style="width: 100%" ng-disabled="true" ng-model="dadosBasicosFundosCtrl.pessoaFundo.codigo" maxlength="8" type="text" ng-disabled="fundoCtrl.acao == 'V'" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-3">
+                            <label>Tipo:</label>
+                            <div class="input-group" ng-if="dadosBasicosFundosCtrl.permission && fundoCtrl.acao != 'V'">
+                                <select ng-change="dadosBasicosFundosCtrl.salvar()" class="form-control" ng-model="dadosBasicosFundosCtrl.pessoaFundo.tipoFundo" style="width: 100%" ng-options="tipo as tipo.dsSigla for tipo in dadosBasicosFundosCtrl.tipoFundos  | orderBy:'-dsSigla':true track by tipo.dsSigla">
+                                    <option value="">Selecione</option>
+                                </select>
+                                <span class="input-group-btn">
+                                    <button  type="button" class="btn btn-primary" ng-click="dadosBasicosFundosCtrl.novoTipoFundos()" tooltip="Novo Tipo">
+                                    <span class="glyphicon glyphicon glyphicon-plus"></span>
+                                </button>
+                                </span>
+                            </div>
+                            <div ng-if="!dadosBasicosFundosCtrl.permission || fundoCtrl.acao == 'V'">
+                                <select ng-change="dadosBasicosFundosCtrl.salvar()" class="form-control" ng-disabled="fundoCtrl.acao == 'V'" ng-model="dadosBasicosFundosCtrl.pessoaFundo.tipoFundo" style="width: 100%" ng-options="tipo as tipo.dsSigla for tipo in dadosBasicosFundosCtrl.tipoFundos  | orderBy:'-dsSigla':true track by tipo.dsSigla">
+									<option value="">Selecione</option>
+									</select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3">
+                            <label>SubTipo:</label>
+                            <select class="form-control" ng-model="dadosBasicosFundosCtrl.pessoaFundo.subTipo" style="width: 100%" ng-change="dadosBasicosFundosCtrl.salvar()" ng-options="subTipo.dsSubTipo as subTipo.dsSigla for subTipo in dadosBasicosFundosCtrl.subTipos" ng-disabled="fundoCtrl.acao == 'V'">
+                                    <option value="">Selecione</option>
+                                </select>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3" ng-class="{'erro': dadosBasicosFundosCtrl.form.ativo.$invalid && ( dadosBasicosFundosCtrl.form.ativo.$dirty || dadosBasicosFundosCtrl.form.$submitted)}"
+                        tooltip="{{ dadosBasicosFundosCtrl.form.ativo.$invalid && ( dadosBasicosFundosCtrl.form.ativo.$dirty || dadosBasicosFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                            <label>Ativo?</label>
+                            <div class="radio" style="margin: 0px;">
+                                <label> 
+                                    <input ng-disabled="fundoCtrl.acao == 'V'" type="radio" required name="ativo" value="1" checked ng-model="dadosBasicosFundosCtrl.pessoaFundo.ativo" ng-click="dadosBasicosFundosCtrl.salvar()"> 
+                                    Sim
+                                </label>
+                                <label> 
+                                    <input ng-disabled="fundoCtrl.acao == 'V'" type="radio" required name="ativo" ng-model="dadosBasicosFundosCtrl.pessoaFundo.ativo" value="0" checked	ng-click="dadosBasicosFundosCtrl.salvar()">
+                                    Não
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3">
+                            <label>GIIN</label>
+                            <input uppercased ng-model="dadosBasicosFundosCtrl.pessoaFundo.codGiin" maxlength="30" id="codGiin" type="text" ng-blur="dadosBasicosFundosCtrl.salvar()" ng-disabled="fundoCtrl.acao == 'V'" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-3" 
+	                        ng-class="{'erro': dadosBasicosFundosCtrl.form.dataSubscricaoInicial.$invalid && 
+	                        	( dadosBasicosFundosCtrl.form.dataSubscricaoInicial.$dirty || dadosBasicosFundosCtrl.form.$submitted)}"
+	                        tooltip="{{ dadosBasicosFundosCtrl.form.dataSubscricaoInicial.$invalid && ( dadosBasicosFundosCtrl.form.dataSubscricaoInicial.$dirty 
+	                        	|| dadosBasicosFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                            <label>Data de subscrição inicial:</label>
+                            <div class="input-group">
+                                <div class=" input-group datepicker-popup-wrapper placement-top">
+                                    <input 
+                                    	required name="dataSubscricaoInicial" id="dataSubscricaoInicial" type="text" class="form-control readonly-white" 
+                                    	data-ng-disabled="fundoCtrl.acao == 'V'" 
+                                    	data-ng-blur="dadosBasicosFundosCtrl.validarData('dataSubscricaoInicial')" 
+                                    	data-datepicker-popup="dd/MM/yyyy" 
+                                    	data-show-weeks="'false'" 
+                                    	data-alt-input-formats="['dd/MM/yyyy']"
+                                        data-close-text="Fechar" 
+                                        data-clear-text="Limpar" 
+                                        data-current-text="Hoje" 
+                                        data-ng-model="dadosBasicosFundosCtrl.pessoaFundo.dataSubscricaoInicial" 
+                                        data-is-open="dataSubscricaoInicialOpen" 
+                                        data-ng-click="dataSubscricaoInicialOpen = !dataSubscricaoInicialOpen"
+                                    />
+                                    <span class="input-group-addon" id="basic-addon2">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-3 col-md-3" 
+                        	ng-class="{'erro': dadosBasicosFundosCtrl.form.dataEncerramento.$invalid && ( dadosBasicosFundosCtrl.form.dataEncerramento.$dirty || dadosBasicosFundosCtrl.form.$submitted)}"
+                        	tooltip="{{ dadosBasicosFundosCtrl.form.dataEncerramento.$invalid && ( dadosBasicosFundosCtrl.form.dataEncerramento.$dirty || dadosBasicosFundosCtrl.form.$submitted) ? 
+                        		'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                            <label>Data de encerramento:</label>
+                            <div class="input-group">
+                                <div class="input-group datepicker-popup-wrapper placement-top">
+                                    <input 
+                                    	required name="dataEncerramento" id="dataEncerramento" type="text" class="form-control readonly-white" 
+                                    	data-ng-disabled="fundoCtrl.acao == 'V'" 
+                                    	data-ng-blur="dadosBasicosFundosCtrl.validarData('dataEncerramento')" 
+                                    	data-datepicker-popup="dd/MM/yyyy" 
+                                    	data-show-weeks="'false'" 
+                                    	data-close-text="Fechar" 
+                                    	data-clear-text="Limpar"
+                                        data-current-text="Hoje" 
+                                        data-ng-model="dadosBasicosFundosCtrl.pessoaFundo.dataEncerramento" 
+                                        data-is-open="dataEncerramentoIsOpen" 
+                                        data-ng-click="dataEncerramentoIsOpen = !dataEncerramentoIsOpen" 
+                                    />
+                                    <span class="input-group-addon" id="basic-addon2">
+                                    	<span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3">
+                            <label>Código na Câmara CETIP:</label>
+                            <input uppercased ng-model="dadosBasicosFundosCtrl.pessoaFundo.codCetip" id="codCetip" ng-disabled="fundoCtrl.acao == 'V'" type="text" ng-blur="dadosBasicosFundosCtrl.salvar()" maxlength="15" style="width: 100%" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3">
+                            <label>Código na Câmara SELIC:</label>
+                            <input uppercased ng-model="dadosBasicosFundosCtrl.pessoaFundo.codSelic" id="codSelic" ng-disabled="fundoCtrl.acao=='V'" type="text" ng-blur="dadosBasicosFundosCtrl.salvar()" maxlength="15" style="width: 100%" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

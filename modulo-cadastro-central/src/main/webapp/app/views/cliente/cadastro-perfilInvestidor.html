@@ -1,0 +1,35 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724567">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-repeat="erro in pessoaCtrl.abas.perfil.erros" ng-if="!erro.campo">
+						<span>{{erro.mensagem}}</span>
+					</div>
+					<div class="panel-content">
+						<div class="row">
+							<div class="col-md-3 col-lg-3 col-sm-3 form-group">
+								<label class="control-label">Perfil do investidor(Suitability):</label> 
+								<input uppercased type="text" class="form-control" ng-model="perfilInvestidorCtrl.questionario.resultado" disabled="disabled">
+							</div>
+							<div class="col-md-3 col-lg-2 col-sm-3 form-group" ng-if="pessoaCtrl.acao != 'V'">	
+								<label class="control-label">&nbsp;</label> 				
+								<button type="button" ng-disabled="perfilInvestidorCtrl.perfilPessoa.recusouResponderSuitability == 1" ng-click="perfilInvestidorCtrl.openModal()" class="form-control btn btn-primary">Definir seu perfil</button>
+							</div>
+						</div>
+						
+						<div class="checkbox" style="margin-top: 30px">
+							<label> 
+								<input type="checkbox" ng-model="perfilInvestidorCtrl.perfilPessoa.recusouResponderSuitability" 
+								ng-disabled="perfilInvestidorCtrl.questionario.resultado || pessoaCtrl.acao === 'V'" ng-click="perfilInvestidorCtrl.insertPessoaPerfil()"
+								ng-true-value="'1'" ng-false-value="'0'" style="margin-top: 9px;">
+							</label>Cliente recusou a responder o questionário suitability.
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<div ng-include="'app/views/cliente/modalQuestionario.html'"></div>
+</div>

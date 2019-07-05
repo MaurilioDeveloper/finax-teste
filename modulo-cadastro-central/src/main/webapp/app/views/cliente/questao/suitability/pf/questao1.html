@@ -1,0 +1,19 @@
+<meta charset="UTF-8">
+<div class="modal-body" style="height: 250px">
+	{{perfilInvestidorCtrl.descricaoQuestao}}<br/><br/>
+	<label class="radio-inline" ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao1.resposta == 'A' }">
+		<input type="radio" name="resposta1" value="A" ng-init="perfilInvestidorCtrl.questionario.questao1.pergunta = 1; perfilInvestidorCtrl.questionario.questao1.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao1.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao1)">Até R$ 10.000,00
+	</label><br/> 
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao1.resposta == 'B' }">
+		<input type="radio" name="resposta1" value="B" ng-init="perfilInvestidorCtrl.questionario.questao1.pergunta = 1; perfilInvestidorCtrl.questionario.questao1.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao1.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao1)">Entre R$ 10.000,01 e R$ 20.000,00
+	</label><br/> 
+	<label class="radio-inline" ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao1.resposta == 'C' }">
+		<input type="radio" name="resposta1" value="C" ng-init="perfilInvestidorCtrl.questionario.questao1.pergunta = 1; perfilInvestidorCtrl.questionario.questao1.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao1.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao1)">Acima de R$ 20.000,01
+	</label>	
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+	<button type="button" class="btn btn-primary" ng-click="perfilInvestidorCtrl.goQuestion2(perfilInvestidorCtrl.questionario.questao1.resposta);">
+		Avançar<i class="fa fa-chevron-right"></i>
+	</button>
+</div>

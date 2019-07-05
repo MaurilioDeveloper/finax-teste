@@ -1,0 +1,49 @@
+<meta charset="UTF-8">
+<div class="modal-header">
+	<div class="row">
+		<div class="col-lg-12">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="modalTipoPrestadorServicoCtrl.cancelar()">&times;</button>
+			<h4 class="modal-title">Novo tipo de prestador de serviço</h4>
+		</div>
+	</div>
+</div>
+
+<div class="modal-body">
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<div class="form-group">
+				<label>Tipo de prestador de serviço:</label>
+				<input uppercased maxlength="50" class="form-control" type="text" ng-model="modalTipoPrestadorServicoCtrl.papel.descricao" />
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12">
+			<button type="button" ng-click="modalTipoPrestadorServicoCtrl.incluir()" ng-disabled="!modalTipoPrestadorServicoCtrl.papel.descricao" class="btn btn-primary">Incluir</button>
+		</div>
+	</div>	
+</div>
+
+<div class="modal-footer pre-scrollable" >
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<table class="table table-striped" style="margin-top: 15px;">
+				<thead>
+					<tr>
+						<th>Tipo de prestador de serviço</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="papel in modalTipoPrestadorServicoCtrl.papeis">
+						<td style="text-align: left;">{{papel.descricao}}</td>
+						<td>
+							<button type="button" class="btn btn-default btn-xs" ng-disabled="papel.editavel == 0" ng-click="modalTipoPrestadorServicoCtrl.excluir(papel)">
+								<span class="glyphicon glyphicon-trash"
+									aria-hidden="true"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

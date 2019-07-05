@@ -1,0 +1,140 @@
+<meta charset="UTF-8">
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<div class="page-header">
+				<button type="button" class="btn btn-primary glyphicon glyphicon-plus pull-right" ui-sref="root.incluir" auth-check permission="inserir-cliente" tooltip="Adicionar Novo Cadastro" ></button>
+				<h3 class="ng-scope">Consulta</h3>
+			</div>
+		</div>	
+		
+		<div class="col-md-12">
+			<div class="tabs-wrapper table">
+				<div class="tab-pane">
+					<div class="panel panel-default">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter" style="cursor: pointer;">
+							<span class="glyphicon glyphicon-plus" ng-show="hideFilter"></span>
+							<span class="glyphicon glyphicon-minus" ng-show="!hideFilter"></span>
+							Filtros
+						</div>
+						<div collapse="hideFilter">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-4 col-md-4"></div>
+									<div class="col-lg-3 col-md-3">
+										<label>Nome:</label>
+									</div>
+									<div class="col-lg-1 col-md-1">
+										<label>ID do cliente:</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group form-inline">
+										<div class="col-lg-4 col-md-4">
+											<div class="input-group">
+												<label class="btn btn-default input-group-addon" ng-model="consultaPessoaCtrl.pessoa.tipoPessoa" btn-radio="'J'" ng-mousedown="consultaPessoaCtrl.aoClicarCNPJ();">CNPJ</label>
+												<label class="btn btn-default input-group-addon" ng-model="consultaPessoaCtrl.pessoa.tipoPessoa" btn-radio="'F'" ng-mousedown="consultaPessoaCtrl.aoClicarCPF();">CPF</label>
+												<label class="btn btn-default input-group-addon" ng-model="consultaPessoaCtrl.pessoa.tipoPessoa" btn-radio="'E'" ng-mousedown="consultaPessoaCtrl.aoClicarCPF();">Cliente Estrangeiro</label>
+												<input uppercased id="cpf" ng-model="consultaPessoaCtrl.pessoa.identificador" ng-blur="consultaPessoaCtrl.validaCpf()" style="width: 100%" ng-if="consultaPessoaCtrl.pessoa.tipoPessoa == 'F'" ui-mask="999.999.999-99" type="text" class="form-control">
+												<input uppercased id="cnpj" ng-model="consultaPessoaCtrl.pessoa.identificador" ng-blur="consultaPessoaCtrl.validaCnpj()" style="width: 100%" ng-if="consultaPessoaCtrl.pessoa.tipoPessoa == 'J'" ui-mask="99.999.999/9999-99" type="text" class="form-control">
+												<input uppercased id="estrangeiro" ng-model="consultaPessoaCtrl.pessoa.identificador" style="width: 100%" ng-if="consultaPessoaCtrl.pessoa.tipoPessoa == 'E'" type="text" class="form-control">
+											</div>
+										</div>
+	
+										<div class="col-lg-3 col-md-3">
+											<input uppercased id="nomeRazao" ng-model="consultaPessoaCtrl.pessoa.nomeRazao" style="width: 100%" type="text" class="form-control" maxlength="100">
+										</div>
+										
+										<div class="col-lg-1 col-md-1">
+											<input id="id" ng-model="consultaPessoaCtrl.pessoa.id" style="width: 100%" type="text" class="form-control" maxlength="100" mask="99999999">
+										</div>
+	
+										<div class="col-lg-2 col-md-2">
+											<div ng-repeat="papel in consultaPessoaCtrl.papeis" class="checkbox" style="margin-top: 5px; margin-left: 25px">
+												<label><input type="checkbox" ng-click="consultaPessoaCtrl.changePapel()" ng-model="papel.checked">&nbsp;{{papel.descricao}}</label>	
+											</div>
+										</div>
+	
+										<div class="col-lg-2 col-md-2">
+											<div class="form-group form-inline">
+												<button id="filterLink" type="button" class="btn btn-primary glyphicon glyphicon-search" ng-disabled="consultaPessoaCtrl.validateIdentificador()"></button>
+												<button ng-click="consultaPessoaCtrl.resetForm()" class="btn btn-default" style="margin-top:1px">Limpar</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<br />
+							</div>
+						</div>
+					</div>
+					
+					<!--<div class="row">
+						<div class="col-lg-12 col-md-12">
+							<div class="form-group form-inline">
+								<button class="btn btn-primary" style="float:right" ui-sref="root.incluir">Adicionar novo cadastro</button>
+							</div>
+						</div>
+					</div>-->
+
+					<div class="row">
+						<div class="col-lg-12 col-md-12">
+							<div class="table-responsive">
+								<table 	datatable
+										rows="10"
+										lazy="true"
+										class="table table-striped"
+										rest="{{consultaPessoaCtrl.restUrl}}/pessoa/findbyfilter"
+										datasource="consultaPessoaCtrl.pessoas"
+										paginator="true"
+										max-size="5"
+										filter-model="consultaPessoaCtrl.pessoa"
+										filter-submit="#filterLink"
+										dont-search-on-load="false"	
+										>
+									<thead class="thead-default">
+										<tr>
+											<th>ID do cliente</th>
+											<th>CNPJ/CPF/Estrangeiro</th>
+											<th>Nome</th>
+											<th>Tipo</th>
+											<th>Status</th>
+											<th>Status do Cadastro</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-if="!consultaPessoaCtrl.pessoas || consultaPessoaCtrl.pessoas.length == 0">
+											<td colspan="9" class="text-center">Não foram encontrados dados para os filtros selecionados</td>
+										</tr>
+										<tr ng-repeat="pessoa in consultaPessoaCtrl.pessoas">
+											<td>{{pessoa.id}}</td>
+											<td ng-if="!pessoa.estrangeiro">{{pessoa.identificador | cpfcnpj: pessoa.tipoPessoa}}</td>
+											<td ng-if="pessoa.estrangeiro">{{pessoa.identificador.toUpperCase()}}</td>
+											<td>{{pessoa.nomeRazao.toUpperCase()}}</td>
+											<td>{{consultaPessoaCtrl.buscaPapel(pessoa.papeis).toUpperCase()}}</td>
+											<td>{{pessoa.ativo == 1? 'ATIVO' : 'INATIVO'}}</td>
+											<td>{{pessoa.statusCadastro.toUpperCase()}}</td>
+											<td>
+												<button type="button" class="btn btn-default btn-xs"
+													ui-sref="root.visualizar({'identificador':pessoa.identificador, 'acao':'V'})" tooltip="Detalhes">
+													<span class="glyphicon glyphicon-eye-open"></span>
+												</button>
+												<button type="button" class="btn btn-default btn-xs" auth-check permission="editar-cliente"
+													ui-sref="root.editar({'identificador':pessoa.identificador, 'acao':'E', 'tipoPessoa':pessoa.tipoPessoa})" tooltip="Editar">
+													<span class="glyphicon glyphicon-pencil"></span>
+												</button>
+ 												<button type="button" class="btn btn-default btn-xs" tooltip="Excluir" auth-check permission="excluir-cliente" ng-click="consultaPessoaCtrl.excluir(pessoa);"> 
+ 													<span class="glyphicon glyphicon-trash"></span> 
+ 												</button> 
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

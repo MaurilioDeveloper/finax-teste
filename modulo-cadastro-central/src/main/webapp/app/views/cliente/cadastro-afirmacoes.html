@@ -1,0 +1,69 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724560">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-repeat="erro in pessoaCtrl.abas.afirmacoes.erros" ng-if="!erro.campo">
+						<span>{{erro.mensagem}}</span>
+					</div>
+					<div class="row active">
+						<div class="form-group col-lg-5 col-md-5">
+							<span>Autoriza envio da correspondência, inclusive por email eletrônico:</label></span>
+						</div>
+						<div class="btn-group btn-group-xs" role="group">
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.autorizaCorrespondencia == 'S' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.autorizaCorrespondencia" btn-radio="'S'">Sim</button>
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.autorizaCorrespondencia == 'N' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.autorizaCorrespondencia" btn-radio="'N'">Não</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-lg-5 col-md-5">
+							<span>Autoriza envio de extrato:</span>
+						</div>
+						<div class="btn-group btn-group-xs" role="group">
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.autorizaEnvioExtrato == 'S' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.autorizaEnvioExtrato" btn-radio="'S'">Sim</button>
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.autorizaEnvioExtrato == 'N' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.autorizaEnvioExtrato" btn-radio="'N'">Não</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-lg-5 col-md-5">
+							<span>Autoriza consulta SCR:</span>
+						</div>
+						<div class="btn-group btn-group-xs" role="group">
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.autorizaConsultaSCR == 'S' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.autorizaConsultaSCR" btn-radio="'S'">Sim</button>
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.autorizaConsultaSCR == 'N' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.autorizaConsultaSCR" btn-radio="'N'">Não</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-lg-5 col-md-5">
+							<span>Pessoa politicamente exposta:</span>
+						</div>
+						<div class="btn-group btn-group-xs" role="group">
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.pessoaPoliticaExposta == 'S' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.pessoaPoliticaExposta" btn-radio="'S'">Sim</button>
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.pessoaPoliticaExposta == 'N' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.pessoaPoliticaExposta" btn-radio="'N'">Não</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-lg-5 col-md-5">
+							<span>Relacionamento com pessoa politicamente exposta:</span>
+						</div>
+						<div class="btn-group btn-group-xs" role="group">
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.relacionamentoPessoaExposta == 'S' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.relacionamentoPessoaExposta" btn-radio="'S'">Sim</button>
+							<button type="button" ng-click="afirmacoesCtrl.incluirPessoaAfirmacoes()" ng-class="afirmacoesCtrl.afirmacao.relacionamentoPessoaExposta == 'N' ? 'btn btn-primary' : 'btn btn-default'" 
+                                ng-disabled="pessoaCtrl.acao == 'V'" ng-model="afirmacoesCtrl.afirmacao.relacionamentoPessoaExposta" btn-radio="'N'">Não</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

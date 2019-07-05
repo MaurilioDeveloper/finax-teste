@@ -1,0 +1,184 @@
+<meta charset="UTF-8">
+<div class="tab-pane">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert"
+						ng-if="prestadorServicoCtrl.abas.acessos.erros.length">
+						<span ng-repeat="erro in prestadorServicoCtrl.abas.acessos.erros"
+							class="block">{{erro.mensagem}}</span>
+					</div>
+					<form name="acessoExternoCtrl.form">
+						<div class="row">
+							<div class="form-group col-lg-4 col-md-4"
+								ng-class="{'erro': (acessoExternoCtrl.form.usuario.$invalid && ( acessoExternoCtrl.form.usuario.$touched || acessoExternoCtrl.form.$submitted))}">
+								<label>Basic User*:</label>
+								<div>
+									<input type="text" class="form-control" name="usuario"
+										maxlength="100" style="width: 100%; border-radius: 4px"
+										ng-model="acessoExternoCtrl.acesso.usuario"
+										ng-blur="acessoExternoCtrl.salvar()" maxlength="30"
+										ng-disabled="acessoExternoCtrl.acao == 'V'" required>
+								</div>
+							</div>
+							<div class="form-group col-lg-4 col-md-4"
+								ng-class="{'erro': (acessoExternoCtrl.form.senha.$invalid && ( acessoExternoCtrl.form.senha.$touched || acessoExternoCtrl.form.$submitted))}">
+								<label>Basic Password*:</label>
+								<div>
+									<input type="text" class="form-control" name="senha"
+										maxlength="100" style="width: 100%; border-radius: 4px"
+										ng-model="acessoExternoCtrl.acesso.senha"
+										ng-blur="acessoExternoCtrl.salvar()" maxlength="30"
+										ng-disabled="acessoExternoCtrl.acao == 'V'" required>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4">
+								<label>URL Token Oauth:</label>
+								<div>
+									<input type="text" class="form-control" maxlength="100"
+										style="width: 100%; border-radius: 4px"
+										ng-model="acessoExternoCtrl.acesso.metodoAcessos[0].url"
+										ng-blur="acessoExternoCtrl.salvar()" maxlength="30"
+										ng-disabled="acessoExternoCtrl.acao == 'V'">
+								</div>
+							</div>
+						</div>
+						<HR SIZE=13>
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<label>URLs para acesso:</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-lg-6 col-md-6"
+								ng-class="{'erro': (acessoExternoCtrl.form.firstUrl.$invalid && ( acessoExternoCtrl.form.firstUrl.$touched || acessoExternoCtrl.form.$submitted))}">
+								<label>URL Para Solicitar o Arquivo de Assinatura*:</label>
+								<div>
+									<input type="text" class="form-control" name="firstUrl"
+										maxlength="100" style="width: 100%; border-radius: 4px"
+										ng-model="acessoExternoCtrl.acesso.metodoAcessos[1].url"
+										ng-blur="acessoExternoCtrl.salvar()" maxlength="30"
+										ng-disabled="acessoExternoCtrl.acao == 'V'" required>
+									<label><input type="checkbox"
+										ng-model="acessoExternoCtrl.acesso.metodoAcessos[1].oauth"
+										ng-click="acessoExternoCtrl.salvar()"
+										ng-disabled="acessoExternoCtrl.acao == 'V'" /> Oauth2</label>
+								</div>
+							</div>
+							<div class=" form-group col-lg-6 col-md-6"
+								ng-class="{'erro': (acessoExternoCtrl.form.secondUrl.$invalid && ( acessoExternoCtrl.form.secondUrl.$touched || acessoExternoCtrl.form.$submitted))}">
+								<label>URL de Envio de Assinatura*:</label>
+								<div>
+									<input type="text" class="form-control" name="secondUrl"
+										maxlength="100" style="width: 100%; border-radius: 4px"
+										ng-model="acessoExternoCtrl.acesso.metodoAcessos[2].url"
+										ng-blur="acessoExternoCtrl.salvar()" maxlength="30"
+										ng-disabled="acessoExternoCtrl.acao == 'V'" required>
+									<label><input type="checkbox"
+										ng-model="acessoExternoCtrl.acesso.metodoAcessos[2].oauth"
+										ng-click="acessoExternoCtrl.salvar()"
+										ng-disabled="acessoExternoCtrl.acao == 'V'" /> Oauth2</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class=" form-group col-lg-6 col-md-6"
+								>
+								<label>URL de Validação de Signatário:</label>
+								<div>
+									<input type="text" class="form-control" name="thrirdUrl"
+										maxlength="100" style="width: 100%; border-radius: 4px"
+										ng-model="acessoExternoCtrl.acesso.metodoAcessos[3].url"
+										ng-blur="acessoExternoCtrl.salvar()" maxlength="30"
+										ng-disabled="acessoExternoCtrl.acao == 'V'" required>
+									<label><input type="checkbox"
+										ng-model="acessoExternoCtrl.acesso.metodoAcessos[3].oauth"
+										ng-click="acessoExternoCtrl.salvar()"
+										ng-disabled="acessoExternoCtrl.acao == 'V'" /> Oauth2</label>
+								</div>
+							</div>
+							<div class="row" ng-if="acessoExternoCtrl.acao != 'V'">
+							<div class="col-lg-12 col-md-12" style="margin-top: 20px;">
+								<fieldset class="form-group">
+									<legend>Request Body</legend>
+									<div class="col-lg-2 col-md-2">
+										<div class="form-group">
+											<label>Chave:</label>
+											<div>
+												<input type="text" class="form-control" maxlength="100"
+													style="width: 100%; border-radius: 4px"
+													ng-model="acessoExternoCtrl.atributo.chave" maxlength="30">
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-2 col-md-2">
+										<div class="form-group">
+											<label>Valor:</label>
+											<div>
+												<input type="text" maxlength="100" class="form-control"
+													style="width: 100%; border-radius: 4px"
+													ng-model="acessoExternoCtrl.atributo.valor" maxlength="30">
+											</div>
+										</div>
+									</div>
+									<div>
+										<div class="col-lg-3 col-md-3">
+											<div class="form-group" style="margin-top: 25px;">
+												<button class="btn btn-primary"
+													ng-if="!acessoExternoCtrl.flagAcesso"
+													ng-click="acessoExternoCtrl.incluirRequestBody(acessoExternoCtrl.atributo)"
+													ng-disabled="!acessoExternoCtrl.atributo.chave || !acessoExternoCtrl.atributo.valor">Incluir</button>
+												<button class="btn btn-primary"
+													ng-if="acessoExternoCtrl.flagAcesso"
+													ng-click="acessoExternoCtrl.alterarRequestBody(acessoExternoCtrl.atributo)"
+													ng-disabled="!acessoExternoCtrl.atributo.chave.length || !acessoExternoCtrl.atributo.valor.length">Alterar</button>
+												<button type="button" class="btn btn-default"
+													style="margin-left: 10px"
+													ng-if="acessoExternoCtrl.flagAcesso"
+													ng-click="acessoExternoCtrl.cancel()">Cancelar</button>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+						<div class="col-lg-7 col-md-8">
+							<table class="table table-striped" style="margin-top: 15px">
+								<label>Request Body</label>
+								<thead>
+									<th>Chave</th>
+									<th>Valor</th>
+									<th></th>
+								</thead>
+								<tbody>
+									<tr
+										ng-if="!acessoExternoCtrl.acesso.metodoAcessos[0].atributos.length">
+										<td colspan="4">Não há registros encontrados.</td>
+									</tr>
+									<tr
+										ng-repeat="atributo in acessoExternoCtrl.acesso.metodoAcessos[0].atributos track by $index">
+										<td>{{atributo.chave}}</td>
+										<td>{{atributo.valor}}</td>
+										<td style="text-align: center"><a href=""
+											class="btn btn-default btn-xs"
+											ng-disabled="acessoExternoCtrl.flagAcesso"
+											ng-click="acessoExternoCtrl.alterar(atributo)"
+											ng-if="acessoExternoCtrl.acao != 'V'"> <span
+												class="glyphicon glyphicon-pencil"></span>
+										</a> <a href="" class="btn btn-default btn-xs"
+											ng-disabled="acessoExternoCtrl.flagAcesso"
+											ng-click="acessoExternoCtrl.deleteRequest(atributo)"
+											ng-if="acessoExternoCtrl.acao != 'V'"> <span
+												class="glyphicon glyphicon-trash"></span>
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,65 @@
+<meta charset="UTF-8">
+<div id="modalTipoDocumento" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content" style="height: 600px;">
+    
+      <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="dadosDocumentosCtrl.cancelar()">&times;</button>
+		    <h4 class="modal-title">Novo Tipo de Documento</h4>
+	  </div>
+	  <div class="modal-body">
+	      <form>
+		    	<div>
+					<label>Tipo de documento:</label>
+					<div>
+						<input uppercased maxlength="50" type="text" class="form-control"
+							style="width: 100%; border-radius: 4px" ng-model="dadosDocumentosCtrl.tipoDocumento.descricao"/>
+					</div>
+				</div>
+				
+				<div>
+					<label>Tipo de Pessoa:</label>
+					<div>
+						<select class="form-control" ng-model="dadosDocumentosCtrl.tipoDocumento.tipoPessoa">
+							<option value="F">Pessoa Física</option>
+							<option value="J">Pessoa Jurídica</option>
+						</select>
+					</div>
+				</div>
+		    </form>
+		    <button type="button" style="margin-top: 15px;" ng-click="dadosDocumentosCtrl.incluirDocumento()" ng-disabled="!dadosDocumentosCtrl.tipoDocumento.descricao || !dadosDocumentosCtrl.tipoDocumento.tipoPessoa" class="btn btn-primary">Incluir</button>
+	    </div>
+	    <div class="modal-footer pre-scrollable">
+		    
+		    
+		    <table class="table table-striped" style="margin-top: 15px;">
+				<thead>
+					<tr>
+						<th>Tipo de documento</th>
+						<th>Tipo de Pessoa</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="documento in dadosDocumentosCtrl.allDocumentosModal">
+						<td style="text-align: left;">{{documento.descricao.toUpperCase()}}</td>
+						<td style="text-align: left;">{{documento.tipoPessoa == 'F'? "PESSOA FÍSICA": "PESSOA JURÍDICA"}}</td>
+						<td>
+							<button type="button" class="btn btn-default btn-xs" tooltip="Excluir" ng-click="dadosDocumentosCtrl.excluirDocumento(documento)">
+								<span class="glyphicon glyphicon-trash"
+									aria-hidden="true"></span>
+							</button>
+						</td>
+					</tr>
+					<tr ng-if="!dadosDocumentosCtrl.allDocumentosModal.length">
+						<td colspan="6">Não há registros encontrados.</td>
+					</tr>
+				</tbody>
+			</table>
+		    
+	  </div>
+<!--       <div ui-view></div> -->
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

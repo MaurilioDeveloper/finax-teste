@@ -1,0 +1,66 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724565">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="panel-content">
+						<form>
+							<div class="row" ng-if="pessoaCtrl.acao != 'V'">
+								<div class="form-group col-lg-4 col-md-4">
+									<label>Identificação da empresa (CNPJ, TAX NUMBER):</label>
+									<div>
+										<input uppercased type="text" class="form-control" ng-model="participacaoEmpresasCtrl.participacaoEmpresa.identificacaoEmpresa" maxlength="20" style="width:100%; border-radius: 4px" type="text">
+									</div>
+								</div>
+								<div class="form-group col-lg-4 col-md-4">
+									<label>Nome da empresa da qual participa:</label>
+									<div>
+										<input uppercased type="text" class="form-control" maxlength="100" ng-model="participacaoEmpresasCtrl.participacaoEmpresa.nomeEmpresaParticipa" style="width:100%; border-radius: 4px">
+									</div>
+								</div>
+								<div class="form-group col-lg-2 col-md-2">
+									<label>% Participação:</label>
+									<div>
+										<input uppercased type="text" class="form-control" id="participacao" number data-a-sep="." data-a-dec="," data-v-max="100" data-v-min="0.00" ng-model="participacaoEmpresasCtrl.participacaoEmpresa.percentualParticipacao" style="width:100%; border-radius: 4px">
+									</div>
+								</div>
+								<div class="form-group col-lg-2" style="margin-top:25px">
+									<button class="btn btn-primary" ng-click="participacaoEmpresasCtrl.incluir()" ng-disabled="!participacaoEmpresasCtrl.participacaoEmpresa.nomeEmpresaParticipa || !participacaoEmpresasCtrl.participacaoEmpresa.percentualParticipacao || participacaoEmpresasCtrl.participacaoEmpresa.percentualParticipacao == 0">{{ participacaoEmpresasCtrl.participacaoEmpresa.id ? 'Alterar' : 'Incluir' }}</button>
+									<button class="btn btn-default" ng-click="participacaoEmpresasCtrl.participacaoEmpresa = {}" ng-if="participacaoEmpresasCtrl.participacaoEmpresa.id">Cancelar</button>
+								</div>
+							</div>
+						</form>
+						<br/>
+						<div class="col-lg-12" style="padding-left: 0px">
+							<table class="table table-striped" style="margin-top: 15px">
+									<thead>
+										<tr>
+											<th>Identificação da empresa</th>
+											<th>Nome da empresa</th>
+											<th>% Participação</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="participacao in participacaoEmpresasCtrl.participacaoEmpresas">
+											<td>{{participacao.identificacaoEmpresa.toUpperCase()}}</td>
+											<td>{{participacao.nomeEmpresaParticipa.toUpperCase()}}</td>
+											<td>{{participacao.percentualParticipacao | number : 2}}%</td>
+											<td>
+												<button type="button" ng-click="participacaoEmpresasCtrl.editar(participacao)" class="btn btn-default btn-xs" ng-if="pessoaCtrl.acao != 'V'"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+												<button type="button" ng-click="participacaoEmpresasCtrl.excluir(participacao)" class="btn btn-default btn-xs" ng-if="pessoaCtrl.acao != 'V'"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+											</td>											
+										</tr>
+										<tr ng-if="!participacaoEmpresasCtrl.participacaoEmpresas.length">
+											<td colspan="4">Não há registros encontrados.</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

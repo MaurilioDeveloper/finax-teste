@@ -1,0 +1,25 @@
+<meta charset="UTF-8">
+<div class="modal-body" style="height: 250px">
+	{{perfilInvestidorCtrl.descricaoQuestao}}<br/><br/>
+	<label class="radio-inline" ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao13.resposta == 'A' }">
+		<input type="radio" name="resposta13" value="A"	ng-init="perfilInvestidorCtrl.questionario.questao13.pergunta = 13; perfilInvestidorCtrl.questionario.questao13.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao13.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao13)">
+		O meu objetivo é manter o valor real do capital constante, ou seja, conseguir um retorno compensatório  à inflação, sem que precise me expor a um nível de risco elevado.
+	</label><br/> 
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao13.resposta == 'B' }">
+		<input type="radio" name="resposta13" value="B" ng-init="perfilInvestidorCtrl.questionario.questao13.pergunta = 13; perfilInvestidorCtrl.questionario.questao13.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao13.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao13)">
+		O meu objetivo é gerar um rendimento regular, obtendo um retorno constante como fonte de renda, através de um nível de risco moderado.
+	</label><br/>
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao13.resposta == 'C' }">
+		<input type="radio" name="resposta13" value="C" ng-init="perfilInvestidorCtrl.questionario.questao13.pergunta = 13; perfilInvestidorCtrl.questionario.questao13.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao13.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao13)">
+		O meu objetivo é conseguir um retorno superior à inflação, obtendo aumento no capital investido, aceitando a submissão a um alto nível de risco.
+	</label>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+	<button type="button" class="btn btn-primary"
+		ng-click="perfilInvestidorCtrl.goResultQuestion(perfilInvestidorCtrl.questionario.questao13.resposta)">
+		Avançar <i class="fa fa-chevron-right"></i>
+	</button>
+</div>
+
+

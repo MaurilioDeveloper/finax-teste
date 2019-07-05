@@ -1,0 +1,73 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724560">
+	<div class="tab-content">
+		<div class="form-group" name="atualizacaoCadastralCtrl.contatoRsForm">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-if="pessoaCtrl.abas.contatos.erros.length">
+						<span ng-repeat="erro in pessoaCtrl.abas.contatos.erros" class="block">{{erro.mensagem}}</span>
+					</div>
+					<legend>Datas de atualização da ficha</legend>
+					<div class="row">
+						<div class="col-lg-2 col-md-3">
+							<div class="form-group">
+								<label>Data de Inclusão:</label> 
+								<input type="text" class="form-control" style="width: 100%" ng-model="atualizacaoCadastralCtrl.ficha.dataInclusao" disabled>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-2 col-md-2">
+							<div class="form-group">
+								<label>Data da última alteração:</label> 
+								<input type="text" class="form-control" style="width: 100%" ng-model="atualizacaoCadastralCtrl.ficha.dataUltAlteracao" disabled>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel-body">
+					<legend>Datas de atualização cadastral</legend>
+					<div class="row" >
+						<div class="col-lg-3 col-md-2" >
+							<div class="form-group">
+								<label>Data da última atualização cadastral:</label> 
+								<input type="text" class="form-control" style="width: 60%" ng-model="atualizacaoCadastralCtrl.cadastral.dataUltimaAtualizacao" disabled>
+							</div>
+						</div>
+						<div class="form-group col-lg-2" style="margin-top: 25px; margin-left: -50px;" ng-if="pessoaCtrl.acao != 'V'">
+							<button type="button"  class="btn btn-primary" ng-click="atualizacaoCadastralCtrl.validaAtualizacao()" ng-disabled="atualizacaoCadastralCtrl.disableUpdate">Atualizar</button>
+						</div>
+					</div>
+					<div class="row" >
+						<div class="col-lg-3 col-md-3" >
+							<div class="form-group">
+								<label>Data da próxima atualização cadastral:</label> 
+								<input type="text" class="form-control" style="width: 60%" ng-model="atualizacaoCadastralCtrl.cadastral.dataProximaAtualizacao" disabled>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-lg-8 col-md-8" style="padding-left: 0px">
+						<table class="table table-striped" style="margin-top: 15px">
+							<thead>
+								<th>Data da atualização cadastral</th>
+								<th>Usuário</th>
+							</thead>
+							<tbody>
+								<tr ng-if="!atualizacaoCadastralCtrl.cadastralList.length">
+									<td colspan="4">Não há registros encontrados.</td>
+								</tr>
+								<tr ng-repeat="cadastral in atualizacaoCadastralCtrl.cadastralList track by $index">
+									<td>{{cadastral.dataUltimaAtualizacao}}</td>
+									<td>{{cadastral.usuario}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

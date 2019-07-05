@@ -1,0 +1,27 @@
+<meta charset="UTF-8">
+<div class="modal-body" style="height: 250px">
+	{{perfilInvestidorCtrl.descricaoQuestao}}<br/><br/>
+	<label class="radio-inline" ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao9.resposta == 'A' }">
+		<input type="radio" name="resposta9" value="A" ng-init="perfilInvestidorCtrl.questionario.questao9.pergunta = 9; perfilInvestidorCtrl.questionario.questao9.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao9.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao9)">
+		 Baixo.
+	</label><br/> 
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao9.resposta == 'B' }">
+		<input type="radio" name="resposta9" value="B" ng-init="perfilInvestidorCtrl.questionario.questao9.pergunta = 9; perfilInvestidorCtrl.questionario.questao9.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao9.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao9)">
+		Médio.
+	</label><br/> 
+	<label class="radio-inline" ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao9.resposta == 'C' }">
+		<input type="radio" name="resposta9" value="C" ng-init="perfilInvestidorCtrl.questionario.questao9.pergunta = 9; perfilInvestidorCtrl.questionario.questao9.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao9.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao9)">
+		Alto.
+	</label> 	
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+	<button type="button" class="btn btn-primary"
+		ng-click="perfilInvestidorCtrl.goQuestion7(perfilInvestidorCtrl.questionario.questao9.resposta)">
+		Avançar <i class="fa fa-chevron-right"></i>
+	</button>
+</div>
+
+
+
+

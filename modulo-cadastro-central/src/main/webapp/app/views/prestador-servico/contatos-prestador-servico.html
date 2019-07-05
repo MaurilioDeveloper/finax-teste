@@ -1,0 +1,78 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724560">
+	<div class="tab-content">
+		<div class="form-group" name="dadosContatosCtrl.contatoRsForm">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-if="prestadorServicoCtrl.abas.contatos.erros.length">
+						<span ng-repeat="erro in prestadorServicoCtrl.abas.contatos.erros" class="block">{{erro.mensagem}}</span>
+					</div>
+					
+					
+					<div class="col-lg-3 col-md-3" ng-if="prestadorServicoCtrl.acao != 'V'">
+						<div class="form-group">
+							<label>Nome:</label> 
+							<input uppercased alphanumeric-input type="text" maxlength="150" class="form-control" style="width: 100%" ng-model="dadosContatosCtrl.contato.nomeContato" clear-if-not-match="false">
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2" ng-if="prestadorServicoCtrl.acao != 'V'">
+						<div class="form-group">
+							<label>Telefone:</label> 
+							<input uppercased type="text" class="form-control" maxlength="15" style="width: 100%" telefone-input ng-model="dadosContatosCtrl.contato.numeroTelefone" ng-blur="dadosContatosCtrl.validaTelefone()" clear-if-not-match="false">
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3" ng-if="prestadorServicoCtrl.acao != 'V'">
+						<div class="form-group">
+							<label>E-mail:</label> 
+							<input uppercased type="text" class="form-control" maxlength="100" style="width: 100%" email-input ng-model="dadosContatosCtrl.contato.email" clear-if-not-match="false">
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2" ng-if="prestadorServicoCtrl.acao != 'V'">
+						<div class="form-group">
+							<label>Setor/Área:</label> 
+							<input uppercased alphanumeric-input type="text" maxlength="150" class="form-control" style="width: 100%" ng-model="dadosContatosCtrl.contato.setorArea">
+						</div>
+					</div>
+					
+					<div class="col-lg-2 col-md-2 form-group" style="margin-top: 25px" ng-if="prestadorServicoCtrl.acao != 'V'">
+						<button class="btn btn-primary" ng-if="!dadosContatosCtrl.contato.id" ng-click="dadosContatosCtrl.incluirContato()" 
+						ng-disabled="!dadosContatosCtrl.contato.nomeContato.length">Incluir</button>
+						<button class="btn btn-primary" ng-if="dadosContatosCtrl.contato.id" ng-click="dadosContatosCtrl.updateContato()" ng-disabled="!dadosContatosCtrl.contato.nomeContato.length">Alterar </button>
+						<button type="button" class="btn btn-default" style="margin-left: 10px" ng-if="dadosContatosCtrl.contato.id" ng-click="dadosContatosCtrl.cancel()">Cancelar</button>
+					</div>
+					
+					<div class="col-lg-12 col-md-12" style="padding-left: 0px">
+						<table class="table table-striped" style="margin-top: 15px">
+							<thead>
+								<th>Nome</th>
+								<th>Telefone</th>
+								<th>E-mail</th>
+								<th>Setor/Área</th>
+								<th></th>
+							</thead>
+							<tbody>
+								<tr ng-if="!dadosContatosCtrl.contatos.length">
+									<td colspan="4">Não há registros encontrados.</td>
+								</tr>
+								<tr ng-repeat="contato in dadosContatosCtrl.contatos track by $index">
+									<td>{{contato.nomeContato}}</td>
+									<td>{{!contato.numeroTelefone ? '' : contato.numeroTelefone | telefone}}</td>
+									<td>{{contato.email}}</td>
+									<td>{{contato.setorArea}}</td>
+									<td style="text-align: center">
+										<a href=""class="btn btn-default btn-xs" ng-disabled="dadosContatosCtrl.habilitarAcao" ng-click="dadosContatosCtrl.preparaUpdate(contato)" ng-if="prestadorServicoCtrl.acao != 'V'">
+											<span class="glyphicon glyphicon-pencil"></span>
+										</a> 
+										<a href="" class="btn btn-default btn-xs" ng-disabled="dadosContatosCtrl.habilitarAcao" ng-click="dadosContatosCtrl.deleteContato(contato)" ng-if="prestadorServicoCtrl.acao != 'V'">
+											<span class="glyphicon glyphicon-trash"></span>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,380 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724564">
+    <div class="tab-content">
+        <div class="form-group">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="alert alert-danger" role="alert" ng-if="fundoCtrl.abas.dadosBancariosFundos.erros.length && !dadosBancariosFundosCtrl.contasCorrenteFundos.length">
+                        <span ng-repeat="erro in fundoCtrl.abas.dadosBancariosFundos.erros" class="block">{{erro.mensagem}}</span>
+                    </div>
+                    <div class="panel-content">
+                        <div class="form">
+                            <div class="row">
+
+                                <div class="col-lg-12 col-md-12">
+                                    <legend>Bancos Custodiantes</legend>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <legend>Cobrança</legend>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <label>Direitos Creditórios</label>
+                                    <ui-select tabindex="1" theme="bootstrap" ng-model="dadosBancariosFundosCtrl.bancoDr" ng-disabled="fundoCtrl.acao == 'V'"
+                                        ng-change="dadosBancariosFundosCtrl.salvarPessoaFundo()">
+                                        <ui-select-match maxlength="20" placeholder="Selecione" tabindex="1">
+                                            {{$select.selected.nome ? $select.selected.nome.toUpperCase() : $select.selected }}
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="banco in dadosBancariosFundosCtrl.bancosDr | filter : $select.search" maxlength="20">
+                                            <div ng-bind-html="(banco.id ? banco.id : '')  + ' ' + (banco.nome ? banco.nome.toUpperCase() : banco ) | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <label>Renda fixa</label>
+                                    <ui-select tabindex="2" theme="bootstrap" ng-model="dadosBancariosFundosCtrl.bancoRf" ng-disabled="fundoCtrl.acao == 'V'"
+                                        ng-change="dadosBancariosFundosCtrl.salvarPessoaFundo()">
+                                        <ui-select-match maxlength="20" placeholder="Selecione" tabindex="2">
+                                            {{$select.selected.nome ? $select.selected.nome.toUpperCase() : $select.selected }}
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="banco in dadosBancariosFundosCtrl.bancosRf | filter : $select.search" maxlength="20">
+                                            <div class="form-group form-inline" ng-bind-html="(banco.id ? banco.id : '')  + ' ' + (banco.nome ? banco.nome.toUpperCase() : banco ) | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-lg-12 col-md-12 pt-24">
+                                    <legend>Conta Corrente</legend>
+                                </div>
+
+                                <form name="formContaCorrente">
+                                    <div class="col-lg-2 col-md-2 form-group" ng-class="{'has-error': formContaCorrente.especieTitulo.$invalid && formContaCorrente.especieTitulo.$touched }">
+                                        <label>Espécie de título</label>
+                                        <select tabindex="3" name="especieTitulo" required class="form-control" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()"
+                                            ng-disabled="fundoCtrl.acao == 'V'" ng-model="dadosBancariosFundosCtrl.especieTitulo"
+                                            ng-options="especie as especie.tpTitulo for especie in dadosBancariosFundosCtrl.especieTitulos">
+                                            <option value="">Selecione</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 form-group" ng-class="{ 'has-error': formContaCorrente.dsContaCorrente.$invalid && formContaCorrente.dsContaCorrente.$touched }">
+                                        <label>Descrição</label>
+                                        <input tabindex="4" type="text" class="form-control" maxlength="20" name="dsContaCorrente" uppercased required ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.dsContaCorrente"/>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <legend class="sub-legend">Banco</legend>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4 form-group" ng-class="{ 'has-error': formContaCorrente.banco.$invalid && formContaCorrente.banco.$touched }">
+                                        <label>Banco</label>
+                                        <ui-select required name="banco" tabindex="5" on-select="dadosBancariosFundosCtrl.aoSelecionarBanco($item,$model)" theme="bootstrap"
+                                            ng-model="dadosBancariosFundosCtrl.banco" ng-disabled="fundoCtrl.acao == 'V'">
+                                            <ui-select-match maxlength="20" placeholder="Selecione"> {{ $select.selected.nome
+                                                ? $select.selected.nome.toUpperCase() : $select.selected }}</ui-select-match>
+                                            <ui-select-choices repeat="banco in dadosBancariosFundosCtrl.bancos | filter : $select.search" maxlength="20">
+                                                <div ng-bind-html="(banco.id ? banco.id : '')  + ' ' + (banco.nome ? banco.nome.toUpperCase() : banco ) | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="col-lg-4 col-md-4 no-padding" ng-class="{ 'has-error': formContaCorrente.nrAgencia.$invalid && !formContaCorrente.nrAgencia.$pristine }">
+                                            <label>Agência</label>
+                                            <input required type="text" name="nrAgencia" tabindex="6" mask="99999" class="form-control width-full" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.nrAgencia"
+                                                ng-disabled="fundoCtrl.acao == 'V'" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" />
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 no-padding" ng-class="{ 'has-error': formContaCorrente.nrContaCorrente.$invalid && !formContaCorrente.nrContaCorrente.$pristine }">
+                                            <label>Conta</label>
+                                            <input required type="text" name="nrContaCorrente" tabindex="7" mask="9999999999" class="form-control width-full" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.nrContaCorrente"
+                                                ng-disabled="fundoCtrl.acao == 'V'" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" />
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 no-padding" ng-class="{ 'has-error': formContaCorrente.nrDigitoConta.$invalid && !formContaCorrente.nrDigitoConta.$pristine }">
+                                            <label>DV</label>
+                                            <input required type="text" name="nrDigitoConta" tabindex="8" mask="9" class="form-control width-full" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.nrDigitoConta"
+                                                ng-disabled="fundoCtrl.acao == 'V'" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4" ng-class="{ 'has-error': formContaCorrente.cdContaExterna.$invalid && !formContaCorrente.cdContaExterna.$pristine }">
+                                        <label>Código da conta no Matera</label>
+                                        <input required type="text" name="cdContaExterna" tabindex="9" mask="9999" class="form-control width-full" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.cdContaExterna"
+                                            ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" />
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 no-padding">
+
+                                        <div class="col-lg-4 col-md-4" ng-class="{ 'has-error': !formContaCorrente.vlDoc.$modelValue && formContaCorrente.vlDoc.$touched }">
+                                            <label>Taxa para DOC</label>
+                                            <input required number type="text" name="vlDoc" tabindex="10" data-a-sep="." data-a-dec="," data-a-sign="R$" data-v-max="999999.99"
+                                                class="form-control width-full" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()"
+                                                ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.vlDoc" />
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-4" ng-class="{ 'has-error': !formContaCorrente.vlTed.$modelValue && formContaCorrente.vlTed.$touched }">
+                                            <label>Taxa para TED</label>
+                                            <input required number type="text" name="vlTed" tabindex="11" data-a-sep="." data-a-dec="," data-a-sign="R$" data-v-max="999999.99"
+                                                class="form-control width-full" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()"
+                                                ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.vlTed" />
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-4">
+                                            <div class="col-lg-9 col-md-9">
+                                                <label>Conta para pagamento de cessão?</label>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 btn-group btn-group-xs" role="group">
+                                                <button tabindex="12" type="button" checked name="inPagamentoCessao" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inPagamentoCessao"
+                                                    btn-radio="1" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inPagamentoCessao == '1' ? 'btn btn-primary' : 'btn btn-default'"
+                                                    ng-disabled="fundoCtrl.acao == 'V'" required ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Sim</button>
+                                                <button tabindex="13" type="button" name="inPagamentoCessao" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inPagamentoCessao"
+                                                    btn-radio="0" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inPagamentoCessao == '0' ? 'btn btn-primary' : 'btn btn-default'"
+                                                    ng-disabled="fundoCtrl.acao == 'V'" required ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Não</button>
+                                            </div>
+
+                                            <div ng-if="dadosBancariosFundosCtrl.contaCorrenteFundo.inPagamentoCessao == 1 && (dadosBancariosFundosCtrl.banco.id == '341' || dadosBancariosFundosCtrl.banco.id == '237')">
+                                                <div class="col-lg-9 col-md-9">
+                                                    <label class="ml-18">Pagamento automatizado?</label>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 btn-group btn-group-xs">
+                                                    <button checked tabindex="12" type="button" btn-radio="1" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.pagamentoAutomatizado"
+                                                        ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.pagamentoAutomatizado == '1' ? 'btn btn-primary' : 'btn btn-default'"
+                                                        ng-disabled="fundoCtrl.acao == 'V'" ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Sim</button>
+                                                    <button tabindex="13" type="button" btn-radio="0" name="pagamentoAutomatizado" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.pagamentoAutomatizado"
+                                                        ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.pagamentoAutomatizado == '0' ? 'btn btn-primary' : 'btn btn-default'"
+                                                        ng-disabled="fundoCtrl.acao == 'V'" ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Não</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-9 col-md-9">
+                                                <label>Ativo?</label>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 btn-group btn-group-xs" role="group">
+                                                <button tabindex="14" type="button" name="inAtivo" checked ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inAtivo"
+                                                    btn-radio="1" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inAtivo == '1' ? 'btn btn-primary' : 'btn btn-default'"
+                                                    ng-disabled="fundoCtrl.acao == 'V'" required ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Sim</button>
+                                                <button tabindex="15" type="button" name="inAtivo" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inAtivo" btn-radio="0"
+                                                    ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inAtivo == '0' ? 'btn btn-primary' : 'btn btn-default'"
+                                                    ng-disabled="fundoCtrl.acao == 'V'" required ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Não</button>
+                                            </div>
+
+                                            <div class="col-lg-9 col-md-9">
+                                                <label>Conta isenta?</label>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 btn-group btn-group-xs" role="group">
+                                                <button tabindex="16" type="button" checked name="inContaIsenta" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaIsenta"
+                                                    btn-radio="1" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaIsenta == '1' ? 'btn btn-primary' : 'btn btn-default'"
+                                                    ng-disabled="fundoCtrl.acao == 'V'" required ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Sim</button>
+                                                <button tabindex="17" type="button" name="inContaIsenta" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaIsenta"
+                                                    btn-radio="0" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaIsenta == '0' ? 'btn btn-primary' : 'btn btn-default'"
+                                                    ng-disabled="fundoCtrl.acao == 'V'" required ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Não</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <legend class="sub-legend">Cobrança</legend>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="col-lg-9 col-md-9 no-padding">
+                                            <label>Conta Utilizada para cobrança?</label>
+                                        </div>
+                                        <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                            <button tabindex="18" type="button" checked name="inContaCobranca" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaCobranca"
+                                                btn-radio="1" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaCobranca == '1' ? 'btn btn-primary' : 'btn btn-default'"
+                                                ng-disabled="fundoCtrl.acao == 'V'" required ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir()">Sim</button>
+                                            <button tabindex="19" type="button" name="inContaCobranca" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaCobranca"
+                                                btn-radio="0" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaCobranca == '0' ? 'btn btn-primary' : 'btn btn-default'"
+                                                ng-disabled="fundoCtrl.acao == 'V'" required ng-click="dadosBancariosFundosCtrl.habilitarBtnIncluir(); dadosBancariosFundosCtrl.contaCorrenteFundo.possuiContaDestinoDePara = 0; dadosBancariosFundosCtrl.limpaContaDPara()">Não</button>
+                                        </div>
+
+                                        <div class="col-lg-9 col-md-9 no-padding pt-4">
+                                            <label>Utiliza Conta Virtual?</label>
+                                        </div>
+                                        <div class="btn-group btn-group-xs col-lg-3 col-md-3 pt-4" role="group">
+                                            <button tabindex="20" type="button" checked name="inContaVirtual" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaVirtual"
+                                                btn-radio="1" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaVirtual == 1 ? 'btn btn-primary' : 'btn btn-default'"
+                                                required ng-click="dadosBancariosFundosCtrl.validarContaVirtual(1)">Sim</button>
+                                            <button tabindex="21" type="button" name="inContaVirtual" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaVirtual"
+                                                btn-radio="0" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaVirtual == 0 ? 'btn btn-primary' : 'btn btn-default'"
+                                                required ng-click="dadosBancariosFundosCtrl.validarContaVirtual(0)">Não</button>
+                                        </div>
+
+                                        <div ng-if="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaVirtual == 1">
+                                            <div class="col-lg-4 col-md-4 form-group" ng-class="{'has-error': formContaCorrente.nrAgenciaVirtual.$invalid && formContaCorrente.nrAgenciaVirtual.$touched}">
+                                                <label>Agência Virtual</label>
+                                                <input tabindex="24" name="nrAgenciaVirtual" ng-disabled="fundoCtrl.acao == 'V'" uppercased required type="text" mask="99999"
+                                                    ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" class="form-control width-full"
+                                                    id="nrAgencia" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.nrAgenciaVirtual"/>
+                                            </div>
+                                            <div class="col-lg-5 col-md-5 form-group" ng-class="{'has-error': formContaCorrente.nrContaVirtual.$invalid && formContaCorrente.nrContaVirtual.$touched}">
+                                                <label>Conta Virtual</label>
+                                                <input tabindex="25" name="nrContaVirtual" ng-disabled="fundoCtrl.acao == 'V'" uppercased required type="text" mask="9999999999"
+                                                    ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.nrContaVirtual"
+                                                    class="form-control width-full" />
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 form-group" ng-class="{'has-error': formContaCorrente.nrDigitoContaVirtual.$invalid && formContaCorrente.nrDigitoContaVirtual.$touched}">
+                                                <label>DV Virtual</label>
+                                                <input tabindex="26" name="nrDigitoContaVirtual" ng-disabled="fundoCtrl.acao == 'V'" uppercased required type="text" mask="9"
+                                                    ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.nrDigitoContaVirtual"
+                                                    class="form-control width-full" />
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="dadosBancariosFundosCtrl.contaCorrenteFundo.inContaCobranca == 1">
+                                            <div class="col-lg-9 col-md-9 no-padding pt-4">
+                                                <label>Possui Conta Destino DE-PARA?</label>
+                                            </div>
+                                            <div class="btn-group btn-group-xs col-lg-3 col-md-3 pt-4" role="group">
+                                                <button tabindex="20" type="button" checked name="possuiContaDestinoDePara" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.possuiContaDestinoDePara"
+                                                    btn-radio="1" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.possuiContaDestinoDePara == 1 ? 'btn btn-primary' : 'btn btn-default'"
+                                                    required>Sim</button>
+                                                <button tabindex="21" type="button" name="possuiContaDestinoDePara" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.possuiContaDestinoDePara"
+                                                    btn-radio="0" ng-class="dadosBancariosFundosCtrl.contaCorrenteFundo.possuiContaDestinoDePara == 0 ? 'btn btn-primary' : 'btn btn-default'"
+                                                    required ng-click="dadosBancariosFundosCtrl.limpaContaDPara()">Não</button>
+                                            </div>
+
+                                            <div ng-if="dadosBancariosFundosCtrl.contaCorrenteFundo.possuiContaDestinoDePara == 1">
+                                                <div class="col-lg-4 col-md-4 form-group" ng-class="{'has-error': formContaCorrente.agenciaDePara.$invalid && formContaCorrente.agenciaDePara.$touched}">
+                                                    <label>Agência</label>
+                                                    <input uppercased required class="form-control width-full" type="text" tabindex="24" name="agenciaDePara" mask="99999" ng-disabled="fundoCtrl.acao == 'V'"
+                                                        ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.agenciaDePara"/>
+                                                </div>
+                                                <div class="col-lg-5 col-md-5 form-group" ng-class="{'has-error': formContaCorrente.contaCorrenteDePara.$invalid && formContaCorrente.contaCorrenteDePara.$touched}">
+                                                    <label>Conta</label>
+                                                    <input uppercased required class="form-control width-full" type="text" tabindex="25" name="contaCorrenteDePara" mask="9999999999"
+                                                        ng-disabled="fundoCtrl.acao == 'V'" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()"
+                                                        ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.contaCorrenteDePara"/>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 form-group" ng-class="{'has-error': formContaCorrente.digitoContaDePara.$invalid && formContaCorrente.digitoContaDePara.$touched}">
+                                                    <label>DV</label>
+                                                    <input uppercased required class="form-control width-full" type="text" tabindex="26" name="digitoContaDePara" mask="9" ng-disabled="fundoCtrl.acao == 'V'"
+                                                        ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.digitoContaDePara"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="col-lg-4 col-md-4">
+                                    <legend class="sub-legend">Boleto emitido pelo cedente</legend>
+
+                                    <label>Código da carteira</label>
+                                    <input tabindex="22" numeric maxlength="15" type="text" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.informacaoCarteira.nrCarteiraBoletoCedente"
+                                        class="form-control" style="width: 100%" />
+
+                                    <label class="pt-24">Código do acessório escritural</label>
+                                    <input tabindex="27" numeric maxlength="15" type="text" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.informacaoCarteira.nrAcessorioBoletoCedente"
+                                        class="form-control" style="width: 100%" />
+
+                                    <label class="pt-24">Código da variação</label>
+                                    <input tabindex="29" numeric maxlength="15" type="text" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.informacaoCarteira.nrVariacaoBoletoCedente"
+                                        class="form-control" style="width: 100%" />
+                                </div>
+
+                                <div class="col-lg-4 col-md-4">
+                                    <legend class="sub-legend">Boleto emitido pelo banco</legend>
+
+                                    <label>Código da carteira</label>
+                                    <input tabindex="23" numeric maxlength="15" type="text" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.informacaoCarteira.nrCarteiraBoletoBanco"
+                                        class="form-control" style="width: 100%" />
+
+                                    <label class="pt-24">Código do acessório escritural</label>
+                                    <input tabindex="28" numeric maxlength="15" type="text" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.informacaoCarteira.nrAcessorioBoletoBanco"
+                                        class="form-control" style="width: 100%" />
+
+                                    <label class="pt-24">Código da variação</label>
+                                    <input tabindex="30" numeric maxlength="15" type="text" ng-blur="dadosBancariosFundosCtrl.habilitarBtnIncluir()" ng-model="dadosBancariosFundosCtrl.contaCorrenteFundo.informacaoCarteira.nrVariacaoBoletoBanco"
+                                        class="form-control" style="width: 100%" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-if="fundoCtrl.acao == 'E'">
+                            <div class="col-lg-2 col-md-2 align-button">
+                                <div class='form-inline'>
+                                    <button type="button" ng-if="!dadosBancariosFundosCtrl.emEdicao" ng-disabled="formContaCorrente.$invalid" ng-click="dadosBancariosFundosCtrl.salvar()"
+                                        class="btn btn-primary" tabindex="31">Incluir</button>
+                                    <button type="button" ng-if="dadosBancariosFundosCtrl.emEdicao" ng-disabled="formContaCorrente.$invalid" ng-click="dadosBancariosFundosCtrl.atualizar()"
+                                        class="btn btn-primary" tabindex="32">Alterar</button>
+                                    <button type="button" ng-if="dadosBancariosFundosCtrl.emEdicao" ng-click="dadosBancariosFundosCtrl.cancelar()" class="btn btn-primary"
+                                        tabindex="33">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ############################  tabela  ###############################-->
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <legend>Contas Correntes</legend>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <table class="table table-striped ">
+                                    <thead>
+                                        <tr>
+                                            <th>Espécie de título</th>
+                                            <th>Banco</th>
+                                            <th>Agência</th>
+                                            <th>Conta</th>
+                                            <th>DV</th>
+                                            <th>Código Matera</th>
+                                            <th>Conta Cobrança</th>
+                                            <th>Pagamento Cessão</th>
+                                            <th>Taxa DOC</th>
+                                            <th>Taxa TED</th>
+                                            <th>Ativo</th>
+                                            <th style="width: 10%">Descrição</th>
+                                            <th>Boleto Emitido</th>
+                                            <th>Conta Virtual</th>
+                                            <th ng-if="fundoCtrl.acao == 'E'">Ações</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="contaCorrenteFundo in dadosBancariosFundosCtrl.contasCorrenteFundos">
+                                            <td>{{contaCorrenteFundo.tpTitulo.toUpperCase()}}</td>
+                                            <td>{{contaCorrenteFundo.idBanco+ ' - ' +contaCorrenteFundo.nome}}</td>
+                                            <td>{{contaCorrenteFundo.nrAgencia.toUpperCase()}}</td>
+                                            <td>{{contaCorrenteFundo.nrContaCorrente}}</td>
+                                            <td>{{contaCorrenteFundo.nrDigitoConta}}</td>
+                                            <td>{{contaCorrenteFundo.cdContaExterna}}</td>
+                                            <td>{{contaCorrenteFundo.inContaCobranca == '1' ? 'SIM' : 'NÃO'}}</td>
+                                            <td>{{contaCorrenteFundo.inPagamentoCessao == '1' ? 'SIM' : 'NÃO'}}</td>
+                                            <td>{{contaCorrenteFundo.vlDoc | currency: 'R$'}}</td>
+                                            <td>{{contaCorrenteFundo.vlTed | currency: 'R$'}}</td>
+                                            <td>{{contaCorrenteFundo.inAtivo == '1' ? 'SIM' : 'NÃO'}}</td>
+                                            <td>
+                                                <a href="" ng-click="dadosBancariosFundosCtrl.abrirModalDescricao(contaCorrenteFundo)">
+                                                    {{contaCorrenteFundo.dsContaCorrente.length ? contaCorrenteFundo.dsContaCorrente : ' - '}}
+                                                </a>
+                                            </td>
+                                            <td><a href="" ng-click="dadosBancariosFundosCtrl.abrirModalBoleto(contaCorrenteFundo.informacaoCarteira)">
+                                                Visualizar </a></td>
+                                            <td>
+                                                <span ng-if="contaCorrenteFundo.inContaVirtual == 0">NÃO</span>
+                                                <a ng-if="contaCorrenteFundo.inContaVirtual == 1" href="" ng-click="dadosBancariosFundosCtrl.abrirModalContaVirtual(contaCorrenteFundo)">Visualizar
+                                                    </a>
+                                            </td>
+                                            <td style="width: 6%;">
+                                                <div class='form-inline'>
+                                                    <a href="" class="btn btn-default btn-xs" ng-if="fundoCtrl.acao == 'E'" ng-click="dadosBancariosFundosCtrl.editar(contaCorrenteFundo)">
+                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                    </a>
+                                                    <a href="" class="btn btn-default btn-xs" ng-if="fundoCtrl.acao == 'E'" ng-click="dadosBancariosFundosCtrl.excluir(contaCorrenteFundo)">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

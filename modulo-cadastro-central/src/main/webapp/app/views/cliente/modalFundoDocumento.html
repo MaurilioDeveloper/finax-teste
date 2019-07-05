@@ -1,0 +1,100 @@
+<meta charset="UTF-8">
+<div id="modalFundoDocumento" class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    <h4 class="modal-title">Vincular Documentos ao Fundo: {{fundosCtrl.fundoModal.nomeFundo}}</h4>
+	  </div>
+	  <div class="modal-body" style="max-height: 100%;">
+	      <form style="align: center;" name="formModalFundoDocumento">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-6">
+							<label>Descrição do documento:</label>
+							<div>
+								<input type="text" class="form-control" style="border-radius: 4px" 
+									data-uppercased 
+									maxlength="50" 
+									required
+									data-ng-model="fundosCtrl.novoFundoModal.descricao"/>
+							</div>
+						</div>
+						
+						<div class="col-xs-6">
+							<label>Data do documento:</label>
+							<div class="input-group">
+								<input type="text" class="form-control readonly-white" required
+									data-datepicker-popup="dd/MM/yyyy" 
+									data-show-weeks="'false'" 
+									data-close-text="Fechar" 
+									data-clear-text="Limpar" 
+									data-current-text="Hoje" 
+									data-ng-blur="fundosCtrl.validarData()"
+									data-ng-model="fundosCtrl.novoFundoModal.dataDocumento" 
+									data-is-open="dataDocumentoIsOpen" 
+									data-ng-click="dataDocumentoIsOpen = !dataDocumentoIsOpen"/> 
+									<span class="input-group-addon" id="basic-addon2">
+									<span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container">
+	    			<div class="row">
+						<div class="col-xs-6" style="margin-top: 15px;">
+							<label> Anexo: </label> 
+							<input class="btn btn-default ng-pristine ng-invalid ng-invalid-required ng-touched" type="file" id="inputDocumento" 
+								data-ng-model="fundosCtrl.novoFundoModal.anexo" 
+								data-check-filesize 
+								data-app-filereader />
+						</div>
+						<div class="col-xs-6" style="margin-top: 15px;">
+							<button type="button" style="margin-top: 25px;" class="btn btn-primary"
+								data-ng-click="fundosCtrl.incluirDocumento(formModalFundoDocumento)" 
+								data-ng-disabled="!fundosCtrl.novoFundoModal.descricao || !fundosCtrl.novoFundoModal.dataDocumento || !fundosCtrl.novoFundoModal.anexo" >Vincular</button>
+				    	</div>
+					</div>
+				</div>
+		    </form>
+		    <table class="table table-striped" style="margin-top: 15px;">
+				<thead>
+					<tr>
+						<th>Descrição do Documento</th>
+						<th>Data do Documento</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="documento in fundosCtrl.fundoModal.documentos">
+						<td style="text-align: left;">{{documento.descricao.toUpperCase()}}</td>
+						<td style="text-align: left;">{{documento.dataDocumento | date : "dd/MM/y"}}</td>
+						<td>
+							<button type="button" class="btn btn-default btn-xs" 
+								data-ng-click="fundosCtrl.baixarDocumento(documento)" 
+								data-ng-if="pessoaCtrl.acao != 'V' && documento.anexo">
+								
+								<span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+							</button>
+							<button type="button" class="btn btn-default btn-xs" 
+								data-ng-click="fundosCtrl.excluirDocumento(documento)">
+								
+								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+							</button>					
+						</td>
+					</tr>
+					<tr data-ng-if="!fundosCtrl.fundoModal.documentos.length">
+						<td colspan="3" style="text-align: left;">Não há registros encontrados.</td>
+					</tr>
+				</tbody>
+			</table>
+	    </div>
+	    <div class="modal-footer">
+		    
+	  	</div>
+<!--       <div ui-view></div> -->
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

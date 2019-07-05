@@ -1,0 +1,111 @@
+<meta charset="UTF-8">
+<style>
+    .mt-25 {
+        padding-top: 25px !important; 
+    }
+</style>
+<div class="tab-pane">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-if="fundoCtrl.abas.writeoff.erros.length">
+						<span ng-repeat="erro in fundoCtrl.abas.writeoff.erros" class="block">{{erro.mensagem}}</br></span>
+					</div>
+					
+					<div class="row">
+					
+						<div ng-if="fundoCtrl.acao != 'V'"> 
+							<div class="col-lg-5 col-md-6">
+								<label>Regra:</label> 
+								<div class="form-group">
+									<ui-select theme="bootstrap" ng-model="parametroWriteoffFundosCtrl.regraElegibilidadeSelecionada" ng-disabled="parametroWriteoffFundosCtrl.acao == 'E'" ng-change="parametroWriteoffFundosCtrl.selecionaRegraElegibilidade()">
+										<ui-select-match placeholder="Selecione">
+											{{$select.selected.nmNegocial ? $select.selected.nmNegocial : $select.selected}}
+										</ui-select-match>
+										<ui-select-choices repeat="regra as regra in parametroWriteoffFundosCtrl.parametroWriteOff | filter : $select.search">
+											<div ng-bind-html="regra.nmNegocial ? regra.nmNegocial : regra | highlight: $select.search"></div>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row" ng-if="parametroWriteoffFundosCtrl.regraElegibilidadeSelecionada">
+					
+						<div ng-if="fundoCtrl.acao != 'V'"> 
+							<div class="col-lg-12 col-md-12">
+								<label>Descrição:</label> 
+								<label style="font-weight: 100">{{parametroWriteoffFundosCtrl.regraElegibilidadeSelecionada.dsDescricaoRegra}}</label> 
+							</div>
+						</div>
+					</div>
+
+
+					<div class="row" ng-if="parametroWriteoffFundosCtrl.regraElegibilidadeSelecionada">
+						<div ng-if="fundoCtrl.acao != 'V'">
+							<div class="col-lg-3 col-md-3" ng-repeat="parametro in parametroWriteoffFundosCtrl.parametros">
+								<label>{{parametro.nmParam}}:</label> 
+								<div class="form-group">
+									<input ng-if="parametro.dsTipo == 'NUMERICO'" type="text" style="width:100%;" class="form-control" id="valorParametro{{parametro.id}}" 
+										ng-model="parametro.valorParametro" number data-a-sep="." data-a-dec="," data-v-max="99999999999999999.99"/>
+									
+									<input ng-if="parametro.dsTipo == 'TEXTO'" id="valorParametro{{parametro.id}}" ng-model="parametro.valorParametro" maxlength="50" type="text" class="form-control">
+									
+									<div class="input-group" ng-if="parametro.dsTipo == 'DATA'">
+										<input type="text" class="form-control readonly-white" ng-model="parametro.valorParametro"
+											datepicker-popup="dd/MM/yyyy" show-weeks="'false'" close-text="Fechar" clear-text="Limpar" name="dataParametro"
+											is-open="dataParametroOpen" ng-click="dataParametroOpen = !dataParametroOpen" current-text="Hoje" />
+											<span class="input-group-addon" id="basic-addon2">
+												<span class="glyphicon glyphicon-calendar"></span>
+											</span>
+									</div>
+								</div>
+							</div>
+					
+					
+							<div class="col-lg-3 col-md-3">
+								<label>&nbsp;</label>
+								<div class="form-group">
+									<button type="button" class="btn btn-primary" ng-if="parametroWriteoffFundosCtrl.acao == 'I'" 
+									ng-disabled="!parametroWriteoffFundosCtrl.habilitaIncluir()" 
+									ng-click="parametroWriteoffFundosCtrl.adicionarElegibilidade()">Incluir</button>
+									<button type="button" class="btn btn-primary" ng-if="parametroWriteoffFundosCtrl.acao == 'E'" ng-click="parametroWriteoffFundosCtrl.atualizarElegibilidade()" 
+									ng-disabled="!parametroWriteoffFundosCtrl.habilitaIncluir()">Alterar</button>
+									<button type="button" class="btn btn-default" style="margin-left: 10px" ng-if="parametroWriteoffFundosCtrl.acao == 'E'" ng-click="parametroWriteoffFundosCtrl.cancel()">Cancelar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+						
+					<div class="row">
+						<div class="col-lg-12 col-md-12">
+							<table class="table table-striped" style="margin-top: 15px">
+								<thead>
+									<th>Regra</th>
+									<th></th>
+								</thead>
+								<tbody>
+									<tr ng-if="!parametroWriteoffFundosCtrl.regrasElegibilidadeFundo.length">
+										<td colspan="2">Não há registros encontrados.</td>
+									</tr>
+									<tr ng-repeat="regraElegebilidade in parametroWriteoffFundosCtrl.regrasElegibilidadeFundo">
+										<td>{{regraElegebilidade.remeRegraElegibilidade.nmNegocial}}</td>
+	                                    <td style="text-align: center">
+	                                        <a href="" class="btn btn-default btn-xs" ng-disabled="parametroWriteoffFundosCtrl.acao == 'E'" ng-click="parametroWriteoffFundosCtrl.preparaAtualizacao(regraElegebilidade)" ng-if="fundoCtrl.acao != 'V'">
+	                                            <span class="glyphicon glyphicon-pencil"></span>
+	                                        </a>
+	                                        <a href="" class="btn btn-default btn-xs" ng-disabled="parametroWriteoffFundosCtrl.acao == 'E'" ng-click="parametroWriteoffFundosCtrl.removerRegra(regraElegebilidade)" ng-if="fundoCtrl.acao != 'V'">
+	                                            <span class="glyphicon glyphicon-trash"></span>
+	                                        </a>
+	                                    </td>
+                                	</tr>
+                           		</tbody>
+                        	</table>
+                    	</div>
+                	</div>
+            	</div>
+        	</div>
+    	</div>
+</div>

@@ -1,0 +1,80 @@
+<meta charset="UTF-8">
+<div class="tab-pane">
+    <div class="tab-content">
+         <div class="panel panel-default">
+             <div class="panel-body">
+           		 <form name="enderecoFundosCtrl.form">
+	                 <div class="row" ng-if="enderecoFundosCtrl.acao != 'V'">
+	                     <div class="form-group col-lg-2 col-md-3" ng-class="{'erro': enderecoFundosCtrl.form.cep.$invalid && ( enderecoFundosCtrl.form.cep.$dirty || enderecoFundosCtrl.form.$submitted)}"
+	                     tooltip="{{ enderecoFundosCtrl.form.cep.$invalid && ( enderecoFundosCtrl.form.cep.$dirty || enderecoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+	                         <label>CEP</label>
+	                         <input ng-required='enderecoFundosCtrl.endereco.pais.nome == "Brasil"' ng-disabled="fundoCtrl.acao == 'V'" uppercased type="text" class="form-control" style="width: 100%" ng-model="enderecoFundosCtrl.endereco.cep"
+	                             ui-mask="99.999-999" ui-options="{clearOnBlur: false,allowInvalidValue :true}" ng-blur="enderecoFundosCtrl.buscaEnderecoByCep()" name="cep" id="cep">
+	                     </div>
+	                     <div class="form-group col-lg-2 col-md-3" ng-class="{'erro': enderecoFundosCtrl.form.pais.$invalid && ( enderecoFundosCtrl.form.pais.$dirty || enderecoFundosCtrl.form.$submitted)}"
+	                     tooltip="{{ enderecoFundosCtrl.form.pais.$invalid && ( enderecoFundosCtrl.form.pais.$dirty || enderecoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+	                         <label>País</label>
+	                         <ui-select required ng-disabled="fundoCtrl.acao == 'V' || enderecoFundosCtrl.disable" on-select="enderecoFundosCtrl.aoSelecionarPais($item,$model);enderecoFundosCtrl.updateEndereco()"
+	                             theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.pais" ng-disabled="pessoaCtrl.acao == 'V'" name="pais" id="pais">
+	                             <ui-select-match placeholder="Selecione">
+	                                 {{$select.selected.nome ? $select.selected.nome : $select.selected }}
+	                             </ui-select-match>
+	                             <ui-select-choices repeat="pais in enderecoFundosCtrl.paises | filter : $select.search">
+	                                 <div ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+	                             </ui-select-choices>
+	                         </ui-select>
+	                     </div>
+	                     <div class="form-group col-lg-2 col-md-3" ng-class="{'erro': enderecoFundosCtrl.form.estado.$invalid && ( enderecoFundosCtrl.form.estado.$dirty || enderecoFundosCtrl.form.$submitted)}"
+	                     tooltip="{{ enderecoFundosCtrl.form.estado.$invalid && ( enderecoFundosCtrl.form.estado.$dirty || enderecoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+	                         <label>Estado</label>
+	                         <input required ng-disabled="fundoCtrl.acao == 'V' || enderecoFundosCtrl.disable" uppercased type="text" class="form-control" style="width: 100%"
+	                             ng-model="enderecoFundosCtrl.endereco.estado" maxlength="50" name="estado" id="estado">
+	                     </div>
+	                     <div class="form-group col-lg-2 col-md-3" ng-class="{'erro': enderecoFundosCtrl.form.cidade.$invalid && ( enderecoFundosCtrl.form.cidade.$dirty || enderecoFundosCtrl.form.$submitted)}"
+	                     tooltip="{{ enderecoFundosCtrl.form.cidade.$invalid && ( enderecoFundosCtrl.form.cidade.$dirty || enderecoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+	                         <label>Cidade</label>
+	                         <input required ng-disabled="fundoCtrl.acao == 'V' || enderecoFundosCtrl.disable " uppercased type="text" class="form-control" style="width: 100%"
+	                             ng-model="enderecoFundosCtrl.endereco.cidade" ng-blur="enderecoFundosCtrl.updateEndereco()" maxlength="50" name="cidade" id="cidade">
+	                     </div>
+	                 </div>
+	                 <div class="row">
+	                     <div class="form-group col-lg-2 col-md-3" ng-class="{'erro': enderecoFundosCtrl.form.bairro.$invalid && ( enderecoFundosCtrl.form.bairro.$dirty || enderecoFundosCtrl.form.$submitted)}"
+	                     tooltip="{{ enderecoFundosCtrl.form.bairro.$invalid && ( enderecoFundosCtrl.form.bairro.$dirty || enderecoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+	                         <label>Bairro</label>
+	                         <div>
+	                             <input ng-required='enderecoFundosCtrl.endereco.pais.nome == "Brasil"' ng-disabled="fundoCtrl.acao == 'V' || enderecoFundosCtrl.disable" uppercased type="text" class="form-control" style="width: 100%; border-radius: 4px"
+	                                 ng-model="enderecoFundosCtrl.endereco.bairro" ng-blur="enderecoFundosCtrl.updateEndereco()"
+	                                 maxlength="50" name="bairro" id="bairro">
+	                         </div>
+	                     </div>
+	                     <div class="form-group col-lg-2 col-md-3" ng-class="{'erro': enderecoFundosCtrl.form.endereco.$invalid && ( enderecoFundosCtrl.form.endereco.$dirty || enderecoFundosCtrl.form.$submitted)}"
+	                     tooltip="{{ enderecoFundosCtrl.form.endereco.$invalid && ( enderecoFundosCtrl.form.endereco.$dirty || enderecoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+	                         <label>Endereço</label>
+	                         <div>
+	                             <input required ng-disabled="fundoCtrl.acao == 'V' || enderecoFundosCtrl.disable " uppercased type="text" class="form-control" style="width: 100%; border-radius: 4px"
+	                                 ng-model="enderecoFundosCtrl.endereco.endereco" ng-blur="enderecoFundosCtrl.updateEndereco()"
+	                                 maxlength="50" name="endereco" id="endereco">
+	                         </div>
+	                     </div>
+	                     <div class="form-group col-lg-2 col-md-3">
+	                         <label>Número</label>
+	                         <div>
+	                             <input required ng-disabled="fundoCtrl.acao == 'V'  " uppercased type="text" class="form-control" style="width: 100%; border-radius: 4px"
+	                                 ng-model="enderecoFundosCtrl.endereco.numero" ng-blur="enderecoFundosCtrl.updateEndereco()"
+	                                 maxlength="6" name="numero" id="numero">
+	                         </div>
+	                     </div>
+	                     <div class="form-group col-lg-2 col-md-3" >
+	                         <label>Complemento</label>
+	                         <div>
+	                             <input required ng-disabled="fundoCtrl.acao == 'V' " uppercased type="text" class="form-control" style="width: 100%; border-radius: 4px"
+	                                 ng-model="enderecoFundosCtrl.endereco.complemento" ng-blur="enderecoFundosCtrl.updateEndereco()"
+	                                 maxlength="30" name="complemento" id="complemento">
+	                         </div>
+	                     </div>
+                     </form>
+                 </div>
+             </div>
+        </div>
+    </div>
+</div>

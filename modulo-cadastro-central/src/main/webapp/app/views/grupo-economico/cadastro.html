@@ -1,0 +1,162 @@
+<meta charset="UTF-8" />
+
+<style>
+@
+-moz-document
+ 
+url-prefix
+ 
+()
+{
+@media ( min-width : 1220px) and (min-width: 1225px) {
+	.col-lg-2.data {
+		width: 300px;
+	}
+}
+
+@media ( min-width : 1200px) {
+	.col-lg-2.data {
+		width: 275px;
+	}
+}
+
+}
+.nav.nav-tabs li a.erro {
+	color: #a94442;
+}
+
+div.form-group.erro input.form-control, div.form-group.erro select.form-control
+	{
+	border-color: #a94442;
+}
+
+div.form-group.erro label {
+	color: #a94442;
+}
+
+.btn-concluir {
+	background: #00b300;
+	border-color: #009900;
+	color: white;
+}
+
+.btn-concluir:hover {
+	background: #009900;
+	border-color: #009900;
+	color: white;
+}
+
+.comMargin {
+	margin-top: 25px;
+}
+
+.semMargin {
+	margin-top: 0px;
+}
+</style>
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+		<div class="col-lg-12 col-md-12" ng-if="grupoEconomicoCtrl.acao == 'V'">
+			<div class="page-header">
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-grupo-economico" tooltip="Consultar"></button>
+				<h3 class="ng-scope">Visualizar Grupo</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="grupoEconomicoCtrl.acao == 'I'"> 
+			<div class="page-header">
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-grupo-economico" tooltip="Consultar"></button></button>
+				<h3 class="ng-scope">Adicionar Grupo</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="grupoEconomicoCtrl.acao == 'E'">
+			<div class="page-header">
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-grupo-economico" tooltip="Consultar"></button>
+				<h3 class="ng-scope">Editar Grupo</h3>
+			</div>
+		</div>
+		<div ng-include="'app/views/grupo-economico/modalAdicionarParticipante.html'"></div>
+		<div class="col-lg-12 col-md-12">
+			<div class="tabs-wrapper table">
+				<ul class="nav nav-tabs">
+					<li ng-class="'active'" id="tabIncluir" ng-click="grupoEconomicoCtrl.mudarTab(1)" style="cursor: pointer;" ng-if="!grupoEconomicoCtrl.grupo.id">
+						<a>{{grupoEconomicoCtrl.titulo}}</a>
+					</li>
+				</ul>
+				
+				<div class="tab-pane">
+					<div class="tab-content">
+						<div class="form-group">
+							<div class="panel panel-default">
+								<div class="panel-body" style="margin-left: -15px">
+
+									<form name="grupoEconomicoCtrl.form" style='margin-top: 1%'>
+										<div class="col-lg-12 col-md-12">
+											<label for="ex1">Nome do grupo (*)</label> 
+		                                    <input id="nomeGrupo" placeholder="Digite o nome do grupo econômico" ng-model="grupoEconomicoCtrl.grupoEconomico.nomeGrupoEconomico" maxlength="100" type="text" class="form-control" style="width: 100%">
+										</div>
+										
+										<div class="col-lg-12 col-md-12" style="margin-top: 20px;">
+											<div class="col-lg-6 col-md-6">
+												<h3>Participantes vinculados ao grupo</h3>
+											</div>
+											<div class="col-lg-6 col-md-6" style='margin-top: 2%'>
+												<button class="btn btn-primary pull-right" style="margin-left: 2%" ng-click="grupoEconomicoCtrl.modalAdicionarParticipante();" tooltip="Incluir Novo Participante">
+								             		<i class="glyphicon glyphicon-plus"></i> Incluir Participante
+								            	</button>
+								            	<input type="file" class="btn btn-default pull-right" ng-model="fileContent" accept=".csv" tooltip="Cadastro por arquivo" check-filesize file-reader="fileContent" />
+							            	</div>
+							            	<div class="col-lg-12 col-md-12">
+												<hr />
+											</div>
+										</div>
+									</form>
+									<div class="col-lg-12 col-md-12">
+										<table datatable rows="15" lazy="false" datasource="grupoEconomicoCtrl.participantes" paginator="true" max-size="5"
+										 class="table table-striped" style="margin-top: 15px" filter-submit="#filterLink" dont-search-on-load="false"
+										 filter-model="grupoEconomicoCtrl.participante" id="datatableParticipante">
+											<thead>
+												<tr>
+													<th sortable="identificador">CNPJ/CPF</th>
+													<th sortable="nome">Razão Social/Nome</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-if="!grupoEconomicoCtrl.participantes.length">
+													<td colspan="3" class="text-center">Nenhum participante adicionado</td>
+												</tr>
+												<tr ng-repeat="participante in grupoEconomicoCtrl.participantes track by $index">
+													<td ng-if="participante.identificador.length == 8">{{participante.identificador}}</td>
+													<td ng-if="participante.identificador.length > 8">{{participante.identificador | cpfcnpj: participante.tipoPessoa}}</td>
+													<td>{{participante.nome}}</td>
+													<td>
+														<button type="button" class="btn btn-default btn-xs" auth-check permission="editar-fundo" ng-click="grupoEconomicoCtrl.editarParticipante(participante)" tooltip="Editar"
+														ng-disabled="grupoEconomicoCtrl.tab == 3">
+			                                                <span class="glyphicon glyphicon-pencil"></span>
+			                                            </button>
+			                                            <button type="button" class="btn btn-default btn-xs"
+															tooltip="Excluir" auth-check permission="excluir-grupo-economico"
+															ng-click="grupoEconomicoCtrl.excluirParticipante(participante);"
+															ng-disabled="grupoEconomicoCtrl.tab == 3">
+															<span class="glyphicon glyphicon-trash"></span>
+														</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<button type="button" class="btn btn-primary pull-right" ng-disabled="!grupoEconomicoCtrl.grupoEconomico.nomeGrupoEconomico || grupoEconomicoCtrl.tab == 3"
+										 style="margin-left: 2%" ng-click="grupoEconomicoCtrl.salvarGrupoEconomico()" tooltip="Salvar Grupo Econômico" id="btnSalvar">
+						             		Salvar
+						            	</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

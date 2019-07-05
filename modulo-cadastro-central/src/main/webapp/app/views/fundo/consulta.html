@@ -1,0 +1,126 @@
+<meta charset="UTF-8">
+<style>
+	.mt-23 {
+	  margin-top: 23px !important;
+	}
+</style>
+<div class="container-fluid" style="margin-bottom: 30px">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="page-header">
+                <button type="button" class="btn btn-primary glyphicon glyphicon-plus pull-right" ui-sref="fundo" auth-check permission="inserir-fundo" tooltip="Adicionar Novo Cadastro"></button>
+                <h3 class="ng-scope">Consulta</h3>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="tabs-wrapper table">
+                <div class="tab-pane">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" ng-click="hideFilter = !hideFilter" style="cursor: pointer;">
+                            <span class="glyphicon glyphicon-plus" ng-show="hideFilter"></span>
+                            <span class="glyphicon glyphicon-minus" ng-show="!hideFilter"></span> Filtros
+                        </div>
+                        <div collapse="hideFilter">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="form-group col-lg-2 col-md-3">
+                                        <label>CNPJ:</label>
+                                        <input uppercased id="cnpj" ng-model="consultaFundoCtrl.fundo.pessoa.identificador" ng-blur="consultaFundoCtrl.validaCnpj()" ui-mask="99.999.999/9999-99" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group col-lg-2 col-md-3">
+                                        <label>Razão Social:</label>
+                                        <input uppercased id="razaosocial" ng-model="consultaFundoCtrl.fundo.pessoa.nomeRazao" maxlength="50" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group col-lg-2 col-md-3">
+                                        <label>Nome Reduzido:</label>
+                                        <input uppercased id="nomeReduzido" ng-model="consultaFundoCtrl.fundo.nomeReduzido" maxlength="5" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group col-lg-2 col-md-3">
+                                        <label>Código:</label>
+                                        <input uppercased id="codigo" ng-model="consultaFundoCtrl.fundo.codigo" maxlength="8" mask="99999999" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-2 col-md-3">
+                                        <label>Tipo:</label>
+                                        <select class="form-control" ng-model="consultaFundoCtrl.fundo.tipoFundo" style="width: 100%" ng-options="tipo.dsSigla for tipo in consultaFundoCtrl.tipos | orderBy:'-dsSigla':true">
+											<option value="">Selecione</option>
+										</select>
+                                    </div>
+                                    <div class="form-group col-lg-2 col-md-3">
+                                        <label>SubTipo:</label>
+                                        <select class="form-control" ng-model="consultaFundoCtrl.fundo.subTipo" style="width: 100%" ng-options="subTipo.value as subTipo.descricao for subTipo in consultaFundoCtrl.subTipos">
+                                            <option value="">Selecione</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-2 col-md-3">
+                                        <label>Ativo?</label>
+                                        <select class="form-control" ng-model="consultaFundoCtrl.fundo.ativo" style="width: 100%">
+                                            <option value="">Todos</option>
+                                            <option value="1">Sim</option>
+                                            <option value="0">Não</option>
+                                        </select>
+                                    </div>
+									<div class="col-lg-6 col-md-3 mt-23 align-button">
+									    <div class="form-inline">
+									        <button id="filterLink" type="button" class="btn btn-primary glyphicon glyphicon-search" ng-disabled="consultaPessoaCtrl.validateIdentificador()" tooltip="" style="margin-bottom: 2px"></button>
+									        <button ng-click="consultaFundoCtrl.resetForm()" class="btn btn-default">Limpar</button>
+									    </div>
+									</div>
+								</div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="table-responsive">
+                            <table datatable rows="15" lazy="true" class="table table-striped" rest="{{consultaFundoCtrl.restUrl}}/fundo/findbyfilter"
+                                datasource="consultaFundoCtrl.fundos" paginator="true" max-size="5" filter-model="consultaFundoCtrl.fundo"
+                                filter-submit="#filterLink" dont-search-on-load="false">
+                                <thead class="thead-default">
+                                    <tr>
+                                        <th sortable="codigo">Código</th>
+                                        <th sortable="pessoa.identificador">CNPJ</th>
+                                        <th sortable="pessoa.nomeRazao">Razão Social</th>
+                                        <th sortable="nomeReduzido">Nome Reduzido</th>
+                                        <th sortable="tipoFundo">Tipo</th>
+                                        <th sortable="subTipo">SubTipo</th>
+                                        <th sortable="ativo">Ativo</th>
+                                        <th sortable="stCadastroFundo">Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-if="!consultaFundoCtrl.fundos || consultaFundoCtrl.fundos.length == 0">
+                                        <td colspan="9" class="text-center">Não foram encontrados dados para os filtros selecionados</td>
+                                    </tr>
+                                    <tr ng-repeat="fundo in consultaFundoCtrl.fundos">
+                                        <td>{{fundo.codigo}}</td>
+                                        <td>{{fundo.pessoa.identificador | cpfcnpj: 'J'}}</td>
+                                        <td>{{fundo.pessoa.nomeRazao.toUpperCase()}}</td>
+                                        <td>{{fundo.nomeReduzido.toUpperCase()}}</td>
+                                        <td>{{fundo.tipoFundo.dsSigla}}</td>
+                                        <td>{{fundo.subTipo == 1 ? 'PADRONIZADO' : fundo.subTipo == 0 ? 'NÃO PADRONIZADO' : ''}}</td>
+                                        <td>{{fundo.ativo == 1? 'SIM' : fundo.ativo == 0 ? 'NÃO' : '' }}</td>
+                                        <td>{{fundo.stCadastroFundo}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-default btn-xs" ui-sref="fundo.visualizar({'identificador':fundo.pessoa.identificador, 'acao':'V', 'tab': 2})" tooltip="Detalhes">
+                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs" auth-check permission="editar-fundo" ui-sref="fundo.editar({'identificador':fundo.pessoa.identificador, 'acao':'E', 'tab': '2'})" tooltip="Editar">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

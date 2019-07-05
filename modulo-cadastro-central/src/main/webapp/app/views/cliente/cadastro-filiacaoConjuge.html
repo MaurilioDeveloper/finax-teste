@@ -1,0 +1,99 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724549">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form name="filiacaoConjugeCtrl.form">
+						<div class="row">
+								<div class="col-md-12" style="padding-left: 0px">
+									<div class="col-md-12">
+										<legend>Filiação</legend>
+									</div>
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group" ng-class="{'erro':filiacaoConjugeCtrl.form.nomeMae.$invalid && (filiacaoConjugeCtrl.form.nomeMae.$dirty || filiacaoConjugeCtrl.form.$submitted)}">
+											<label>Nome completo da mãe*:</label>
+											<input uppercased alphanumeric-input tooltip="{{filiacaoConjugeCtrl.form.nomeMae.$invalid && (filiacaoConjugeCtrl.form.nomeMae.$dirty || filiacaoConjugeCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" type="text" class="form-control" ng-blur="filiacaoConjugeCtrl.salvarPessoaFiliacao()"
+												ng-model="filiacaoConjugeCtrl.pessoaFiliacao.nomeMae" name="nomeMae" required maxlength="100" style="width: 100%">
+										</div>
+									</div>
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group">
+											<label>Nome completo do pai:</label>
+											<input uppercased alphanumeric-input type="text" class="form-control"  
+												ng-blur="filiacaoConjugeCtrl.salvarPessoaFiliacao()"
+												ng-model="filiacaoConjugeCtrl.pessoaFiliacao.nomePai" maxlength="100" style="width: 100%">
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-12 col-md-12" style="padding-left: 0px">
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group">
+											<label>Nome completo do tutor responsável ou curador:</label>
+											<input uppercased alphanumeric-input type="text" class="form-control"	 
+												ng-blur="filiacaoConjugeCtrl.salvarPessoaFiliacao()"
+												ng-model="filiacaoConjugeCtrl.pessoaFiliacao.nomeTutorResponsavel" maxlength="100" style="width: 100%">
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-12 col-mg-12 form-group" style="margin-top: 25px;" ng-if="filiacaoConjugeCtrl.isConjuge">
+									<legend>Cônjuge</legend>
+									<div class="row">
+										<div class="col-lg-2 col-md-2">
+											<div class="form-group" ng-class="{'erro':filiacaoConjugeCtrl.form.cpfConjuge.$invalid && (filiacaoConjugeCtrl.form.cpfConjuge.$dirty || filiacaoConjugeCtrl.form.$submitted)}">
+												<label>CPF cônjuge*:</label>
+												<input uppercased name="cpfConjuge" tooltip="{{filiacaoConjugeCtrl.form.cpfConjuge.$invalid && (filiacaoConjugeCtrl.form.cpfConjuge.$dirty || filiacaoConjugeCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" required ng-model="filiacaoConjugeCtrl.pessoaMatrimonio.cpfConjuge"
+													ui-mask="999.999.999-99" ng-blur="filiacaoConjugeCtrl.buscarConjuge()" type="text" class="form-control"
+													ng-blur="filiacaoConjugeCtrl.validarCPF()">
+											</div>
+										</div>
+										<div class="col-lg-7 col-md-7">
+											<div class="form-group" ng-class="{'erro':filiacaoConjugeCtrl.form.nomeConjuge.$invalid && (filiacaoConjugeCtrl.form.nomeConjuge.$dirty || filiacaoConjugeCtrl.form.$submitted)}">
+												<label>Nome cônjuge*:</label>
+												<input uppercased alphanumeric-input type="text" tooltip="{{filiacaoConjugeCtrl.form.nomeConjuge.$invalid && (filiacaoConjugeCtrl.form.nomeConjuge.$dirty || filiacaoConjugeCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" class="form-control" name="nomeConjuge" required maxlength="100"
+													ng-blur="filiacaoConjugeCtrl.salvarPessoaMatrimonio()" ng-disabled="filiacaoConjugeCtrl.disableNomeConjuge"
+													ng-model="filiacaoConjugeCtrl.pessoaMatrimonio.nomeConjuge" style="width: 100%">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-2 col-md-2">
+											<div class="form-group">
+												<label>Data de nascimento:</label>
+												 <div class="input-group">
+													<input type="text" class="form-control readonly-white" ng-model="filiacaoConjugeCtrl.pessoaMatrimonio.dataNascimento" ng-blur="filiacaoConjugeCtrl.validarData()"
+														datepicker-popup="dd/MM/yyyy" show-weeks="'false'" close-text="Fechar" clear-text="Limpar" ng-disabled="filiacaoConjugeCtrl.disableDataConjuge"
+														is-open="dataNascimentoOpen" ng-click="dataNascimentoOpen = !dataNascimentoOpen" current-text="Hoje"/>
+													<span class="input-group-addon" id="basic-addon2">
+													<span class="glyphicon glyphicon-calendar"></span></span>
+													</div>
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<div class="form-group">
+												<label>Nacionalidade:</label>
+												<input uppercased type="text" class="form-control" maxlength="25" style="width: 100%"
+													ng-model="filiacaoConjugeCtrl.pessoaMatrimonio.nacionalidade"
+													ng-blur="filiacaoConjugeCtrl.salvarPessoaMatrimonio()">
+											</div>
+										</div>
+	
+										<div class="col-lg-4 col-md-4">
+											<div class="form-group" ng-class="{'erro':filiacaoConjugeCtrl.form.regimeCasamento.$invalid && (filiacaoConjugeCtrl.form.regimeCasamento.$dirty || filiacaoConjugeCtrl.form.$submitted )}">
+												<label>Regime casamento*:</label>
+												<select class="form-control" name="regimeCasamento" required style="width: 100%"
+													ng-model="filiacaoConjugeCtrl.pessoaMatrimonio.regimeCasamento" ng-options="regimeCasamento.nome as regimeCasamento.nome for regimeCasamento in filiacaoConjugeCtrl.regimesCasamento"
+													ng-change="filiacaoConjugeCtrl.salvarPessoaMatrimonio()" tooltip="{{filiacaoConjugeCtrl.form.regimeCasamento.$invalid && (filiacaoConjugeCtrl.form.regimeCasamento.$dirty || filiacaoConjugeCtrl.form.$submitted ) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}">
+													<option value="">Selecione</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

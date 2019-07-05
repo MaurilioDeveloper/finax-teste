@@ -1,0 +1,626 @@
+<meta charset="UTF-8">
+<style>
+    .align-bottom {
+        display: -moz-box;
+        /* Firefox */
+        display: -webkit-box;
+        /* Safari and Chrome */
+        display: box;
+        -webkit-box-align: end;
+    }
+
+    .align-bottom>div {
+        -moz-box-flex: 1.0;
+        /* Firefox */
+        -webkit-box-flex: 1.0;
+        /* Safari and Chrome */
+        box-flex: 1.0;
+    }
+
+    .table-fixed-min>table {
+        width: 100%;
+        margin-bottom: 0px !important;
+    }
+
+    .table-fixed-min thead,
+    .table-fixed-min tbody,
+    .table-fixed-min tr,
+    .table-fixed-min td,
+    .table-fixed-min th {
+        display: block;
+    }
+
+    .table-fixed-min tr:after {
+        content: ' ';
+        display: block;
+    }
+
+    .table-fixed-min thead th {
+        height: 50px;
+    }
+
+    .table-fixed-min tbody {
+        height: 120px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed-min tbody td {
+        float: left;
+    }
+
+    .table-fixed-min thead th {
+        float: left;
+    }
+</style>
+<div class="tab-pane">
+    <div class="tab-content">
+        <fieldset ng-disabled="blockLoad">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form name="configuracaoFundosCtrl.form">
+                        <div class="alert alert-danger" role="alert" ng-if="fundoCtrl.abas.configuracaoFundos.erros.length && fundoCtrl.abas.configuracaoFundos.hasAlert && !tiposTituloAssociados.length">
+                            <span ng-repeat="erro in fundoCtrl.abas.configuracaoFundos.erros" class="block" ng-show="!erro.campo">{{erro.mensagem}}</span>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4 col-md-4">
+                                <label>Tipos de cedentes</label>
+                                <select class="form-control" data-ng-change="configuracaoFundosCtrl.salvar()" data-ng-disabled="fundoCtrl.acao == 'V'" data-ng-model="configuracaoFundosCtrl.pessoaFundoConfig.tpCendenteOperante"
+                                    style="width: 40%" tabindex="1">
+                                    <option value="">Selecione</option>
+                                    <option value="JF">Todos</option>
+                                    <option value="PF">Pessoa Física</option>
+                                    <option value="PJ">Pessoa Jurídica</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4" ng-class="{'erro': configuracaoFundosCtrl.form.nrDiasCarencia.$invalid && ( configuracaoFundosCtrl.form.nrDiasCarencia.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                tooltip="{{ configuracaoFundosCtrl.form.nrDiasCarencia.$invalid && ( configuracaoFundosCtrl.form.nrDiasCarencia.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                <label>Dias de carência na concentração</label>
+                                <input numeric required id="nrDiasCarencia" name="nrDiasCarencia" ng-disabled="fundoCtrl.acao == 'V'" uppercased ng-model="configuracaoFundosCtrl.pessoaFundoConfig.nrDiasCarencia"
+                                    style="width: 40%" type="text" maxlength="5" ng-blur="configuracaoFundosCtrl.salvar()" class="form-control"
+                                    tabindex="2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="modal-header" style="padding-left: 0px;">
+                                        <h4 class="modal-title">Horário</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': configuracaoFundosCtrl.form.hrFuncionamentoFim.$invalid && ( configuracaoFundosCtrl.form.hrFuncionamentoFim.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.hrFuncionamentoFim.$invalid && ( configuracaoFundosCtrl.form.hrFuncionamentoFim.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <label>Horário de funcionamento</label>
+                                    <div class="form-inline">
+                                        <input ng-model="configuracaoFundosCtrl.pessoaFundoConfig.hrFuncionamentoIni" ng-disabled="fundoCtrl.acao == 'V'" ng-blur="configuracaoFundosCtrl.validarHoraMin('hrFuncionamentoIni', configuracaoFundosCtrl.pessoaFundoConfig.hrFuncionamentoIni)"
+                                            name="hrFuncionamentoIni" id="hrFuncionamentoIni" type="text" ui-mask="99:99" maxlength="5"
+                                            style="width: 30%" class="form-control" tabindex="3" />
+                                        <label> até </label>
+                                        <input ng-model="configuracaoFundosCtrl.pessoaFundoConfig.hrFuncionamentoFim" ng-disabled="fundoCtrl.acao == 'V'" ng-blur="configuracaoFundosCtrl.validarHoraMin('hrFuncionamentoFim', configuracaoFundosCtrl.pessoaFundoConfig.hrFuncionamentoFim)"
+                                            name="hrFuncionamentoFim" id="hrFuncionamentoFim" required type="text" ui-mask="99:99"
+                                            maxlength="5" style="width: 30%" class="form-control" id="hrFuncionamentoFim" name="hrFuncionamentoFim"
+                                            tabindex="4" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Horário limite para pagamento</label>
+                                    <input uppercased id="hr" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.hrLimitePagamento" ng-disabled="fundoCtrl.acao == 'V'"
+                                        ng-blur="configuracaoFundosCtrl.validarHoraMin('hrLimitePagamento', configuracaoFundosCtrl.pessoaFundoConfig.hrLimitePagamento)"
+                                        type="text" ui-mask="99:99" maxlength="5" style="width: 30%" class="form-control" tabindex="5">
+                                </div>
+                                <div class="form-group">
+                                    <label>Horário de autoserviço</label>
+                                    <div class="form-inline">
+                                        <input uppercased id="hr" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.hrAutoservicoIni" ng-disabled="fundoCtrl.acao == 'V'"
+                                            ng-blur="configuracaoFundosCtrl.validarHoraMin('hrAutoservicoIni', configuracaoFundosCtrl.pessoaFundoConfig.hrAutoservicoIni)"
+                                            type="text" ui-mask="99:99" maxlength="5" style="width: 30%" class="form-control"
+                                            tabindex="6">
+                                        <label> até </label>
+                                        <input uppercased ng-model="configuracaoFundosCtrl.pessoaFundoConfig.hrAutoservicoFim" ng-disabled="fundoCtrl.acao == 'V'"
+                                            ng-blur="configuracaoFundosCtrl.validarHoraMin('hrAutoservicoFim', configuracaoFundosCtrl.pessoaFundoConfig.hrAutoservicoFim)"
+                                            type="text" ui-mask="99:99" maxlength="45" style="width: 30%" class="form-control"
+                                            id="hrAutoservicoFim" name="hrAutoservicoFim" tabindex="7">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="modal-header" style="padding-left: 0px;">
+                                        <h4 class="modal-title">Lastro</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 23px;" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inLinhaLastroObrigatoria && ( configuracaoFundosCtrl.form.inLinhaLastroObrigatoria.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inLinhaLastroObrigatoria.$invalid && ( configuracaoFundosCtrl.form.inLinhaLastroObrigatoria.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9" style="margin-left: -15px;">
+                                        <label>Obrigatório linha de lastro?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inLinhaLastroObrigatoria" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inLinhaLastroObrigatoria == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()"
+                                            tabindex="8">Sim</button>
+                                        <button type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inLinhaLastroObrigatoria" btn-radio="'0'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inLinhaLastroObrigatoria == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()"
+                                            tabindex="9">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group " ng-class="{'erro': configuracaoFundosCtrl.form.nrDiasBloqLtoFisico.$invalid && ( configuracaoFundosCtrl.form.nrDiasBloqLtoFisico.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.nrDiasBloqLtoFisico.$invalid && ( configuracaoFundosCtrl.form.nrDiasBloqLtoFisico.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <label>Dias para bloqueio por ausência de lastro físico</label>
+                                    <input numeric required id="nrDiasBloqLtoFisico" name="nrDiasBloqLtoFisico" ng-disabled="fundoCtrl.acao == 'V'" uppercased
+                                        ng-model="configuracaoFundosCtrl.pessoaFundoConfig.nrDiasBloqLtoFisico" style="width: 40%"
+                                        type="text" maxlength="3" ng-blur="configuracaoFundosCtrl.salvar()" class="form-control"
+                                        tabindex="10">
+                                </div>
+                                <div class="form-group" ng-class="{'erro': configuracaoFundosCtrl.form.nrDiasBloqLtoEletronico.$invalid && ( configuracaoFundosCtrl.form.nrDiasBloqLtoEletronico.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.nrDiasBloqLtoEletronico.$invalid && ( configuracaoFundosCtrl.form.nrDiasBloqLtoEletronico.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <label>Dias para bloqueio por ausência de lastro eletrônico</label>
+                                    <input numeric required id="nrDiasBloqLtoEletronico" name="nrDiasBloqLtoEletronico" ng-disabled="fundoCtrl.acao == 'V'" uppercased
+                                        ng-model="configuracaoFundosCtrl.pessoaFundoConfig.nrDiasBloqLtoEletronico" style="width: 40%"
+                                        type="text" maxlength="3" ng-blur="configuracaoFundosCtrl.salvar()" class="form-control"
+                                        tabindex="11">
+                                </div>
+                                <div class="form-group" ng-class="{'erro': configuracaoFundosCtrl.form.nrDiasBloqDpeAssinatura.$invalid && ( configuracaoFundosCtrl.form.nrDiasBloqDpeAssinatura.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.nrDiasBloqDpeAssinatura.$invalid && ( configuracaoFundosCtrl.form.nrDiasBloqDpeAssinatura.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <label>Dias para bloqueio por ausência de assinatura de duplicata eletrônico</label>
+                                    <input numeric required id="nrDiasBloqDpeAssinatura" name="nrDiasBloqDpeAssinatura" ng-disabled="fundoCtrl.acao == 'V'" uppercased
+                                        ng-model="configuracaoFundosCtrl.pessoaFundoConfig.nrDiasBloqDpeAssinatura" style="width: 40%"
+                                        type="text" maxlength="3" ng-blur="configuracaoFundosCtrl.salvar()" class="form-control"
+                                        tabindex="11.1">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4">
+                                <div class="form-group ">
+                                    <div class="modal-header" style="padding-left: 0px;">
+                                        <h4 class="modal-title">Direitos Creditórios</h4>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo</label>
+                                    <select tabindex="12" id="tpTitulo" ng-change="configuracaoFundosCtrl.habilitarBtnIncluir()" class="form-control" ng-model="configuracaoFundosCtrl.tipoAssociado.id.tpTitulo"
+                                        ng-disabled="fundoCtrl.acao == 'V'" style="width: 100%">
+                                        <option value="" label="Selecione" selected="selected"></option>
+                                        <option ng-repeat="tipoTitulo in tiposTitulo | orderBy:'tpTitulo'" value="{{tipoTitulo.tpTitulo}}">{{tipoTitulo.tpTitulo}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-md-9" style="padding-left: 0">
+                                        <label>Banco</label>
+                                        <ui-select tabindex="13" ng-change="configuracaoFundosCtrl.habilitarBtnIncluir()" theme="bootstrap" ng-model="configuracaoFundosCtrl.tipoAssociado.banco"
+                                            ng-disabled="fundoCtrl.acao == 'V'" style="width: 100%">
+                                            <ui-select-match maxlength="20" placeholder="Selecione">
+                                                {{$select.selected.nome ? $select.selected.nome.toUpperCase() : $select.selected }}
+                                            </ui-select-match>
+                                            <ui-select-choices repeat="banco in configuracaoFundosCtrl.bancos | filter : $select.search" maxlength="20">
+                                                <div ng-bind-html="(banco.id ? banco.id : '')  + ' ' + (banco.nome ? banco.nome.toUpperCase() : banco ) | highlight: $select.search">
+                                                </div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 align-button" style="padding-right: 0; margin-top: 25px;">
+                                        <button tabindex="14" type="button" style="width: 100%" ng-disabled="configuracaoFundosCtrl.disable" ng-click="configuracaoFundosCtrl.salvarTiposTitulo()"
+                                            class="btn btn-primary">Incluir</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table table-fixed-min">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 15%">Tipo</th>
+                                                <th style="width: 68%">Banco Cobrador</th>
+                                                <th style="width: 10%" ng-if="fundoCtrl.acao == 'E'">Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="tipoAssociados in tiposTituloAssociados | orderBy:'id.tpTitulo'">
+                                                <td style="width: 15%">{{tipoAssociados.id.tpTitulo}}</td>
+                                                <td style="width: 72%">{{tipoAssociados.banco.id + ' - ' + tipoAssociados.banco.nome}}</td>
+                                                <td style="width: 10%">
+                                                    <a href="" class="btn btn-default btn-xs" ng-if="fundoCtrl.acao == 'E'" ng-click="configuracaoFundosCtrl.deleteTiposTitulo(tipoAssociados)">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12 col-md-12">
+                                <div class="modal-header" style="padding-left: 0px;">
+                                    <h4 class="modal-title">Operações</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- COLUNA 1 -->
+                            <div class="form-group col-lg-4 col-md-4">
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inAssGestoPgtoCessao && ( configuracaoFundosCtrl.form.inAssGestoPgtoCessao.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inAssGestoPgtoCessao.$invalid && ( configuracaoFundosCtrl.form.inAssGestoPgtoCessao.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Assinatura do gestor obrigatória para pagamento de cessão?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="15" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inAssGestoPgtoCessao" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inAssGestoPgtoCessao == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="16" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inAssGestoPgtoCessao" btn-radio="'0'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inAssGestoPgtoCessao == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inRemessaParcial && ( configuracaoFundosCtrl.form.inRemessaParcial.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inRemessaParcial.$invalid && ( configuracaoFundosCtrl.form.inRemessaParcial.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Aceita remessa parcial?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="17" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRemessaParcial" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRemessaParcial == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="18" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRemessaParcial" btn-radio="'0'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRemessaParcial == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inRetornoRemessa && ( configuracaoFundosCtrl.form.inRetornoRemessa.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inRetornoRemessa.$invalid && ( configuracaoFundosCtrl.form.inRetornoRemessa.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Retorno de remessas?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="19" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRetornoRemessa" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRetornoRemessa == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="20" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRetornoRemessa" btn-radio="'0'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRetornoRemessa == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoRecompra && ( configuracaoFundosCtrl.form.inValorMinimoRecompra.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inValorMinimoRecompra.$invalid && ( configuracaoFundosCtrl.form.inValorMinimoRecompra.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Validar valor mínimo de recompra?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="21" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoRecompra" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoRecompra == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="22" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoRecompra" btn-radio="'0'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoRecompra == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoPagamento && ( configuracaoFundosCtrl.form.inValorMinimoPagamento.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inValorMinimoPagamento.$invalid && ( configuracaoFundosCtrl.form.inValorMinimoPagamento.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Validar valor mínimo de pagamento?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="23" type="button" id="inValorMinimoPagamento" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoPagamento"
+                                            btn-radio="'1'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoPagamento == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="24" type="button" id="inValorMinimoPagamento" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoPagamento"
+                                            btn-radio="'0'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inValorMinimoPagamento == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inRecupJudicial && ( configuracaoFundosCtrl.form.inSeguro.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inSeguro.$invalid && ( configuracaoFundosCtrl.form.inSeguro.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-7 col-md-7">
+                                        <label>Permite operar com Recuperação Judicial?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-5 col-md-5" role="group">
+                                        <button tabindex="25" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRecupJudicial" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRecupJudicial == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="26" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRecupJudicial" btn-radio="'0'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRecupJudicial == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                        <button tabindex="27" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRecupJudicial" btn-radio="'2'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRecupJudicial == '2' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Com
+                                            plano homologado</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': (!configuracaoFundosCtrl.pessoaFundoConfig.inAtuaAcruoAposVenc != '1' && !configuracaoFundosCtrl.pessoaFundoConfig.inAtuaAcruoAposVenc != '0' ) && ( configuracaoFundosCtrl.form.inAtuaAcruoAposVenc.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inAtuaAcruoAposVenc.$invalid && ( configuracaoFundosCtrl.form.inAtuaAcruoAposVenc.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Atua com acruo após vencimento do titulo?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="28" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inAtuaAcruoAposVenc" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inAtuaAcruoAposVenc == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar();configuracaoFundosCtrl.changeAceiteAcruo()">Sim</button>
+                                        <button tabindex="29" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inAtuaAcruoAposVenc" btn-radio="'0'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inAtuaAcruoAposVenc == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar();configuracaoFundosCtrl.changeAceiteAcruo()">Não</button>
+                                    </div>
+                                </div>
+                                <div ng-if="configuracaoFundosCtrl.pessoaFundoConfig.inAtuaAcruoAposVenc == '1'" class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.nrPrazoDiasAcruoAposVenc && ( configuracaoFundosCtrl.form.nrPrazoDiasAcruoAposVenc.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.nrPrazoDiasAcruoAposVenc.$invalid && ( configuracaoFundosCtrl.form.nrPrazoDiasAcruoAposVenc.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Prazo de dias para o acruo: </label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <input tabindex="30" numeric required id="nrPrazoDiasAcruoAposVenc" name="nrPrazoDiasAcruoAposVenc" ng-disabled="fundoCtrl.acao == 'V'"
+                                            ng-model="configuracaoFundosCtrl.pessoaFundoConfig.nrPrazoDiasAcruoAposVenc" style="width: 64px"
+                                            type="text" maxlength="4" ng-blur="configuracaoFundosCtrl.salvar()" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- COLUNA 2 -->
+                            <div class="form-group col-lg-4 col-md-4">
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inRecompraParcial && ( configuracaoFundosCtrl.form.inRecompraParcial.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inRecompraParcial.$invalid && ( configuracaoFundosCtrl.form.inRecompraParcial.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Aceita recompra parcial?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="31" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRecompraParcial" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRecompraParcial == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="32" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRecompraParcial" btn-radio="'0'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRecompraParcial == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Emite duplicata?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="33" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inEmiteDuplicata" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inEmiteDuplicata == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="34" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inEmiteDuplicata" btn-radio="'0'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inEmiteDuplicata == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+								<div class="form-group" 
+									ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inReapresentacaoAutomatica && ( configuracaoFundosCtrl.form.inReapresentacaoAutomatica.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+								    tooltip="{{ configuracaoFundosCtrl.form.inReapresentacaoAutomatica.$invalid && ( configuracaoFundosCtrl.form.inReapresentacaoAutomatica.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+								    <div class="col-lg-9 col-md-9">
+								        <label>Realiza reapresentação automática de cheques?</label>
+								    </div>
+								    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+								        <button tabindex="35" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inReapresentacaoAutomatica"
+								            btn-radio="'1'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inReapresentacaoAutomatica == 1 ? 'btn btn-primary active' : 'btn btn-default'"
+								            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+								        <button tabindex="36" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inReapresentacaoAutomatica" btn-radio="'0'"
+								            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inReapresentacaoAutomatica == 0 ? 'btn btn-primary active' : 'btn btn-default'"
+								            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+								    </div>
+								</div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inResolucao && ( configuracaoFundosCtrl.form.inResolucao.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inResolucao.$invalid && ( configuracaoFundosCtrl.form.inResolucao.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Permitido realizar operação de resolução?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="37" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inResolucao" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inResolucao == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="38" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inResolucao" btn-radio="'0'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inResolucao == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inRepasse && ( configuracaoFundosCtrl.form.inRepasse.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inRepasse.$invalid && ( configuracaoFundosCtrl.form.inRepasse.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Permitido realizar operação de repasse?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="39" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRepasse" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRepasse == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="40" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRepasse" btn-radio="'0'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRepasse == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inSeguro && ( configuracaoFundosCtrl.form.inSeguro.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inSeguro.$invalid && ( configuracaoFundosCtrl.form.inSeguro.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Permitido realizar operação de seguro?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="41" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inSeguro" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inSeguro == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="42" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inSeguro" btn-radio="'0'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inSeguro == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': (!configuracaoFundosCtrl.pessoaFundoConfig.recompraOcorrencia != 0 && !configuracaoFundosCtrl.pessoaFundoConfig.recompraOcorrencia != 1) && ( configuracaoFundosCtrl.form.recompraOcorrencia.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.recompraOcorrencia.$invalid && ( configuracaoFundosCtrl.form.recompraOcorrencia.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Aceita recompra de ocorrências?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+
+                                        <button tabindex="43" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.recompraOcorrencia" btn-radio="1"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.recompraOcorrencia == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="44" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.recompraOcorrencia" btn-radio="0"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.recompraOcorrencia == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': (!configuracaoFundosCtrl.pessoaFundoConfig.inTermoUnificado != 0 && !configuracaoFundosCtrl.pessoaFundoConfig.inTermoUnificado != 1) && ( configuracaoFundosCtrl.form.inTermoUnificado.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inTermoUnificado.$invalid && ( configuracaoFundosCtrl.form.recompraOcorrencia.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Gerar Termo Unificado?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="43" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inTermoUnificado" btn-radio="1"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inTermoUnificado == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="44" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inTermoUnificado" btn-radio="0"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inTermoUnificado == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': !configuracaoFundosCtrl.pessoaFundoConfig.inRelatRetornoLiquidacao && ( configuracaoFundosCtrl.form.inSeguro.$dirty || configuracaoFundosCtrl.form.$submitted)}">
+                                    <div class="col-lg-9 col-md-9">
+                                        <label>Gerar Relatório de Retorno Bancário?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="41" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRelatRetornoLiquidacao" btn-radio="'1'"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRelatRetornoLiquidacao == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="42" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inRelatRetornoLiquidacao" btn-radio="'0'" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inRelatRetornoLiquidacao == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- COLUNA 3 -->
+                            <div class="form-group col-lg-4 col-md-4">
+
+
+                                <div class="form-group" ng-class="{'erro': configuracaoFundosCtrl.form.dtInicioOrigemMovFin.$invalid && ( configuracaoFundosCtrl.form.dtInicioOrigemMovFin.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.dtInicioOrigemMovFin.$invalid && ( configuracaoFundosCtrl.form.dtInicioOrigemMovFin.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <label>Data de início da validação da origem do movimento financeiro</label>
+                                    <div class="input-group">
+                                        <div class=" input-group datepicker-popup-wrapper placement-top">
+                                            <!-- data-ng-blur="configuracaoFundosCtrl.salvar()" -->
+                                            <input required name="dtInicioOrigemMovFin" id="dtInicioOrigemMovFin" type="text" class="form-control readonly-white" data-ng-disabled="fundoCtrl.acao == 'V'"
+                                                data-datepicker-popup="dd/MM/yyyy" data-show-weeks="'false'" data-close-text="Fechar"
+                                                data-clear-text="Limpar" data-current-text="Hoje" data-ng-model="configuracaoFundosCtrl.pessoaFundoConfig.dtInicioOrigemMovFin"
+                                                data-is-open="dtInicioOrigemMovFinOpen" data-ng-click="dtInicioOrigemMovFinOpen = !dtInicioOrigemMovFinOpen"
+                                                data-ng-blur="configuracaoFundosCtrl.salvar()" tabindex="45" />
+                                            <span class="input-group-addon" id="basic-addon2">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'erro': configuracaoFundosCtrl.form.nrPrazoDiasIdentificacao.$invalid && ( configuracaoFundosCtrl.form.nrPrazoDiasIdentificacao.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.nrPrazoDiasIdentificacao.$invalid && ( configuracaoFundosCtrl.form.nrPrazoDiasIdentificacao.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <label>Dias para identificação de depósito</label>
+                                    <input tabindex="46" numeric required id="nrPrazoDiasIdentificacao" name="nrPrazoDiasIdentificacao" ng-disabled="fundoCtrl.acao == 'V'"
+                                        uppercased ng-model="configuracaoFundosCtrl.pessoaFundoConfig.nrPrazoDiasIdentificacao"
+                                        style="width: 40%" type="text" maxlength="4" ng-blur="configuracaoFundosCtrl.salvar()"
+                                        class="form-control">
+                                </div>
+
+                                <!-- ROBO -->
+                                <div class="form-group " ng-class="{'erro': configuracaoFundosCtrl.form.inHabilitaRobo.$invalid && ( configuracaoFundosCtrl.form.inHabilitaRobo.$dirty || configuracaoFundosCtrl.form.$submitted)}"
+                                    tooltip="{{ configuracaoFundosCtrl.form.inHabilitaRobo.$invalid && ( configuracaoFundosCtrl.form.inHabilitaRobo.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+                                    <div class="col-lg-9 col-md-9" style="padding-left: 0;">
+                                        <label>Permitir ativação do robô?</label>
+                                    </div>
+                                    <div class="btn-group btn-group-xs col-lg-3 col-md-3" role="group">
+                                        <button tabindex="47" type="button" checked ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inHabilitaRobo" btn-radio="1"
+                                            ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inHabilitaRobo == '1' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Sim</button>
+                                        <button tabindex="48" type="button" ng-model="configuracaoFundosCtrl.pessoaFundoConfig.inHabilitaRobo" btn-radio="0" ng-class="configuracaoFundosCtrl.pessoaFundoConfig.inHabilitaRobo == '0' ? 'btn btn-primary active' : 'btn btn-default'"
+                                            ng-disabled="fundoCtrl.acao == 'V'" required ng-click="configuracaoFundosCtrl.salvar()">Não</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="robot-limit-value" ng-class="{'erro': (configuracaoFundosCtrl.form.vlLimiteAutorizacaoRobo.$invalid && ( configuracaoFundosCtrl.form.vlLimiteAutorizacaoRobo.$dirty || configuracaoFundosCtrl.form.$submitted)) || (configuracaoFundosCtrl.pessoaFundoConfig.inHabilitaRobo == 1 && configuracaoFundosCtrl.pessoaFundoConfig.vlLimiteAutorizacaoRobo == '0')}">
+                                    <span tooltip="{{ configuracaoFundosCtrl.form.vlLimiteAutorizacaoRobo.$invalid && ( configuracaoFundosCtrl.form.vlLimiteAutorizacaoRobo.$dirty || configuracaoFundosCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : 
+			                    	configuracaoFundosCtrl.pessoaFundoConfig.inHabilitaRobo == 1 && configuracaoFundosCtrl.pessoaFundoConfig.vlLimiteAutorizacaoRobo == '0' ? 'Valor Limite deve ser maior que zero.' : ''}}">
+                                        <label>Valor limite do robô</label>
+                                        <input tabindex="49" number data-a-sep="." data-a-dec="," data-a-sign="R$" data-v-max="9999999999.99" required id="vlLimiteAutorizacaoRobo"
+                                            name="vlLimiteAutorizacaoRobo" ng-disabled="fundoCtrl.acao == 'V' || configuracaoFundosCtrl.pessoaFundoConfig.inHabilitaRobo == '0'"
+                                            ng-model="configuracaoFundosCtrl.pessoaFundoConfig.vlLimiteAutorizacaoRobo" style="width: 40%"
+                                            type="text" ng-blur="configuracaoFundosCtrl.salvar()" class="form-control">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Write-Off  Linha-->
+                        <div class="row">
+		                	<div class="form-group col-lg-8 col-md-8">
+		                		<div class="modal-header" style="padding-left: 0px;">
+		                    		<h4 class="modal-title">Write-Off</h4>
+		                    	</div>
+		                    </div>
+                            <div class="form-group col-lg-4 col-md-4">
+                                <div class="modal-header" style="padding-left: 0px;">
+                                    <h4 class="modal-title">Limites PDD</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8 col-md-8"> 
+								<div class="form-group" ng-if="fundoCtrl.acao != 'V'">
+									<label>Parâmetro:</label> 
+									<div class="form-group">
+										<ui-select theme="bootstrap" ng-model="configuracaoFundosCtrl.regraSelecionada" ng-disabled="configuracaoFundosCtrl.acao == 'E'" ng-change="configuracaoFundosCtrl.selecionaRegra()">
+											<ui-select-match placeholder="Selecione">
+												{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+											</ui-select-match>
+											<ui-select-choices repeat="regra as regra in configuracaoFundosCtrl.regras | filter : $select.search">
+												<div ng-bind-html="regra.nome ? regra.nome : regra | highlight: $select.search"></div>
+											</ui-select-choices>
+										</ui-select>
+									</div>
+								</div>
+								<div class="form-group" ng-if="configuracaoFundosCtrl.regraSelecionada">					
+									<label>Descrição:</label> 
+									<label style="font-weight: 100">{{configuracaoFundosCtrl.regraSelecionada.nome}} - Quantidade de Dias: {{configuracaoFundosCtrl.regraSelecionada.quantidadeDias}}</label> 
+								</div>
+								<div class="form-group" ng-if="configuracaoFundosCtrl.regraSelecionada && configuracaoFundosCtrl.acao != 'V'">
+									<label>&nbsp;</label>
+									<div class="form-group">
+										<button type="button" class="btn btn-primary" ng-click="configuracaoFundosCtrl.adicionar()">Incluir</button>									
+										<button type="button" class="btn btn-default" style="margin-left: 10px" ng-if="configuracaoFundosCtrl.acao == 'E'" ng-click="configuracaoFundosCtrl.cancel()">Cancelar</button>
+									</div>
+								</div>
+								<div class="form-group">
+									<table class="table table-striped" style="margin-top: 15px">
+										<thead>
+											<th>Parâmetro:</th>
+											<th></th>
+										</thead>
+										<tbody>								
+											<tr ng-if="!configuracaoFundosCtrl.regrasFundo || configuracaoFundosCtrl.regrasFundo.length == 0">
+												<td colspan="2">Não há parametro vinculado.</td>
+											</tr>
+											<tr ng-repeat="regra in configuracaoFundosCtrl.regrasFundo" ng-if="regra.dataAlteracao == null">
+												<td>{{regra.nome}} - Quantidade de Dias: {{regra.quantidadeDias}}</td>
+			                                    <td style="text-align: center">	                                      
+			                                        <a href="" class="btn btn-default btn-xs" ng-click="configuracaoFundosCtrl.removerRegra(regra)" ng-if="configuracaoFundosCtrl.acao != 'V'">
+			                                            <span class="glyphicon glyphicon-trash"></span>
+			                                        </a>
+			                                    </td>
+		                                	</tr>
+		                           		</tbody>
+		                        	</table>
+			                	</div>
+							</div>
+                            <div class="col-lg-4 col-md-4">
+                                <label>Limites PDD para Cedentes em RJ e com Nota CC</label>
+                                <div class="form-inline">
+                                    <label style="width: 30%">Inicio</label> <label>&nbsp;</label>
+                                    <label style="width: 30%">Final</label>
+                                </div>
+                                <div class="form-inline">
+                                    <input numeric ng-model="configuracaoFundosCtrl.pessoaFundoConfig.nrDiaLimitesPddRjIni" ng-disabled="fundoCtrl.acao == 'V'"
+                                        name="nrDiaLimitesPddRjIni" id="nrDiaLimitesPddRjIni" ng-blur="configuracaoFundosCtrl.validarDiasLimitesPddRj()"
+                                        type="text" maxlength="3" style="width: 30%" class="form-control" tabindex="50" />                                    <label>&nbsp;</label>
+                                    <input numeric ng-model="configuracaoFundosCtrl.pessoaFundoConfig.nrDiaLimitesPddRjFim" ng-disabled="fundoCtrl.acao == 'V'"
+                                        name="nrDiaLimitesPddRjFim" id="nrDiaLimitesPddRjFim" ng-blur="configuracaoFundosCtrl.validarDiasLimitesPddRj()"
+                                        required type="text" maxlength="3" style="width: 30%" class="form-control" tabindex="51"
+                                    />
+                                </div>
+                                <label>Metodologia do PDD:</label>
+                                <select class="form-control"
+                                        data-ng-change="configuracaoFundosCtrl.salvar()"
+                                        data-ng-disabled="fundoCtrl.acao == 'V'"
+                                        data-ng-model="configuracaoFundosCtrl.pessoaFundoConfig.metodologiaPDD"
+                                        data-ng-options="pdd.id as pdd.nome for pdd in configuracaoFundosCtrl.listaMetodologiaPDD"
+                                        style="width: 253px"
+                                        tabindex="49">
+                                </select>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

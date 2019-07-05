@@ -1,0 +1,39 @@
+<meta charset="UTF-8">
+<div class="modal-header">
+	<div class="row">
+		<div class="col-lg-12">
+			<h4 class="modal-title">Visualizar contatos</h4>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer" >
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<table class="table table-striped" style="margin-top: 15px;">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Telefone</th>
+						<th>E-mail</th>
+						<th>Setor/Área</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-if="!modalContatoPrestadorServicoCtrl.contatos.length">
+						<td colspan="4" style="text-align: center;">Não há registros encontrados.</td>
+					</tr>
+					<tr ng-repeat="contato in modalContatoPrestadorServicoCtrl.contatos">
+						<td style="text-align: left;">{{contato.nomeContato}}</td>
+						<td style="text-align: left;">{{!contato.numeroTelefone ? '' : contato.numeroTelefone | telefone}}</td>
+						<td style="text-align: left;">{{contato.email}}</td>
+						<td style="text-align: left;">{{contato.setorArea}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<button type="button" class="btn btn-primary" data-dismiss="modal"
+				aria-hidden="true" ng-click="modalContatoPrestadorServicoCtrl.cancelar()">Fechar
+			</button>
+		</div>
+	</div>
+</div>

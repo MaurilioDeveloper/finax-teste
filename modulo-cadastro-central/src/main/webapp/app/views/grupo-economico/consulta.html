@@ -1,0 +1,96 @@
+<meta charset="UTF-8">
+<style>
+	.mt-23 {
+	  margin-top: 23px !important;
+	}
+</style>
+<div class="container-fluid" style="margin-bottom: 30px">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="page-header">
+                <button type="button" class="btn btn-primary pull-right" ui-sref="grupo-economico.incluir" auth-check permission="inserir-grupo-economico" tooltip="Adicionar Novo Grupo Econômico">
+                	<i class="glyphicon glyphicon-plus"></i> Adicionar grupo
+               	</button>
+                <h3 class="ng-scope">Consultar Grupos Econômicos</h3>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="tabs-wrapper table">
+                <div class="tab-pane">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" ng-click="hideFilter = !hideFilter" style="cursor: pointer;">
+                        	<span class="glyphicon glyphicon-plus" ng-show="hideFilter"></span>
+                            <span class="glyphicon glyphicon-minus" ng-show="!hideFilter"></span>
+                            Pesquisar
+                        </div>
+                        <div collapse="hideFilter">
+                            <div class="panel-body">
+                            	<div class="row">
+									<div class="form-group form-inline" style='margin-top: 1%'>
+										<div class="col-lg-12 col-md-12">
+		                                    <textarea uppercased id="busca" placeholder="Digite para buscar" ng-model="consultaGrupoEconomicoCtrl.grupoEconomico.nomeGrupoEconomico" maxlength="100" type="text" class="form-control" style="width: 100%"></textarea>
+										</div>
+										<div class="col-lg-6 col-md-2 align-button">
+											<div class="form-group form-inline">
+												
+												<button id="filterLink" type="button" class="btn btn-primary"
+													ng-click="consultaGrupoEconomicoCtrl.buscarGrupos()">
+													<i class="glyphicon glyphicon-search"></i>
+												</button>
+												
+												<button ng-click="consultaGrupoEconomicoCtrl.resetForm()"
+													class="btn btn-default" style="margin-top: 1px">Limpar
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<br />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="table-responsive">
+                            <table datatable rows="15" lazy="false" class="table table-striped" 
+                                datasource="consultaGrupoEconomicoCtrl.grupos" paginator="true" max-size="5" filter-model="consultaGrupoEconomicoCtrl.grupo"
+                                filter-submit="#filterLink" dont-search-on-load="false" show-total="true">
+                                <thead class="thead-default">
+                                    <tr>
+                                        <th sortable="nomeGrupoEconomico">Nome do Grupo</th>
+                                        <th sortable="quantidadePessoas">Quantidade de Participantes</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-if="!consultaGrupoEconomicoCtrl.grupos || consultaGrupoEconomicoCtrl.grupos.length == 0">
+                                        <td colspan="9" class="text-center">Não foram encontrados dados para os filtros selecionados</td>
+                                    </tr>
+                                    <tr ng-repeat="grupo in consultaGrupoEconomicoCtrl.grupos">
+                                        <td>{{grupo.nomeGrupoEconomico}}</td>
+                                        <td>{{grupo.quantidadePessoas}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-default btn-xs" auth-check permission="visualizar-grupo-economico" ui-sref="grupo-economico.visualizar({'identificador':grupo.id, 'acao':'V', 'tab': '3'})" tooltip="Detalhes">
+                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs" auth-check permission="editar-grupo-economico" ui-sref="grupo-economico.editar({'identificador':grupo.id, 'acao':'E', 'tab': '2'})" tooltip="Editar">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+												tooltip="Excluir" auth-check permission="excluir-grupo-economico"
+												ng-click="consultaGrupoEconomicoCtrl.excluirGrupoEconomico(grupo);">
+												<span class="glyphicon glyphicon-trash"></span>
+											</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

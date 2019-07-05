@@ -1,0 +1,375 @@
+<meta charset="UTF-8">
+<style>
+label {
+	font-size: 13px;
+}
+
+#template {
+	font-family: monospace;
+}
+
+.ace_editor div {
+	font-family: monospace !important;
+}
+
+.btn-default.btn.btn-sm:focus {
+	outline: none;
+}
+
+.modal-lg {
+	width: 1042px;
+	margin-top: 5px
+}
+
+.panel-heading {
+	padding: 2px 3px;
+}
+
+legend {
+	font-size: 16px;
+}
+
+.panel-body {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+</style>
+<div class="modal-header" style="padding-bottom: 0px;">
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6">
+			<h4 class="modal-title">{{termoCtrl.termo.idPessoaFundoTermo ?
+				termoCtrl.termo.nmTermo : 'Novo Termo' }}</h4>
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-6">
+			<a class="pull-right" ng-click="termoCtrl.close();"
+				style="cursor: pointer;"> <span
+				class="glyphicon glyphicon-remove"></span>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="modal-body">
+	<div class="row" ng-if="!termoCtrl.showTemplateOnly">
+		<div class="col-lg-9 col-md-9 col-sm-9">
+			<div class="form-group">
+				<label class="control-label" for="nmTermo">Nome do termo</label> <input
+					type="text" class="form-control" id="nmTermo"
+					ng-model="termoCtrl.termo.nmTermo" />
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3">
+			<button class="btn btn-default"
+				ng-click="termoCtrl.abrirModalCopiarTermo()"
+				style="margin-top: 25px;">Copiar termo de outro fundo</button>
+		</div>
+	</div>
+	<div class="row" ng-if="!termoCtrl.showTemplateOnly">
+		<div class="col-lg-4 col-md-4 col-sm-4">
+			<ul
+				style="list-style: none; padding: 0px; height: 120px; overflow: auto;"
+				class="form-control">
+				<li
+					ng-style="termoCtrl.caracteristicaParaAdicionar.idTipoTermo == caracteristica.idTipoTermo && {'color':'white','background-color':'#337ab7'} || {'color':'black','background-color':'transparent'}"
+					style="cursor: pointer; padding: 4px;"
+					ng-repeat="caracteristica in termoCtrl.caracteristicas track by $index"
+					ng-click="termoCtrl.caracteristicaParaAdicionar = caracteristica;">{{caracteristica.nmTipoTermo}}</li>
+			</ul>
+		</div>
+		<div class="col-lg-1 col-md-1 col-sm-1" style="text-align: center;">
+			<button id="rightfocusout" style="margin: 5px;"
+				class="btn-default btn btn-sm"
+				ng-click="termoCtrl.adicionarCaracteristica()">
+				<span class="glyphicon glyphicon-arrow-right"></span>
+			</button>
+			<button id="leftfocusout" class="btn-default btn btn-sm"
+				ng-click="termoCtrl.removerCaracteristica()">
+				<span class="glyphicon glyphicon-arrow-left"></span>
+			</button>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-4">
+			<ul
+				style="list-style: none; padding: 0px; height: 120px; overflow: auto;"
+				class="form-control">
+				<li
+					ng-style="termoCtrl.caracteristicaParaRemover.idTipoTermo == caracteristica.idTipoTermo && {'color':'white','background-color':'#337ab7'} || {'color':'black','background-color':'transparent'}"
+					style="cursor: pointer; padding: 4px;"
+					ng-repeat="caracteristica in termoCtrl.termo.caracteristicas track by $index"
+					ng-click="termoCtrl.caracteristicaParaRemover = caracteristica;">{{caracteristica.nmTipoTermo}}</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row" ng-if="!termoCtrl.showTemplateOnly">
+		<div class="col-lg-4 col-md-4 col-sm-4">
+			<legend>Tags</legend>
+
+			<div style="height: 215px;">
+				<div style="overflow-y: auto; height: 100%; padding-right: 0px">
+					<div class="form-group" style="margin-right: 10px">
+						<input type="text" class="form-control" id="filtrarTags"
+							ng-model="termoCtrl.filtroTermos" placeholder="Pesquisar..." />
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Fundo</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsFundo | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Cedente</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsCedente | filter: { nome: termoCtrl.filtroTermos } track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Contrato</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsContrato | filter: { nome: termoCtrl.filtroTermos } "
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Sacado</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsSacado | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Termo</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsTermo | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Cessão</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsCessao | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Administrador</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsAdministrador | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Consultora</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsConsultora | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Testemunha</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsTestemunha | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Gestor</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsGestor | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Intervenientes</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsIntervenientes | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Responsável Solidário</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsResponsavelSolidario | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-default"
+						style="margin-bottom: 0px; border: none; box-shadow: none">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter">
+							Representante Legal</div>
+						<div class="panel-body">
+							<div class="row"
+								ng-repeat="tag in termoCtrl.tagsRepresentanteLegal | filter: { nome: termoCtrl.filtroTermos }  track by $index"
+								ng-click="termoCtrl.tagSelecionada == tag ? termoCtrl.tagSelecionada = null : termoCtrl.tagSelecionada = tag"
+								ng-style="(termoCtrl.tagSelecionada == tag) && {'background-color':'rgb(51, 122, 183)'} || {'background-color':'none'}">
+								<div class="col-lg-12 col-md-12" style="padding-bottom: 0px;">
+									<label
+										ng-style="(termoCtrl.tagSelecionada == tag) && {'color':'white', 'font-weight': '100'} || {'color':'#333', 'font-weight': '100'}">{{
+										tag.nome }}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right">
+				<button
+					ng-disabled="!termoCtrl.tagSelecionada || termoCtrl.termo.caracteristicas.length == 0"
+					class="btn btn-primary"
+					ng-click="termoCtrl.adicionarTagAoTemplateTermo()"
+					style="margin-top: 5px;">Incluir tag</button>
+			</div>
+		</div>
+		<div class="col-lg-8 col-md-8 col-sm-8">
+			<legend>Termo</legend>
+			<div id="template" class="form-control"
+				ng-style="termoCtrl.showTemplateOnly && {'height':'360px'} || {'height':'280px'}"></div>
+		</div>
+	</div>
+	<div class="row" ng-if="termoCtrl.showTemplateOnly">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div id="template" class="form-control"
+				ng-style="termoCtrl.showTemplateOnly && {'height':'400px'} || {'height':'280px'}"></div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button
+		ng-disabled="!termoCtrl.termo.nmTermo || termoCtrl.termo.caracteristicas.length == 0 || !termoCtrl.termo.dsTextoTermo"
+		ng-if="!termoCtrl.showTemplateOnly" class="btn btn-primary"
+		ng-click="termoCtrl.validarESalvar()">Salvar</button>
+	<button ng-if="termoCtrl.showTemplateOnly" class="btn btn-primary"
+		ng-click="termoCtrl.gerarPdf()">Gerar PDF</button>
+</div>

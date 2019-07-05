@@ -1,0 +1,65 @@
+<meta charset="UTF-8">
+<div class="tab-pane">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form name="atualizaoesCtrl.form">
+						
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<label>Data de inclusão:</label>
+							</div>
+							<div class="col-lg-4 col-md-4">
+								<label>Usuário:</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<div class="form-group"> 
+									<input ng-disabled="true" name="dataCadastroInc" type="text" datepicker-popup="dd/MM/yyyy" class="form-control" style="width: 100%" maxlength="100" 
+									ng-model="atualizaoesCtrl.prestadorServico.dataCadastro">
+								</div>
+							</div>
+							
+							<div class="col-lg-4 col-md-4">
+								<div class="form-group">  
+									<input ng-disabled="true" name="nomeCadUser" type="text" class="form-control" style="width: 100%" maxlength="100"
+									ng-model="atualizaoesCtrl.prestadorServico.nomeUsuarioCadastro">
+								</div>
+							</div>
+						</div>
+						
+						
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<label>Data da última atualização:</label>
+							</div>
+							<div class="col-lg-4 col-md-4">
+								<label>Usuário:</label>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<div class="form-group"> 
+									<input ng-disabled="true" name="dataCadastroAt" type="text" datepicker-popup="dd/MM/yyyy" class="form-control" style="width: 100%" maxlength="100" 
+									ng-model="atualizaoesCtrl.prestadorServico.dataAtualizacao">
+								</div>
+							</div>
+							
+							<div class="col-lg-4 col-md-4">
+								<div class="form-group">  
+									<input ng-disabled="true" name="nomeAtUser" type="text"  class="form-control" style="width: 100%" maxlength="100"
+									ng-model="atualizaoesCtrl.prestadorServico.nomeUsuarioAtualizacao">
+								</div>
+							</div>
+						</div>
+												
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

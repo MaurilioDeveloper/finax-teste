@@ -1,0 +1,114 @@
+<meta charset="UTF-8">
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<h1>
+					<h3 class="ng-scope">Consulta</h3>
+				</h1>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+			<div class="tabs-wrapper table">
+				<ul class="nav nav-tabs">
+					<li ng-class="{'active': pessoaCtrl.tab == 1}" ng-click="pessoaCtrl.mudarTab(1)" style="cursor: pointer;"><a>Incluir</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 2}" ng-click="pessoaCtrl.mudarTab(2)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 2"><a>Dados Pessoais</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 2}" ng-click="pessoaCtrl.mudarTab(2)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 1" ><a>Dados Empresa</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 3}" ng-click="pessoaCtrl.mudarTab(3)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>Documentos</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 4}" ng-click="pessoaCtrl.mudarTab(4)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 2"><a>Filiação/Cônjuge</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 5}" ng-click="pessoaCtrl.mudarTab(5)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>Contatos</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 6}" ng-click="pessoaCtrl.mudarTab(6)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>Endereço</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 7}" ng-click="pessoaCtrl.mudarTab(7)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 2"><a>Dados Profissionais </a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 7}" ng-click="pessoaCtrl.mudarTab(7)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 1"><a>Dados Empresariais</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 8}" ng-click="pessoaCtrl.mudarTab(8)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>Dados bancários</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 9}" ng-click="pessoaCtrl.mudarTab(9)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>Participação em Empresas</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 10}" ng-click="pessoaCtrl.mudarTab(10)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 2"><a>Informações Financeiras</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 11}" ng-click="pessoaCtrl.mudarTab(11)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 1"><a>Informações Financeiras</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 12}" ng-click="pessoaCtrl.mudarTab(12)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>Afirmações</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 13}" ng-click="pessoaCtrl.mudarTab(13)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>Patrimônio</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 14}" ng-click="pessoaCtrl.mudarTab(14)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>Perfil Investidor</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 15}" ng-click="pessoaCtrl.mudarTab(15)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>FATCA</a></li>
+				</ul>
+					</br>
+					<div class="tab-pane" ng-if="pessoaCtrl.tab == 1">
+						<div class="panel panel-default">
+							<div class="panel-heading" ng-click="hideFilter = !hideFilter" style="cursor: pointer;">
+								<span class="glyphicon glyphicon-plus" ng-show="hideFilter"></span>
+								<span class="glyphicon glyphicon-minus" ng-show="!hideFilter"></span>
+								Filtros
+							</div>
+							<div collapse="hideFilter">
+								<div class="panel-body">
+									<div class="row">
+										<div class="form-group input-group form-inline col-lg-6" style="margin-left: 15px">
+											<label class="btn btn-default input-group-addon" ng-model="pessoaCtrl.pessoa.tipoPessoa" btn-radio="'cpfcnpj'" btn-checkbox btn-checkbox-true="2" ng-click="pessoaCtrl.pessoa.tipoPessoa = '2'">CPF</label>
+											<label class="btn btn-default input-group-addon" ng-model="pessoaCtrl.pessoa.tipoPessoa" btn-radio="'cpfcnpj'" btn-checkbox btn-checkbox-true="1" ng-click="pessoaCtrl.pessoa.tipoPessoa = '1'">CNPJ</label>
+											<input uppercased ng-model="pessoaCtrl.pessoa.identificador" style="width: 238px" ng-if="pessoaCtrl.pessoa.tipoPessoa == 2" ui-mask="999.999.999-99" type="text" class="form-control">
+											<input uppercased ng-model="pessoaCtrl.pessoa.identificador" style="width: 238px" ng-if="pessoaCtrl.pessoa.tipoPessoa == 1" ui-mask="99.999.999/9999-99" type="text" class="form-control">
+
+											<div ng-repeat="papel in pessoaCtrl.papeis" class="checkbox" style="margin-top: 5px; margin-left: 25px">
+												<label><input type="checkbox" ng-click="pessoaCtrl.changePapel()" ng-model="papel.checked">{{papel.descricao}}</label>	
+											</div>
+										</div>
+									</div>
+									<br />
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<div class="table-responsive">
+									<table 	datatable
+											rows="15"
+											lazy="true"
+											class="table"
+											rest="{{restUrl}}/fundo/findbyfilter"
+											datasource="fundosCtrl.cotistaCorrentista"
+											paginator="true"
+											max-size="5"
+											filter-model="fundosCtrl.fundosFilter"
+											filter-submit="#filterLink"
+											dont-search-on-load="false"	
+											>
+										<thead class="thead-default">
+											<tr>
+												<th>CPF/CNPJ</th>
+												<th>Papel</th>
+												<th>Nome</th>
+												<th>Status</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-if="!fundosCtrl.cotistaCorrentista || fundosCtrl.cotistaCorrentista.length == 0">
+												<td colspan="9" class="text-center">Não foram encontrados dados para os filtros selecionados</td>
+											</tr>
+											<tr ng-repeat="cotistaCorrentista in fundosCtrl.cotistaCorrentista">
+												<td>{{cotistaCorrentista.cnpj | cnpj}}</td>
+												<td>{{cotistaCorrentista.papel}}</td>
+												<td>{{cotistaCorrentista.nome}}</td>
+												<td>{{cotistaCorrentista.status}}</td>
+												<td>
+													<button type="button" class="btn btn-default btn-xs"
+														ui-sref="" tooltip="Detalhes">
+														<span class="glyphicon glyphicon-search"></span>
+													</button>
+													<button type="button" class="btn btn-default btn-xs"
+														ui-sref="" tooltip="Excluir">
+														<span class="glyphicon glyphicon-trash"></span>
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

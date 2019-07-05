@@ -1,0 +1,118 @@
+<meta charset="UTF-8">
+<style>
+a.btn.btn-xs.btn-link.pull-right{
+	margin-right: 10px !important;
+    margin-left: -23px !important;
+    float: none !important;
+}
+</style>
+<div class="modal-header">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h4 class="modal-title">Copiar termo de outro fundo</h4>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="form-group">
+                <label for="nome" class="control-label">Nome do Termo</label>
+                <ui-select theme="bootstrap" ng-model="copiarTermoCtrl.filtros.nmTermo" id="nome">
+                    <ui-select-match allow-clear="" maxlength="100" placeholder="Selecione">
+                        {{$select.selected ? $select.selected.toUpperCase() : $select.selected }}
+                    </ui-select-match>
+                    <ui-select-choices repeat="termos in copiarTermoCtrl.termosAutoComplete | filter : $select.search" maxlength="20">
+                        <div ng-bind-html="termos.toUpperCase() | highlight: $select.search">
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="form-group">
+                <label class="control-label" for="fundo">Nome do fundo</label>
+				<ui-select theme="bootstrap" ng-model="copiarTermoCtrl.filtros.pessoaFundo.pessoa.nomeRazao" style="width: 100%" id="fundo">
+                    <ui-select-match allow-clear="" maxlength="255" placeholder="Selecione">
+                        {{$select.selected ? $select.selected.toUpperCase() : $select.selected }}
+                    </ui-select-match>
+                    <ui-select-choices repeat="fundos in copiarTermoCtrl.fundosAutoComplete | filter : $select.search" maxlength="20">
+                        <div ng-bind-html="fundos.toUpperCase() | highlight: $select.search">
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <ul style="list-style: none; padding: 0px; height: 120px; overflow: auto;" class="form-control">
+                <li ng-style="copiarTermoCtrl.caracteristicaParaAdicionar.idTipoTermo == caracteristica.idTipoTermo && {'color':'white','background-color':'#337ab7'} || {'color':'black','background-color':'transparent'}"
+                    style="cursor: pointer; padding: 4px;" ng-repeat="caracteristica in copiarTermoCtrl.caracteristicas"
+                    ng-click="copiarTermoCtrl.caracteristicaParaAdicionar = caracteristica;">
+                    {{caracteristica.nmTipoTermo}}
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1" style="text-align: center;">
+            <button style="margin: 5px;" class="btn-default btn btn-sm" ng-click="copiarTermoCtrl.adicionarCaracteristica()" id="rightcopyfocusout">
+                <span class="glyphicon glyphicon-triangle-right"></span>
+            </button>
+            <button class="btn-default btn btn-sm" ng-click="copiarTermoCtrl.removerCaracteristica()" id="leftcopyfocusout">
+                <span class="glyphicon glyphicon-triangle-left"></span>
+            </button>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <ul style="list-style: none; padding:0px; height: 120px; overflow: auto;" class="form-control">
+                <li ng-style="copiarTermoCtrl.caracteristicaParaRemover.idTipoTermo == caracteristica.idTipoTermo && {'color':'white','background-color':'#337ab7'} || {'color':'black','background-color':'transparent'}"
+                    style="cursor: pointer; padding: 4px;"
+                    ng-repeat="caracteristica in copiarTermoCtrl.filtros.caracteristicas"
+                    ng-click="copiarTermoCtrl.caracteristicaParaRemover = caracteristica;">
+                    {{caracteristica.nmTipoTermo}}
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <button class="btn btn-primary" style="margin-top: 86px;" id="filtrar">Filtrar</button>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-lg-12 col-md-12 col-sm-12" >
+            <table class="table table-striped"
+                   datatable lazy="true"
+                   paginator="true"
+                   rows="5"
+                   rest="{{copiarTermoCtrl.PATHCONFIG.CADASTRO_CENTRAL}}/termo"
+                   filter-model="copiarTermoCtrl.filtros"
+                   datasource="copiarTermoCtrl.termos"
+                   filter-submit="#filtrar">
+                <thead class="thead-default">
+                    <tr>
+                        <th>Nome do Fundo</th>
+                        <th>Nome do termo</th>
+                        <th>Características do termo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="!copiarTermoCtrl.termos.length">
+                        <td align="center" colspan="4">Não foram encontrados dados para os filtros selecionados</td>
+                    </tr>
+                    <tr ng-repeat="termo in copiarTermoCtrl.termos">
+                        <td>{{termo.pessoaFundo.pessoa.nomeRazao}}</td>
+                        <td>{{termo.nmTermo}}</td>
+                        <td>{{copiarTermoCtrl.formataCaracteristicas(termo)}}</td>
+                        <td>
+                            <button class="btn btn-default btn-xs" ng-click="copiarTermoCtrl.$modalInstance.close(termo)">
+                                <span class="glyphicon glyphicon-copy"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default pull-right" ng-click="copiarTermoCtrl.$modalInstance.dismiss()">Voltar</button>
+</div>

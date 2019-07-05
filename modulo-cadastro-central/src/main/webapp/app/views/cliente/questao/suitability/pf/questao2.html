@@ -1,0 +1,19 @@
+<meta charset="UTF-8">
+<div class="modal-body" style="height: 250px">
+	{{perfilInvestidorCtrl.descricaoQuestao}}<br/><br/>	
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao2.resposta == 'A' }">
+		<input type="radio" name="resposta2" value="A" ng-init="perfilInvestidorCtrl.questionario.questao2.pergunta = 2; perfilInvestidorCtrl.questionario.questao2.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao2.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao2)">Até 01 ano
+	</label><br/>
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao2.resposta == 'B' }">
+		<input type="radio" name="resposta2" value="B" ng-init="perfilInvestidorCtrl.questionario.questao2.pergunta = 2; perfilInvestidorCtrl.questionario.questao2.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao2.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao2)">De 01 ano a 05 anos
+	</label><br/> 
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao2.resposta == 'C' }">
+		<input type="radio" name="resposta2" value="C" ng-init="perfilInvestidorCtrl.questionario.questao2.pergunta = 2; perfilInvestidorCtrl.questionario.questao2.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao2.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao2)">Acima de 05 anos
+	</label> 
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+	<button type="button" class="btn btn-primary" ng-click="perfilInvestidorCtrl.goQuestion3(perfilInvestidorCtrl.questionario.questao2.resposta)">
+		Avançar <i class="fa fa-chevron-right"></i>
+	</button>
+</div>

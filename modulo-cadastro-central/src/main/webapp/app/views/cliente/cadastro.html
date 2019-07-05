@@ -1,0 +1,304 @@
+<meta charset="UTF-8">
+
+<style>
+
+@-moz-document url-prefix() { 
+	@media (min-width: 1220px) and (min-width: 1225px){
+		.col-lg-2.data {
+   			width: 300px;
+		}
+	}
+	
+	@media (min-width: 1200px){
+		.col-lg-2.data {
+   			width: 275px;
+		}
+	}
+}
+
+.nav.nav-tabs li a.erro {
+	color:#a94442;
+}
+
+div.form-group.erro input.form-control, div.form-group.erro select.form-control {
+	border-color:#a94442;
+}
+
+div.form-group.erro label {
+	color:#a94442;
+}
+
+.btn-concluir{
+	background: #00b300;
+	border-color: #009900;
+	color: white;
+}
+
+.btn-concluir:hover{
+	background: #009900;
+	border-color: #009900;
+	color:white;
+}
+
+.comMargin {
+    margin-top: 25px;
+}
+
+.semMargin {
+    margin-top: 0px;
+}
+
+</style>
+
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+		<div class="col-lg-12 col-md-12" ng-if="pessoaCtrl.acao == 'V'">
+			<div class="page-header">
+				<button type="button" class="btn btn-primary glyphicon glyphicon-print pull-right" ng-click="pessoaCtrl.gerarPdf();" tooltip="Imprimir Cadastro" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-trash pull-right" ng-click="pessoaCtrl.excluir(pessoaCtrl.pessoa);" auth-check permission="excluir-cliente" tooltip="Deletar Cadastro" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-pencil pull-right" ng-click="pessoaCtrl.mudarParaEdicao()" auth-check permission="editar-cliente" tooltip="Editar Cadastro" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-plus pull-right" ui-sref="root.incluir({acao:'I',identificador:undefined,tab:1})" auth-check permission="inserir-cliente" tooltip="Adicionar Novo Cadastro" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-cliente" tooltip="Consultar"></button>
+				<h3 class="ng-scope">Visualizar</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="pessoaCtrl.acao == 'E'">
+			<div class="page-header">
+				<button type="button" class="btn btn-primary glyphicon glyphicon-arrow-left pull-right" ui-sref="root.incluir({acao:'I',identificador:undefined})" tooltip="Voltar" ng-if="pessoaCtrl.pessoaRelacionada"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-print pull-right" ng-click="pessoaCtrl.gerarPdf();"  tooltip="Imprimir Cadastro" style="margin-left: 5px" ng-if="!pessoaCtrl.pessoaRelacionada"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-trash pull-right" ng-click="pessoaCtrl.excluir(pessoaCtrl.pessoa);" auth-check permission="excluir-cliente" tooltip="Deletar Cadastro"  style="margin-left: 5px" ng-if="!pessoaCtrl.pessoaRelacionada"></button>
+				<button type="button" class="btn btn-concluir glyphicon glyphicon-refresh pull-right" ng-click="pessoaCtrl.concluir()" tooltip="Sincronizar com Matera"  style="margin-left: 5px" ng-if="!pessoaCtrl.pessoaRelacionada && !pessoaCtrl.pessoa.estrangeiro"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-plus pull-right" ui-sref="root.incluir({acao:'I',identificador:undefined,tab:1})" auth-check permission="inserir-cliente" tooltip="Adicionar Novo Cadastro"  style="margin-left: 5px" ng-if="!pessoaCtrl.pessoaRelacionada"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-cliente" tooltip="Consultar"></button>
+				<h3 class="ng-scope">Editar</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="pessoaCtrl.acao == 'I'">
+			<div class="page-header">
+				<button type="button" class="btn btn-primary glyphicon glyphicon-arrow-left pull-right" ng-click="pessoaCtrl.voltar();" tooltip="Voltar" ng-if="pessoaCtrl.pessoaRelacionada"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-print  pull-right" ng-click="pessoaCtrl.gerarPdf();"  ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.pessoaRelacionada" tooltip="Imprimir Cadastro" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-trash  pull-right" ng-click="pessoaCtrl.excluir(pessoaCtrl.pessoa);" auth-check permission="excluir-cliente" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.pessoaRelacionada" tooltip="Deletar Cadastro"  style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-concluir glyphicon glyphicon-refresh pull-right" ng-click="pessoaCtrl.concluir()" ng-if="(pessoaCtrl.pessoa.id && !pessoaCtrl.pessoaRelacionada && !pessoaCtrl.pessoa.estrangeiro)" tooltip="Sincronizar com Matera" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-plus pull-right" ui-sref="root.incluir({acao:'I',identificador:undefined,tab:1})" ui-sref-opts="{reload: true}" auth-check permission="inserir-cliente" tooltip="Adicionar Novo Cadastro" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.pessoaRelacionada" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-cliente" tooltip="Consultar" ng-if="!pessoaCtrl.pessoaRelacionada"></button>
+				<h3 class="ng-scope" ng-if="!pessoaCtrl.pessoaRelacionada">Incluir</h3>
+				<h3 class="ng-scope" ng-if="pessoaCtrl.pessoaRelacionada">Cadastro de Pessoa Relacionada</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12">
+			<div class="tabs-wrapper table">
+				<ul class="nav nav-tabs">
+					<li ng-class="{'active': pessoaCtrl.tab == 1}" id="tabIncluir" ng-click="pessoaCtrl.mudarTab(1)" style="cursor: pointer;"><a>Incluir</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 2}" ng-click="pessoaCtrl.mudarTab(2)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 'F'">
+						<a ng-class="{'erro':pessoaCtrl.abas.dadosPessoais.erros.length}">Dados Pessoais</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 2}" ng-click="pessoaCtrl.mudarTab(2)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 'J'" >
+						<a ng-class="{'erro':pessoaCtrl.abas.dadosPessoais.erros.length}">Dados Empresa</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 3}" ng-click="pessoaCtrl.mudarTab(3)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id">
+						<a ng-class="{'erro':pessoaCtrl.abas.documentos.erros.length}">Documentos</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 4}" ng-click="pessoaCtrl.mudarTab(4)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 'F'">
+						<a ng-class="{'erro':pessoaCtrl.abas.filiacaoConjuge.erros.length}">Filiação/Cônjuge</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 5}" ng-click="pessoaCtrl.mudarTab(5)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.isControladoras">
+						<a ng-class="{'erro':pessoaCtrl.abas.contatos.erros.length}">Contatos</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 6}" ng-click="pessoaCtrl.mudarTab(6)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.isControladoras">
+						<a ng-class="{'erro':pessoaCtrl.abas.enderecos.erros.length}">Endereço</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 7}" ng-click="pessoaCtrl.mudarTab(7)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 'F' && !pessoaCtrl.isControladoras"><a>Dados Profissionais </a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 7}" ng-click="pessoaCtrl.mudarTab(7)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 'J' && !pessoaCtrl.isControladoras"><a>Ramo Atividade</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 8}" ng-click="pessoaCtrl.mudarTab(8)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.isControladoras">
+						<a ng-class="{'erro':pessoaCtrl.abas.dadosBancarios.erros.length}">Dados Bancários</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 9}" ng-click="pessoaCtrl.mudarTab(9)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.isControladoras"><a>Participação em Empresas</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 10}" ng-click="pessoaCtrl.mudarTab(10)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 'F' && !pessoaCtrl.isControladoras">
+						<a ng-class="{'erro':pessoaCtrl.abas.infFinanceiras.erros.length}">Informações Financeiras</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 11}" ng-click="pessoaCtrl.mudarTab(11)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa == 'J' && !pessoaCtrl.isControladoras">
+						<a ng-class="{'erro':pessoaCtrl.abas.infFinanceiras.erros.length}">Informações Financeiras</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 12}" ng-click="pessoaCtrl.mudarTab(12)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.isControladoras">
+						<a ng-class="{'erro':pessoaCtrl.abas.afirmacoes.erros.length}">Afirmações</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 13}" ng-click="pessoaCtrl.mudarTab(13)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.isControladoras"><a>Patrimônio</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 14}" ng-click="pessoaCtrl.mudarTab(14)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && pessoaCtrl.isCotista">
+						<a ng-class="{'erro':pessoaCtrl.abas.perfil.erros.length}">Perfil Investidor</a></li>
+					
+					<li ng-class="{'active': pessoaCtrl.tab == 16}" ng-click="pessoaCtrl.mudarTab(16)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.pessoaRelacionada">
+						<a ng-class="{'erro':pessoaCtrl.abas.pessoasRelacionadas.erros.length}">Pessoas Relacionadas</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 17}" ng-click="pessoaCtrl.mudarTab(17)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id">
+						<a ng-class="{'erro':pessoaCtrl.abas.documentos.erros.length}">Fundos</a>
+					</li>
+					<li ng-class="{'active': pessoaCtrl.tab == 18}" ng-click="pessoaCtrl.mudarTab(18)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id && !pessoaCtrl.pessoaRelacionada"><a>Atualização Cadastral</a></li>
+					<li ng-class="{'active': pessoaCtrl.tab == 19}" ng-click="pessoaCtrl.mudarTab(19)" style="cursor: pointer;" ng-if="pessoaCtrl.pessoa.id"><a>FATCA</a></li>
+				</ul>
+					</br>
+					<div class="tab-pane" ng-if="pessoaCtrl.tab == 1">
+						<div class="tab-content">
+							<div class="form-group">
+								<div class="panel panel-default">
+									<div class="panel-body" style="margin-left:-15px">
+
+										<form name="pessoaCtrl.form">
+
+											<div class="col-lg-12 col-md-12">
+												<legend>Identificação</legend>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="col-lg-5 col-md-6">
+														<div class="form-group input-group form-inline" ng-if="!pessoaCtrl.pessoa.estrangeiro">
+															<label class="btn btn-default input-group-addon" ng-model="pessoaCtrl.tipoPessoa" btn-radio="'J'" ng-change="pessoaCtrl.limparPessoa('J')" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id || pessoaCtrl.pessoa.tipoPessoa == 'J'" id="labelCnpj" ng-mousedown="pessoaCtrl.aoClicarCNPJ();">CNPJ</label>
+															<label class="btn btn-default input-group-addon" ng-model="pessoaCtrl.tipoPessoa" btn-radio="'F'" ng-change="pessoaCtrl.limparPessoa('F')" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id || pessoaCtrl.pessoa.tipoPessoa == 'F'" id="labelCpf" ng-mousedown="pessoaCtrl.aoClicarCPF();">CPF</label>
+															<label class="btn btn-default input-group-addon" ng-model="pessoaCtrl.pessoa.estrangeiro" ng-click="pessoaCtrl.aoClicarClienteEstrangeiro()" btn-radio="true" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id || pessoaCtrl.pessoa.estrangeiro">Cliente Estrangeiro</label>
+															<input uppercased id="cpf" ng-model="pessoaCtrl.pessoa.identificador" ng-if="pessoaCtrl.pessoa.tipoPessoa == 'F'" ui-mask="999.999.999-99" ui-options="{clearOnBlur: false,allowInvalidValue :true}" type="text" class="form-control" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id">
+															<input uppercased id="cnpj" ng-model="pessoaCtrl.pessoa.identificador"  ng-if="pessoaCtrl.pessoa.tipoPessoa == 'J'" ui-mask="99.999.999/9999-99" ui-options="{clearOnBlur: false,allowInvalidValue:true}" type="text" class="form-control" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id">
+														</div>
+														<div class="form-group input-group form-inline" ng-if="pessoaCtrl.pessoa.estrangeiro">
+															<label class="btn btn-default input-group-addon" ng-model="pessoaCtrl.pessoa.estrangeiro" ng-change="pessoaCtrl.limparPessoa('J')" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id " id="labelCnpj" ng-click="pessoaCtrl.aoClicarCNPJ();" btn-radio="false">CNPJ</label>
+															<label class="btn btn-default input-group-addon" ng-model="pessoaCtrl.pessoa.estrangeiro" ng-change="pessoaCtrl.limparPessoa('F')" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id " ng-click="pessoaCtrl.aoClicarCPF();" btn-radio="false">CPF</label>
+															<label class="btn btn-default input-group-addon" ng-model="pessoaCtrl.pessoa.estrangeiro" btn-radio="true" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id || pessoaCtrl.pessoa.estrangeiro" style="background-color: #e0e0e0">Cliente Estrangeiro</label>
+															<input uppercased id="estrangeiro" ng-model="pessoaCtrl.pessoa.identificador" type="text" class="form-control" ng-disabled="pessoaCtrl.acao != 'I' || pessoaCtrl.pessoa.id">
+														</div>
+													</div>
+													<div ng-if="pessoaCtrl.pessoa.estrangeiro" class="col-lg-2 col-md-3" style="width: 10%">
+														<label>Tipo Pessoa:</label><br>
+														<input type="radio" id="pessoaFisica" name="fisica" value="F" ng-model="pessoaCtrl.pessoa.tipoPessoa" ng-click="pessoaCtrl.constroiCheckBoxPapeis()"> <label for="pessoaFisica">Física</label><br>
+														<input type="radio" id="pessoaJuridica" name="juridica" value="J" ng-model="pessoaCtrl.pessoa.tipoPessoa" ng-click="pessoaCtrl.constroiCheckBoxPapeis()"> <label for="pessoaJuridica">Jurídica</label><br>
+													</div>
+													<div ng-if="!pessoaCtrl.pessoaRelacionada" class="col-lg-2 col-md-4" ng-repeat="papel in pessoaCtrl.papeis" class="checkbox" style="margin-top: 5px; width: 10%">
+														<input type="checkbox" ng-click="pessoaCtrl.changePapel(papel.descricao)" ng-model="papel.checked" ng-disabled="pessoaCtrl.acao == 'V'">&nbsp;{{papel.descricao}}
+													</div>
+												</div>
+											</div>
+
+											<div class="col-lg-6 col-md-5">
+												<div class="form-group" ng-class="{'erro':pessoaCtrl.form.nomeRazao.$invalid && pessoaCtrl.form.nomeRazao.$dirty }">
+													<label>{{ pessoaCtrl.pessoa.tipoPessoa ==  'F' || (pessoaCtrl.pessoa.tipoPessoa ==  'E' && pessoaCtrl.pessoaEstrangeiro == 'F') ? 'Nome completo*' : 'Razão social*' }}:</label>
+													<!-- Campo fica desabilitado quando a tela é de visualização -->
+													<input uppercased  maxlength="255" name="nomeRazao" type="text" class="form-control" ng-model="pessoaCtrl.pessoa.nomeRazao" disabled ng-if="pessoaCtrl.acao == 'V' && pessoaCtrl.pessoa.id"/>
+													<!-- Quando a tela é de edição ou inclusão e a pessoa possuir um ID toda vez que sair do campo irá atualizar o nome da pessoa -->
+													<input uppercased  maxlength="255" name="nomeRazao" type="text" class="form-control" required ng-model="pessoaCtrl.pessoa.nomeRazao" ng-blur="pessoaCtrl.atualizaNomeRazao()" ng-if="(pessoaCtrl.acao == 'E' || pessoaCtrl.acao == 'I') && pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa ==  'J'"  tooltip="{{ pessoaCtrl.form.nomeRazao.$invalid && pessoaCtrl.form.nomeRazao.$dirty ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}"/>
+													<input uppercased  maxlength="255" name="nomeRazao" type="text" class="form-control" required ng-model="pessoaCtrl.pessoa.nomeRazao" ng-if="pessoaCtrl.acao == 'I' && !pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa ==  'J'" tooltip="{{ pessoaCtrl.form.nomeRazao.$invalid && pessoaCtrl.form.nomeRazao.$dirty ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}"/>
+
+													<input uppercased  maxlength="255" alphanumeric-input name="nomeRazao" type="text" class="form-control" required ng-model="pessoaCtrl.pessoa.nomeRazao" ng-blur="pessoaCtrl.atualizaNomeRazao()" ng-if="(pessoaCtrl.acao == 'E' || pessoaCtrl.acao == 'I') && pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa ==  'F'" tooltip="{{ pessoaCtrl.form.nomeRazao.$invalid && pessoaCtrl.form.nomeRazao.$dirty ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}"/>
+													<input uppercased  maxlength="255" alphanumeric-input name="nomeRazao" type="text" class="form-control" required ng-model="pessoaCtrl.pessoa.nomeRazao" ng-if="pessoaCtrl.acao == 'I' && !pessoaCtrl.pessoa.id && pessoaCtrl.pessoa.tipoPessoa ==  'F'" tooltip="{{ pessoaCtrl.form.nomeRazao.$invalid && pessoaCtrl.form.nomeRazao.$dirty ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}"/>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group col-lg-4 col-md-3">		
+														<label for="ex1">ID do cliente:</label>
+														<input uppercased class="form-control" style="  width: 100%" type="text" ng-disabled="true" ng-model="pessoaCtrl.pessoa.id">
+													</div>
+													<div class="form-group col-lg-2 col-md-3">
+														<label for="ex1">Status:</label>
+														<input uppercased class="form-control" style="  width: 100%" type="text" ng-disabled="true" ng-model="pessoaCtrl.pessoa.statusCadastro">
+													</div>
+												</div>
+											</div>
+											<div ng-if="!pessoaCtrl.pessoaRelacionada" class="col-lg-6 col-md-6">
+												<button type="button" class="btn btn-primary" ng-click="pessoaCtrl.incluir()" ng-if="pessoaCtrl.acao == 'I' && !pessoaCtrl.pessoa.id">Incluir Cliente</button>
+											</div>
+										</form>
+									</div>
+								</div>
+                                <div class="panel panel-default" ng-if="pessoaCtrl.pessoaRelacionada">
+                                    <div class="panel-body">
+                                        <div class="col-lg-12 col-md-12">
+                                            <legend>Papel de pessoas relacionadas</legend>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-8">
+												<form name="pessoaCtrl.formPapel">
+													<table>
+														<tbody>
+															<tr ng-repeat="papel in pessoaCtrl.papeis">
+																<td class="col-lg-4" colspan="{{papel.checked ? 1 : 3}}">
+																	<input type="checkbox" ng-click="pessoaCtrl.incluirRelacao(papel)" ng-model="papel.checked" ng-disabled="(papel.checked && pessoaCtrl.pessoa.id)">&nbsp;{{papel.descricao}}
+																</td>
+																<td class="col-lg-2 data" ng-if="papel.checked">
+																	<div class="form-group" ng-init="papelInputs[$index].dataIniRelacionamentoOpen = false" ng-class="{'erro': (pessoaCtrl.formPapel['dataIniRelacionamento' + $index].$invalid && pessoaCtrl.formPapel['dataIniRelacionamento' + $index].$dirty) || (pessoaCtrl.formPapel['dataIniRelacionamento' + $index].$invalid && pessoaCtrl.formPapel['dataIniRelacionamento' + $index].$error['periodo-valido'] ) }">
+																		<label>Data início de relacionamento:</label>
+																		<div class="input-group">
+																			<input uppercased type="text" class="form-control readonly-white" disabled ng-model="papel.dataIniRelacionamento" />
+																			<label class="input-group-addon">
+																				<span class="glyphicon glyphicon-calendar"></span>
+																			</label>
+																		</div>
+																	</div>
+																</td>
+																<td class="col-lg-2 data" ng-if="papel.checked">
+																	<div class="form-group" ng-init="papelInputs[$index].dataFimRelacionamentoOpen = false" ng-class="{'erro':pessoaCtrl.formPapel['dataFimRelacionamento' + $index].$invalid }">
+																		<label>Data fim de relacionamento:</label>
+																		<div class="input-group">
+																			<input type="text" class="form-control readonly-white" periodo-valido tooltip="{{ pessoaCtrl.formPapel['dataFimRelacionamento' + $index].$invalid ? 'Data fim deve ser maior que a data início de relacionamento' : ''}}"
+																				   datepicker-popup="dd/MM/yyyy" name="dataFimRelacionamento{{$index}}" show-weeks="'false'"  close-text="Fechar" clear-text="Limpar" id="dataFimRelacionamento{{$index}}"
+																				   is-open="papelInputs[$index].dataFimRelacionamentoOpen"  current-text="Hoje" ng-change="pessoaCtrl.atualizaRelacao(papel,$index)" ng-model="papel.dataFimRelacionamento"
+																				   ng-click="papelInputs[$index].dataFimRelacionamentoOpen = !papelInputs[$index].dataFimRelacionamentoOpen; $event.stopPropagation();" for="dataFimRelacionamento{{$index}}">
+																			<label class="input-group-addon">
+																				<span class="glyphicon glyphicon-calendar"></span>
+																			</label>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</form>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                            	<br/>
+	                                        	<div ng-if="pessoaCtrl.pessoaRelacionada" class="col-lg-6 col-md-6">
+													<button type="button" class="btn btn-primary" ng-click="pessoaCtrl.incluir()" ng-disabled="!pessoaCtrl.papel" ng-if="pessoaCtrl.acao == 'I' && !pessoaCtrl.pessoa.id">Incluir Cliente</button>
+												</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+					</div>
+					<div ui-view="DadosPessoaisEmpresa" ng-if="pessoaCtrl.tab == 2 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="Documentos" ng-if="pessoaCtrl.tab == 3 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="FiliacaoConjuge" ng-if="pessoaCtrl.tab == 4 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="Contatos" ng-if="pessoaCtrl.tab == 5 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="Endereco" ng-if="pessoaCtrl.tab == 6 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="DadosProfissionaisEmpresariais" ng-if="pessoaCtrl.tab == 7 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="DadosBancarios" ng-if="pessoaCtrl.tab == 8 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="ParticipacaoEmpresas" ng-if="pessoaCtrl.tab == 9 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="InformacoesFinanceiras" ng-if="pessoaCtrl.tab == 10 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="InformacoesFinanceirasPessoaJuridica" ng-if="pessoaCtrl.tab == 11 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="Afirmacoes" ng-if="pessoaCtrl.tab == 12 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="Patrimonio" ng-if="pessoaCtrl.tab == 13 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="PerfilInvestidor" ng-if="pessoaCtrl.tab == 14 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="PessoasRelacionadas" ng-if="pessoaCtrl.tab == 16 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="AtualizacaoCadastral" ng-if="pessoaCtrl.tab == 18 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="Fundos" ng-if="pessoaCtrl.tab == 17 && pessoaCtrl.pessoa.id"></div>
+					<div ui-view="Fatca" ng-if="pessoaCtrl.tab == 19 && pessoaCtrl.pessoa.id"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="rodap" ng-if="pessoaCtrl.tab > 1">
+	<div style="float: left; padding-top:5px; padding-left:10px; padding-right:10px;">
+		<div ng-if="pessoaCtrl.pessoa.estrangeiro">
+			<label for="ex1" ><!-- {{pessoaCtrl.pessoa.tipoPessoa=='J'?'CNPJ':'CPF'}}: -->Identificador:</label>&nbsp;{{pessoaCtrl.pessoa.identificador}}<br>
+		</div>
+		<div ng-if="!pessoaCtrl.pessoa.estrangeiro">
+			<label for="ex1" ng-if="!pessoaCtrl.pessoa.estrangeiro">{{pessoaCtrl.pessoa.tipoPessoa=='J'?'CNPJ':'CPF'}}:</label>&nbsp;{{pessoaCtrl.pessoa.identificador | cpfcnpj: pessoaCtrl.pessoa.tipoPessoa}}<br>
+		</div>
+		<label for="ex1">{{pessoaCtrl.pessoa.tipoPessoa=='J'?'Razão social':'Nome'}}:</label>&nbsp;{{pessoaCtrl.pessoa.nomeRazao}}
+	</div>
+	<div style="float: left; padding-top:5px; padding-left:10px; padding-right:10px; margin-left:5%;" ng-init="pessoaCtrl.montaTipoPessoa()">
+		<label for="ex1">Tipo:</label>&nbsp;{{pessoaCtrl.pessoa.tipo.toUpperCase()}}<br>
+		<label for="ex1">Status do cadastro:</label>&nbsp;{{pessoaCtrl.pessoa.statusCadastro.toUpperCase()}}<br>
+	</div>
+	<div style="padding-top:12px; float: left; margin-left:5%;">
+		<br>
+		<label ng-if="pessoaCtrl.pessoaRelacionada">Pessoa Relacionada</label>
+	</div>
+</div>

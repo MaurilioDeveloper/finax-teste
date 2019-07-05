@@ -1,0 +1,175 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724564">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-repeat="erro in pessoaCtrl.abas.dadosBancarios.erros" ng-if="!erro.campo">
+						<span>{{erro.mensagem}}</span>
+					</div>
+					
+					<div ng-include="'app/views/cliente/modalTipoConta.html'"></div>
+					
+					<div class="panel-content">
+						<div class="form">
+							<div class="row" ng-if="pessoaCtrl.acao != 'V'">
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>Tipo de Conta*:</label> 
+										<select class="form-control" ng-model="dadosBancariosCtrl.dadosBancario.tipoConta" style="width: 100%" 
+											ng-options="tipoConta as tipoConta.dsTipoConta for tipoConta in dadosBancariosCtrl.tiposConta track by tipoConta.id"
+											ng-change="dadosBancariosCtrl.validarTipoConta()">
+											<option value="">Selecione</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>Modelo de Conta:</label>
+										 <select class="form-control" style="width: 100%" ng-model="dadosBancariosCtrl.dadosBancario.modeloConta" ng-options="modeloConta for modeloConta in dadosBancariosCtrl.modelosConta">
+											<option value="">Selecione</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>Banco*:</label>
+										<ui-select on-select="dadosBancariosCtrl.aoSelecionarBanco($item,$model)" theme="bootstrap" ng-model="dadosBancariosCtrl.dadosBancario.banco" ng-disabled="pessoaCtrl.acao == 'V'">
+											<ui-select-match maxlength="20" placeholder="Selecione" >
+												{{$select.selected.nome ? $select.selected.nome.toUpperCase() : $select.selected }}
+											</ui-select-match>
+											<ui-select-choices repeat="banco in dadosBancariosCtrl.bancos | filter : $select.search" maxlength="20">
+												<div ng-bind-html="(banco.id ? banco.id : '')  + ' ' + (banco.nome ? banco.nome.toUpperCase() : banco ) | highlight: $select.search"></div>
+											</ui-select-choices>
+										</ui-select> 
+									</div>
+								</div>
+								<div class="col-lg-1 col-md-1">
+									<div class="form-group">
+										<label>Agência*:</label> 
+										<input uppercased string-numeric type="text" maxlength="5" class="form-control" style="width: 100%" ng-model="dadosBancariosCtrl.dadosBancario.agencia" ng-blur="dadosBancariosCtrl.validaAgencia()"/>										
+									</div>
+								</div>
+								<div class="col-lg-1 col-md-1">
+									<div class="form-group">
+										<label>DV*:</label> 
+										<input uppercased string-numeric type="text" maxlength="2" class="form-control" style="width: 100%" ng-model="dadosBancariosCtrl.dadosBancario.nrDigitoAgencia"/>
+									</div>
+								</div>
+								<div class="col-lg-1 col-md-1">
+									<div class="form-group">
+										<label>Conta*:</label> 
+										<input uppercased string-numeric type="text" maxlength="10" class="form-control" style="width: 100%" ng-model="dadosBancariosCtrl.dadosBancario.numeroConta" ng-blur="dadosBancariosCtrl.teste(dadosBancariosCtrl.dadosBancario.agencia)"/>
+									</div>
+									</div>
+								<div class="col-lg-1 col-md-1">
+									<div class="form-group">
+										<label>DV*:</label> 
+										<input uppercased string-numeric type="text" maxlength="2" class="form-control" style="width: 100%" ng-model="dadosBancariosCtrl.dadosBancario.nrDigitoConta"/>
+									</div>
+								</div>
+								
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>País:</label>
+										<input uppercased type="text" maxlength="25" class="form-control" style="width: 100%" ng-model="dadosBancariosCtrl.dadosBancario.pais"/>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="pessoaCtrl.acao != 'V'">
+								<div class="col-lg-4 col-md-4">
+									<div class="form-group">
+										<label>Gerente:</label> 
+										<input uppercased alphanumeric-input type="text" maxlength="50"  class="form-control" style="width: 100%" ng-model="dadosBancariosCtrl.dadosBancario.nomeGerente">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>Contato gerente:</label> 
+										<input uppercased type="text" telefone-input class="form-control" style="width: 100%" ng-model="dadosBancariosCtrl.dadosBancario.telefoneContatoGerente" ng-blur="dadosBancariosCtrl.validaTelefone()" clear-if-not-match="false" />
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-3">
+									<div class="form-group">
+										<div class="checkbox" style="margin-top: 30px">
+											<label> 
+												<input type="checkbox" ng-model="dadosBancariosCtrl.dadosBancario.preferenciaLiquidacao" 
+												ng-disabled=" 
+												!dadosBancariosCtrl.dadosBancario.tipoConta
+												|| !dadosBancariosCtrl.dadosBancario.banco 
+												|| !dadosBancariosCtrl.dadosBancario.agencia  
+												|| !dadosBancariosCtrl.dadosBancario.numeroConta"
+												ng-true-value="'S'" ng-false-value="'N'">Preferência de liquidação
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-3">
+									<div class="form-group"
+										style="margin-top: 20px; float: right">
+										<button type="button" class="btn btn-primary" ng-click="dadosBancariosCtrl.incluir()" ng-disabled="!dadosBancariosCtrl.dadosBancario.tipoConta
+												|| !dadosBancariosCtrl.dadosBancario.banco 
+												|| !dadosBancariosCtrl.dadosBancario.agencia  
+												|| !dadosBancariosCtrl.dadosBancario.numeroConta">{{dadosBancariosCtrl.dadosBancario.id ? 'Alterar' : 'Incluir'}}</button>
+										<button type="button" class="btn btn-default"  ng-if="dadosBancariosCtrl.dadosBancario.id" ng-click="dadosBancariosCtrl.dadosBancario = {preferenciaLiquidacao:'N',pais:'Brasil'}">Cancelar</button>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<table class="table table-striped" style="margin-top: 15px">
+										<thead>
+											<tr>
+												<th>Tipo conta</th>
+												<th>Modelo conta</th>
+												<th>Banco</th>
+												<th>Agência</th>
+												<th>DV</th>
+												<th>Conta</th>
+												<th>DV</th>
+												<th>Gerente</th>
+												<th>Contato gerente</th>
+												<th>Pref. de liquidação</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="dadosBancario in dadosBancariosCtrl.dadosBancarios">
+												<td style="text-align: center">{{dadosBancario.tipoConta.dsTipoConta.toUpperCase()}}</td>
+												<td style="text-align: center">{{dadosBancario.modeloConta.toUpperCase()}}</td>
+												<td style="text-align: center">{{dadosBancario.banco ? dadosBancario.banco.id + ' ' + dadosBancario.banco.nome.toUpperCase() : dadosBancario.idBanco}}</td>
+												<td>{{dadosBancario.idAgencia ? dadosBancario.idAgencia : dadosBancario.agencia.id.codAgencia}}</td>
+												<td>{{dadosBancario.nrDigitoAgencia}}</td>
+<!-- 											<td>{{dadosBancario.agencia ? dadosBancario.agencia.id.codAgencia + ' ' + dadosBancario.agencia.nome.toUpperCase() : dadosBancario.idAgencia }}</td> -->
+												<td>{{dadosBancario.numeroConta}}</td>
+												<td>{{dadosBancario.nrDigitoConta}}</td>
+												<td>{{dadosBancario.nomeGerente.toUpperCase()}}</td>
+												<td><span ng-if="dadosBancario.telefoneContatoGerente">{{dadosBancario.telefoneContatoGerente | telefone}}</span></td>
+												<td>
+													{{dadosBancario.preferenciaLiquidacao == 'S' ? 'SIM' : 'NÃO'}}
+												</td>
+												<td style="text-align: center">
+													<a href="" class="btn btn-default btn-xs" ng-click="dadosBancariosCtrl.editar(dadosBancario)" ng-if="pessoaCtrl.acao != 'V'">
+														<span class="glyphicon glyphicon-pencil"></span>
+													</a> 
+													<a href="" class="btn btn-default btn-xs" ng-click="dadosBancariosCtrl.excluir(dadosBancario)" ng-if="pessoaCtrl.acao != 'V'">
+														<span class="glyphicon glyphicon-trash"></span>
+													</a>
+												</td>
+											</tr>
+											<tr ng-if="!dadosBancariosCtrl.dadosBancarios.length">
+												<td colspan="9">
+													Não há registros encontrados.
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

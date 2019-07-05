@@ -1,0 +1,332 @@
+<meta charset="UTF-8">
+<div class="tab-pane">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div ng-if="pessoaCtrl.pessoa.tipoPessoa == 'F' && !erro.campo" class="alert alert-danger" role="alert" ng-repeat="erro in pessoaCtrl.abas.dadosPessoais.erros">
+						<span>{{erro.mensagem}}</span>
+					</div>
+					<form name="dadosPessoaisEmpresaCtrl.form">
+						<div ng-if="pessoaCtrl.pessoa.tipoPessoa == 'F'" >
+							<div class="row">
+								<div class="col-lg-6 col-md-6">
+									<div class="form-group" ng-class="{'erro':dadosPessoaisEmpresaCtrl.form.nome.$invalid && (dadosPessoaisEmpresaCtrl.form.nome.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted)}">
+										<label>Nome completo*:</label> 
+										<input uppercased alphanumeric-input tooltip="{{dadosPessoaisEmpresaCtrl.form.nome.$invalid && (dadosPessoaisEmpresaCtrl.form.nome.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" required name="nome" type="text" class="form-control" style="width: 100%" maxlength="100" ng-model="pessoaCtrl.pessoa.nomeRazao" ng-blur="dadosPessoaisEmpresaCtrl.salvar()">
+									</div>
+								</div>
+								<div class="col-lg-1 col-md-2">
+									<div class="form-group" ng-class="{'erro': pessoaCtrl.pessoa.tipoPessoa == 'F' && dadosPessoaisEmpresaCtrl.form.sexo.$invalid && (dadosPessoaisEmpresaCtrl.form.sexo.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted)} "  tooltip="{{ pessoaCtrl.pessoa.tipoPessoa == 'F' && dadosPessoaisEmpresaCtrl.form.sexo.$invalid && (dadosPessoaisEmpresaCtrl.form.sexo.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : ''}}">
+										<label>Sexo*:</label>
+										<div class="radio" style="margin: 0px">
+											<label>
+												<input type="radio" required name="sexo" value="F" ng-model="pessoaCtrl.pessoa.sexo" ng-click="dadosPessoaisEmpresaCtrl.salvar()">
+												Feminino
+											</label>
+										</div>
+										<div class="radio" style="margin: 0px">
+											<label>
+												<input type="radio" required name="sexo" value="M" ng-model="pessoaCtrl.pessoa.sexo" ng-click="dadosPessoaisEmpresaCtrl.salvar()">
+												Masculino
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>Estado civil:</label>
+										<select class="form-control" ng-model="dadosPessoaisEmpresaCtrl.pessoa.estadoCivil" ng-change="dadosPessoaisEmpresaCtrl.salvar()"
+											ng-options="estadoCivil.nome as estadoCivil.nome for estadoCivil in dadosPessoaisEmpresaCtrl.estadosCivis" style="width: 100%">
+											<option value="">Selecione</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-2 col-md-3 form-group" ng-class="{'erro': pessoaCtrl.pessoa.tipoPessoa == 'F' && dadosPessoaisEmpresaCtrl.form.dataNascConstituicao.$invalid && (dadosPessoaisEmpresaCtrl.form.dataNascConstituicao.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted)}">
+									<label>Data de nascimento*:</label>
+									<div class="input-group">
+										<input type="text" class="form-control readonly-white" ng-model="pessoaCtrl.pessoa.dataNascConstituicao" ng-blur="dadosPessoaisEmpresaCtrl.validarData('nascimento')"
+											datepicker-popup="dd/MM/yyyy" show-weeks="'false'" close-text="Fechar" clear-text="Limpar" name="dataNascConstituicao"
+											is-open="dataNascConstituicaoOpen" required ng-click="dataNascConstituicaoOpen = !dataNascConstituicaoOpen" current-text="Hoje" tooltip="{{ pessoaCtrl.pessoa.tipoPessoa == 'F' && dadosPessoaisEmpresaCtrl.form.dataNascConstituicao.$invalid && (dadosPessoaisEmpresaCtrl.form.dataNascConstituicao.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" />
+											<span class="input-group-addon" id="basic-addon2">
+											<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>País:</label>
+										<ui-select on-select="dadosPessoaisEmpresaCtrl.aoSelecionarPais($item,$model)" theme="bootstrap" ng-model="pessoaCtrl.pessoa.pais" ng-disabled="pessoaCtrl.acao == 'V'">
+											<ui-select-match placeholder="Selecione">
+												{{$select.selected.nome ? $select.selected.nome : $select.selected }}
+											</ui-select-match>
+											<ui-select-choices repeat="pais.nome as pais in dadosPessoaisEmpresaCtrl.paises | filter : $select.search">
+												<div ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+											</ui-select-choices>
+										</ui-select>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>Estado:</label> 
+										<ui-select on-select="dadosPessoaisEmpresaCtrl.aoSelecionarEstado($item,$model)" ng-if="pessoaCtrl.pessoa.pais.id == 'BR' || pessoaCtrl.pessoa.pais == 'Brasil' " theme="bootstrap" ng-model="pessoaCtrl.pessoa.estado" ng-disabled="pessoaCtrl.acao == 'V'">
+											<ui-select-match maxlength="50" placeholder="Selecione">
+												{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+											</ui-select-match>
+											<ui-select-choices repeat="estado.nome as estado in dadosPessoaisEmpresaCtrl.estados | filter : $select.search">
+												<div ng-bind-html="estado.nome | highlight: $select.search"></div>
+											</ui-select-choices>
+										</ui-select> 
+										<input uppercased type="text" class="form-control" ng-if="pessoaCtrl.pessoa.pais.id != 'BR' && pessoaCtrl.pessoa.pais != 'Brasil'" maxlength="50" ng-model="pessoaCtrl.pessoa.estado" ng-blur="dadosPessoaisEmpresaCtrl.salvar()" style="width: 100%">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-4">
+									<div class="form-group">
+										<label>Cidade:</label>
+										<ui-select ng-if="pessoaCtrl.pessoa.pais.id == 'BR' || pessoaCtrl.pessoa.pais == 'Brasil' " theme="bootstrap" ng-model="pessoaCtrl.pessoa.cidade" ng-disabled="pessoaCtrl.acao == 'V'" ng-change="dadosPessoaisEmpresaCtrl.salvar()">
+											<ui-select-match maxlength="50" placeholder="Selecione">
+												{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+											</ui-select-match>
+											<ui-select-choices repeat="cidade.nome as cidade in dadosPessoaisEmpresaCtrl.cidades | filter : $select.search">
+												<div ng-bind-html="cidade.nome | highlight: $select.search"></div>
+											</ui-select-choices>
+										</ui-select> 
+										<input uppercased ng-if="pessoaCtrl.pessoa.pais != 'Brasil'" type="text" class="form-control" maxlength="50" style="width: 100%" ng-model="pessoaCtrl.pessoa.cidade" ng-blur="dadosPessoaisEmpresaCtrl.salvar()">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>Status do cliente*:</label>
+										<div class="radio" style="margin: 0px">
+											<label> 
+												<input type="radio" name="ativo" value="1" checked ng-model="pessoaCtrl.pessoa.ativo" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Ativo
+											</label>
+										</div>
+										<div class="radio" style="margin: 0px">
+											<label>
+												<input type="radio" name="ativo" value="0" ng-model="pessoaCtrl.pessoa.ativo" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Inativo
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-3 form-group">
+									<label>Data início de relacionamento:</label>
+									<div class="input-group">
+										<input type="text" class="form-control readonly-white" ng-model="pessoaCtrl.pessoa.dataInicioRelacionamento"  ng-blur="dadosPessoaisEmpresaCtrl.salvar()"
+											datepicker-popup="dd/MM/yyyy" readonly show-weeks="'false'" close-text="Fechar" clear-text="Limpar"
+											is-open="dataInicioRelacionamentoOpen" ng-click="dataInicioRelacionamentoOpen = !dataInicioRelacionamentoOpen" current-text="Hoje"
+											ng-disabled="true"/>
+											<span class="input-group-addon" id="basic-addon2">
+											<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-3 form-group">
+									<label>Data fim de relacionamento:</label>
+									<div class="input-group">
+										<input type="text" class="form-control readonly-white" ng-model="pessoaCtrl.pessoa.dataFimRelacionamento"  ng-blur="dadosPessoaisEmpresaCtrl.salvar()"
+											datepicker-popup="dd/MM/yyyy" readonly show-weeks="'false'" close-text="Fechar" clear-text="Limpar"
+											is-open="dataFimRelacionamentoOpen" ng-click="dataFimRelacionamentoOpen = !dataFimRelacionamentoOpen" current-text="Hoje"
+											ng-disabled="true"/>
+											<span class="input-group-addon" id="basic-addon2">
+											<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>É Fatca?*:</label>
+										<div class="radio" style="margin: 0px">
+											<label> 
+												<input type="radio" name="fatca" value="S" ng-model="dadosPessoaisEmpresaCtrl.perfil.fatca" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Sim
+											</label>
+										</div>
+										<div class="radio" style="margin: 0px">
+											<label>
+												<input type="radio" name="fatca" value="N" ng-model="dadosPessoaisEmpresaCtrl.perfil.fatca" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Não
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-md-12" style="margin-top: 20px;">
+									<fieldset class="form-group">
+										<legend>Nacionalidade</legend>
+										<div ng-if="pessoaCtrl.acao != 'V'">
+											<div class="col-lg-2 col-md-2">
+												<div class="form-group">
+													<label>Nacionalidade:</label> 
+													<ui-select theme="bootstrap" ng-model="dadosPessoaisEmpresaCtrl.nacionalidade.descricaoNacionalidade" ng-disabled="pessoaCtrl.acao == 'V'" ng-change="dadosPessoaisEmpresaCtrl.validarNacionalidade()">
+														<ui-select-match placeholder="Selecione" >
+															{{$select.selected.descricao ? $select.selected.descricao : $select.selected }}
+														</ui-select-match>
+														<ui-select-choices repeat="nacionalidade.descricao as nacionalidade in dadosPessoaisEmpresaCtrl.nacionalidades | filter : $select.search">
+															<div ng-bind-html="nacionalidade.descricao ? nacionalidade.descricao : nacionalidade | highlight: $select.search"></div>
+														</ui-select-choices>
+													</ui-select>
+												</div>
+											</div>
+											<div class="col-lg-2 col-md-2" ng-if="dadosPessoaisEmpresaCtrl.pessoaNacionalidades.length">
+												<div class="form-group" style="margin-top: 30px" >
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="dadosPessoaisEmpresaCtrl.nacionalidade.abdicouNacionalidade">
+															Abdicou nacionalidade
+														</label>
+													</div>
+												</div>
+											</div>
+											<div>
+												<div class="col-lg-3 col-md-3">
+													<div class="form-group" style="margin-top: 25px;">
+														<button type="button" class="btn btn-primary" ng-if="!dadosPessoaisEmpresaCtrl.nacionalidade.id" ng-click="dadosPessoaisEmpresaCtrl.salvarNacionalidade(); dadosPessoaisEmpresaCtrl.cancel()" ng-disabled="!dadosPessoaisEmpresaCtrl.nacionalidade.descricaoNacionalidade.length">Incluir</button>
+														<button type="button" class="btn btn-primary" ng-if="dadosPessoaisEmpresaCtrl.nacionalidade.id" ng-click="dadosPessoaisEmpresaCtrl.salvarNacionalidade(); dadosPessoaisEmpresaCtrl.cancel()" ng-disabled="!dadosPessoaisEmpresaCtrl.nacionalidade.descricaoNacionalidade.length">Alterar</button>
+														<button type="button" class="btn btn-default" style="margin-left: 10px" ng-if="dadosPessoaisEmpresaCtrl.nacionalidade.id" ng-click="dadosPessoaisEmpresaCtrl.cancel()">Cancelar</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<div class="col-lg-7 col-md-8">
+									<table class="table table-striped" style="margin-top: 15px">
+										<thead>
+											<th>Nacionalidade</th>
+											<th>Abdicou nacionalidade</th>
+											<th ng-if="pessoaCtrl.acao != 'V'"></th>
+										</thead>
+										<tbody>
+											<tr ng-if="!dadosPessoaisEmpresaCtrl.pessoaNacionalidades.length">
+												<td colspan="3">Não há registros encontrados.</td>
+											</tr>
+											<tr ng-repeat="nacionalidade in dadosPessoaisEmpresaCtrl.pessoaNacionalidades track by $index">
+												<td>{{nacionalidade.descricaoNacionalidade}}</td>
+												<td>
+													{{nacionalidade.abdicouNacionalidade == 1 ? 'Sim' : 'Não'}}
+												</td>
+												<td ng-if="pessoaCtrl.acao != 'V'">
+													<button type="button" class="btn btn-default btn-xs" ng-click="dadosPessoaisEmpresaCtrl.updateNacionalidade(nacionalidade)">
+														<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+													</button>
+													<button type="button" class="btn btn-default btn-xs" ng-click="dadosPessoaisEmpresaCtrl.deleteNacionalidade(nacionalidade)">
+														<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-if="pessoaCtrl.pessoa.tipoPessoa == 'J'">
+							<div class="col-lg-12 col-md-12" style="padding-left: 0px">
+								<div class="form-group col-lg-5 col-md-5" ng-class="{'erro':dadosPessoaisEmpresaCtrl.form.nome.$invalid 
+									&& (dadosPessoaisEmpresaCtrl.form.nome.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted)}">
+									<label>Razão social*:</label> 
+									<input uppercased type="text" class="form-control" name="nome" required tooltip="{{dadosPessoaisEmpresaCtrl.form.nome.$invalid && (dadosPessoaisEmpresaCtrl.form.nome.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" style="width: 100%" maxlength="100" ng-model="pessoaCtrl.pessoa.nomeRazao" ng-blur="dadosPessoaisEmpresaCtrl.salvar()">
+								</div>
+								
+								<div class="col-lg-2 col-md-2 form-group" ng-class="{'erro': dadosPessoaisEmpresaCtrl.form.dataNascConstituicao.$invalid && (dadosPessoaisEmpresaCtrl.form.dataNascConstituicao.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted)}">
+									<label>Data de constituição*:</label>
+									<div class="input-group" >
+										<!-- ng-change="dadosPessoaisEmpresaCtrl.validarData('constituicao')" readonly -->
+										<input type="text" class="form-control readonly-white" ng-model="pessoaCtrl.pessoa.dataNascConstituicao" ng-blur="dadosPessoaisEmpresaCtrl.validarData('constituicao')"
+											datepicker-popup="dd/MM/yyyy" show-weeks="'false'" close-text="Fechar" clear-text="Limpar" name="dataNascConstituicao" tooltip="{{ dadosPessoaisEmpresaCtrl.form.dataNascConstituicao.$invalid && (dadosPessoaisEmpresaCtrl.form.dataNascConstituicao.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" 
+											is-open="dataNascConstituicaoOpen" required ng-click="dataNascConstituicaoOpen = !dataNascConstituicaoOpen" current-text="Hoje"/>
+										<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-3">
+									<div class="form-group">
+										<label>Forma de constituição:</label> 
+										<select name="formaConstituicao" id="formaConstituicao" class="form-control" 
+											ng-model="pessoaCtrl.pessoa.formaConstituicao.idFormaConstituicao" 
+											ng-change="dadosPessoaisEmpresaCtrl.validarFormaConstituicao()">
+									    	<option value="">Selecione</option>
+									    	<option value="new">Nova Forma de Constituição</option>
+									    	<option value="{{option.idFormaConstituicao}}" ng-repeat="option in dadosPessoaisEmpresaCtrl.formasDeConstituicao">{{option.dsFormaConstituicao}}</option>
+									    </select>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group" ng-class="{'erro': dadosPessoaisEmpresaCtrl.form.pais.$invalid && (dadosPessoaisEmpresaCtrl.form.pais.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted)}">
+										<label>País de Origem*:</label>
+										<ui-select on-select="dadosPessoaisEmpresaCtrl.aoSelecionarPais($item,$model)" name="pais" theme="bootstrap" ng-model="pessoaCtrl.pessoa.pais" ng-disabled="pessoaCtrl.acao == 'V'"
+											required tooltip="{{ dadosPessoaisEmpresaCtrl.form.pais.$invalid && (dadosPessoaisEmpresaCtrl.form.pais.$dirty || dadosPessoaisEmpresaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}">
+											<ui-select-match placeholder="Selecione">
+												{{$select.selected.nome ? $select.selected.nome : $select.selected }}
+											</ui-select-match>
+											<ui-select-choices repeat="pais.nome as pais in dadosPessoaisEmpresaCtrl.paises | filter : $select.search">
+												<div ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+											</ui-select-choices>
+										</ui-select>
+									</div>
+								</div>
+								
+								
+							</div>
+							<div class="col-lg-12 col-md-12" style="padding-left: 0px">
+								<div class="col-lg-3 col-md-3 form-group">
+									<label>Data início de relacionamento</label>
+									<div class="input-group">
+										<input type="text" class="form-control readonly-white" ng-model="pessoaCtrl.pessoa.dataInicioRelacionamento"  ng-blur="dadosPessoaisEmpresaCtrl.salvar()"
+											datepicker-popup="dd/MM/yyyy" readonly show-weeks="'false'" close-text="Fechar" clear-text="Limpar"
+											is-open="dataInicioRelacionamentoOpen" ng-click="dataInicioRelacionamentoOpen = !dataInicioRelacionamentoOpen" current-text="Hoje"
+											ng-disabled="true"/>
+											<span class="input-group-addon" id="basic-addon2">
+											<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-3 form-group">
+									<label>Data fim de relacionamento:</label>
+									<div class="input-group">
+										<input type="text" class="form-control readonly-white" ng-model="pessoaCtrl.pessoa.dataFimRelacionamento"  ng-blur="dadosPessoaisEmpresaCtrl.salvar()"
+											datepicker-popup="dd/MM/yyyy" readonly show-weeks="'false'" close-text="Fechar" clear-text="Limpar"
+											is-open="dataFimRelacionamentoOpen" ng-click="dataFimRelacionamentoOpen = !dataFimRelacionamentoOpen" current-text="Hoje"
+											ng-disabled="true"/>
+											<span class="input-group-addon" id="basic-addon2">
+											<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>É Fatca*:</label>
+										<div class="radio" style="margin: 0px">
+											<label> 
+												<input type="radio" name="fatca" value="S" ng-model="dadosPessoaisEmpresaCtrl.perfil.fatca" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Sim
+											</label>
+										</div>
+										<div class="radio" style="margin: 0px">
+											<label>
+												<input type="radio" name="fatca" value="N" ng-model="dadosPessoaisEmpresaCtrl.perfil.fatca" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Não
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2 form-group">
+									<label>Status do cliente*:</label>
+									<div class="radio" style="margin: 0px">
+										<label> 
+											<input type="radio" name="ativo" value="1" checked ng-model="pessoaCtrl.pessoa.ativo" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Ativo
+										</label>
+									</div>
+									<div class="radio" style="margin: 0px">
+										<label>
+											<input type="radio" name="ativo" value="0" ng-model="pessoaCtrl.pessoa.ativo" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Inativo
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					
+					<div ng-include="'app/views/cliente/modalFormaConstituicao.html'"></div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

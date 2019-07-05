@@ -1,0 +1,66 @@
+<meta charset="UTF-8">
+<div class="modal-header">
+	<div class="row">
+		<div class="col-lg-12">
+			<h4 class="modal-title">Boleto emitido pelo cedente</h4>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer" >
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<table style="margin-top: 15px;">
+				<tbody>
+					<tr>
+						<td style="text-align: right; padding-right: 5px;">Código da carteira: </td>
+						<td style="text-align: left;">{{modalDescBoletoEmitidoCtrl.informacaoCarteira.nrCarteiraBoletoCedente}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: right; padding-right: 5px;">Código do acessório escritural: </td>
+						<td style="text-align: left;">{{modalDescBoletoEmitidoCtrl.informacaoCarteira.nrAcessorioBoletoCedente}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: right; padding-right: 5px;">Código da variação: </td>
+						<td style="text-align: left;">{{modalDescBoletoEmitidoCtrl.informacaoCarteira.nrVariacaoBoletoCedente}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<meta charset="UTF-8">
+<div class="modal-header">
+	<div class="row">
+		<div class="col-lg-12">
+			<h4 class="modal-title">Boleto emitido pelo banco</h4>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer" >
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<table style="margin-top: 15px;">
+				<tbody>
+					<tr>
+						<td style="text-align: right; padding-right: 5px;">Código da carteira: </td>
+						<td style="text-align: left;">{{modalDescBoletoEmitidoCtrl.informacaoCarteira.nrCarteiraBoletoBanco}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: right; padding-right: 5px;">Código do acessório escritural: </td>
+						<td style="text-align: left;">{{modalDescBoletoEmitidoCtrl.informacaoCarteira.nrAcessorioBoletoBanco}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: right; padding-right: 5px;">Código da variação: </td>
+						<td style="text-align: left;">{{modalDescBoletoEmitidoCtrl.informacaoCarteira.nrVariacaoBoletoBanco}}</td>
+					</tr>
+				</tbody>
+			</table>
+			</br>
+			<button type="button" class="btn btn-primary" data-dismiss="modal"
+				aria-hidden="true" ng-click="modalDescBoletoEmitidoCtrl.cancelar()">Fechar</button>
+		</div>
+	</div>
+</div>

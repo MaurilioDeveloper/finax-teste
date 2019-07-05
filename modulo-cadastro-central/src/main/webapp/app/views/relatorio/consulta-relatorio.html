@@ -1,0 +1,419 @@
+<meta charset="UTF-8">
+<style>
+.table>tbody>tr>td {
+	text-transform: uppercase;
+}
+</style>
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+
+		<div class="col-md-12">
+			<div class="tabs-wrapper table">
+				<div class="tab-pane">
+					<div class="panel panel-default">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter"
+							style="cursor: pointer;">
+							<span class="glyphicon glyphicon-plus" ng-show="hideFilter"></span>
+							<span class="glyphicon glyphicon-minus" ng-show="!hideFilter"></span>
+							Filtros
+						</div>
+						<div collapse="hideFilter">
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group form-inline">
+										<div class="col-lg-3 col-md-3">
+											<label>Papel:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.papel"
+												style="width: 100%"
+												ng-options="papel.descricao as papel.descricao for papel in consultaRelatorioCtrl.papeis">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>Tipo de Pessoa:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.tipoPessoa"
+												style="width: 100%"
+												ng-options="tipo.id as tipo.descricao for tipo in consultaRelatorioCtrl.tipoPessoa">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>Status:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.status"
+												style="width: 100%"
+												ng-options="stats.id as stats.descricao for stats in consultaRelatorioCtrl.status">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>Declaração do Cliente:</label> <select
+												class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.declaracaoCliente"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.declaracaoCliente">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group form-inline">
+										<form name="consultaRelatorioCtrl.form">
+											<div class="col-lg-3 col-md-3"
+												ng-class="{'has-error': consultaRelatorioCtrl.invalidDate}">
+												<label>Nascimento/Fundação De: </label>
+												<div class="input-group" style="width: 100%">
+													<input type="text" class="form-control readonly-white"
+														ng-model="consultaRelatorioCtrl.filtro.dataNascFundacaoDe"
+														ng-blur="consultaRelatorioCtrl.changeDataFundacaoDe()"
+														datepicker-popup="dd/MM/yyyy" show-weeks="'false'"
+														close-text="Fechar" clear-text="Limpar"
+														name="dataNascFundacaoDe" is-open="dataNascFundacaoDeOpen"
+														required
+														ng-click="dataNascFundacaoDeOpen = !dataNascFundacaoDeOpen"
+														current-text="Hoje" /> <span class="input-group-addon"
+														id="basic-addon2"> <span
+														class="glyphicon glyphicon-calendar"></span></span>
+												</div>
+											</div>
+											<div class="col-lg-3 col-md-3"
+												ng-class="{'has-error': consultaRelatorioCtrl.invalidDate}">
+												<label>Até:</label>
+												<div class="input-group" style="width: 100%">
+													<input type="text" class="form-control readonly-white"
+														ng-model="consultaRelatorioCtrl.filtro.dataNascFundacaoAte"
+														ng-blur="consultaRelatorioCtrl.changeDataFundacaoAte()"
+														datepicker-popup="dd/MM/yyyy" show-weeks="'false'"
+														close-text="Fechar" clear-text="Limpar"
+														name="dataNascFundacaoAte"
+														is-open="dataNascFundacaoAteOpen" required
+														ng-click="dataNascFundacaoAteOpen = !dataNascFundacaoAteOpen"
+														current-text="Hoje" /> <span class="input-group-addon"
+														id="basic-addon2"> <span
+														class="glyphicon glyphicon-calendar"></span></span>
+												</div>
+											</div>
+											<div class="form-group col-lg-3 col-md-3">
+												<label>Nacionalidade:</label>
+												<ui-select theme="bootstrap"
+													ng-model="consultaRelatorioCtrl.filtro.nacionalidade"
+													data-id> <ui-select-match
+													placeholder="Selecione">
+												{{$select.selected.descricao ? $select.selected.descricao :
+												$select.selected }} </ui-select-match> <ui-select-choices
+													repeat="nacionalidade.descricao as nacionalidade in consultaRelatorioCtrl.nacionalidades | filter : $select.search">
+												<div
+													ng-bind-html="nacionalidade.descricao ? nacionalidade.descricao : nacionalidade | highlight: $select.search"></div>
+												</ui-select-choices> </ui-select>
+											</div>
+											<div class="col-lg-3 col-md-3">
+												<label>Estado Civil:</label> <select class="form-control"
+													ng-model="consultaRelatorioCtrl.filtro.estadoCivil"
+													style="width: 100%"
+													ng-options="estadoCivil.nome as estadoCivil.nome for estadoCivil in consultaRelatorioCtrl.estadoCivil">
+													<option value="">Selecione</option>
+												</select>
+											</div>
+										</form>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group form-inline">
+										<div class="form-group col-lg-3 col-md-3">
+											<label>País:</label>
+											<ui-select
+												on-select="consultaRelatorioCtrl.aoSelecionarPais($item,$model)"
+												theme="bootstrap"
+												ng-model="consultaRelatorioCtrl.filtro.pais" data-id>
+											<ui-select-match placeholder="Selecione">
+											{{$select.selected.nome ? $select.selected.nome :
+											$select.selected }} </ui-select-match> <ui-select-choices
+												repeat="pais.nome as pais in consultaRelatorioCtrl.paises | filter : $select.search">
+											<div
+												ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+											</ui-select-choices> </ui-select>
+										</div>
+										<div class="form-group col-lg-3 col-md-3">
+											<label>Estado:</label>
+											<ui-select
+												on-select="consultaRelatorioCtrl.aoSelecionarEstado($item,$model)"
+												ng-if="consultaRelatorioCtrl.filtro.pais.id == 'BR' || consultaRelatorioCtrl.filtro.pais == 'Brasil' "
+												theme="bootstrap"
+												ng-model="consultaRelatorioCtrl.filtro.estado" data-id>
+											<ui-select-match maxlength="50" placeholder="Selecione">
+											{{$select.selected.nome ? $select.selected.nome :
+											$select.selected}} </ui-select-match> <ui-select-choices
+												repeat="estado.nome as estado in consultaRelatorioCtrl.estados | filter : $select.search">
+											<div ng-bind-html="estado.nome | highlight: $select.search"></div>
+											</ui-select-choices> </ui-select>
+											<input type="text" class="form-control"
+												ng-if="consultaRelatorioCtrl.filtro.pais.id != 'BR' && consultaRelatorioCtrl.filtro.pais != 'Brasil'"
+												style="width: 100%"
+												ng-model="consultaRelatorioCtrl.filtro.estado"
+												ng-disabled="consultaRelatorioCtrl.disableEstadoCidade"
+												maxlength="50" placeholder="Todos">
+										</div>
+										<div class="form-group col-lg-3 col-md-3">
+											<label>Cidade:</label>
+											<ui-select
+												ng-if="consultaRelatorioCtrl.filtro.pais.id == 'BR' || consultaRelatorioCtrl.filtro.pais == 'Brasil' "
+												theme="bootstrap"
+												ng-model="consultaRelatorioCtrl.filtro.cidade"
+												ng-disabled="!consultaRelatorioCtrl.filtro.estado" data-id>
+											<ui-select-match maxlength="50" placeholder="Selecione">
+											{{$select.selected.nome ? $select.selected.nome :
+											$select.selected}} </ui-select-match> <ui-select-choices
+												repeat="cidade.nome as cidade in consultaRelatorioCtrl.cidades | filter : $select.search">
+											<div ng-bind-html="cidade.nome | highlight: $select.search"></div>
+											</ui-select-choices> </ui-select>
+											<input type="text" class="form-control"
+												ng-if="consultaRelatorioCtrl.filtro.pais.id != 'BR' && consultaRelatorioCtrl.filtro.pais != 'Brasil'"
+												style="width: 100%"
+												ng-model="consultaRelatorioCtrl.filtro.cidade"
+												ng-disabled="consultaRelatorioCtrl.disableEstadoCidade"
+												maxlength="50" placeholder="Todas">
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>FATCA:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.fatca"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.fatca">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group form-inline">
+										<div class="col-lg-3 col-md-3">
+											<label>Porte da Empresa:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.porteEmpresa"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.porteEmpresa">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>Perfil do Investidor:</label> <select
+												class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.perfilInvestidor"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.perfilInvestidor">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>PEP:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.pep"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.pep">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>Relacionamento PEP:</label> <select
+												class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.relacionamentoPep"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.pep">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group form-inline">
+										<div class="col-lg-3 col-md-3">
+											<label>Capital Social:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.capitalSocial"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.capitalSocial">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>Tipo de Conta:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.tipoConta"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.tipoConta">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>Modelo de Conta:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.modeloConta"
+												style="width: 100%"
+												ng-options="fat.id as fat.descricao for fat in consultaRelatorioCtrl.modeloConta">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<label>Banco:</label>
+											<ui-select theme="bootstrap"
+												ng-model="consultaRelatorioCtrl.filtro.banco" data-id>
+											<ui-select-match maxlength="20" placeholder="Selecione">
+											{{$select.selected.nome ? $select.selected.nome :
+											$select.selected }} </ui-select-match> <ui-select-choices
+												repeat="banco.id as banco in consultaRelatorioCtrl.bancos | filter : $select.search"
+												maxlength="20">
+											<div
+												ng-bind-html="(banco.id ? banco.id : '')  + ' ' + (banco.nome ? banco.nome : banco ) | highlight: $select.search"></div>
+											</ui-select-choices> </ui-select>
+										</div>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="form-group form-inline">
+										<div class="col-lg-3 col-md-3">
+											<label>Forma de Constituição:</label> <select class="form-control"
+												ng-model="consultaRelatorioCtrl.filtro.formaConstituicao"
+												style="width: 100%"
+												ng-options="fat.idFormaConstituicao as fat.dsFormaConstituicao for fat in consultaRelatorioCtrl.formaConstituicao">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<br />
+
+								<div class="row">
+									<div class="form-group form-inline">
+										<div class="col-lg-2 col-md-2 align-button">
+											<div class="form-group form-inline">
+												<button id="filterLink" type="button"
+													class="btn btn-primary glyphicon glyphicon-search"></button>
+												<button ng-click="consultaRelatorioCtrl.resetForm()"
+													class="btn btn-default" style="margin-top: 1px">Limpar</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<br />
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+						<div class="table-responsive">
+							<table datatable rows="15" lazy="true"
+								class="table table-striped"
+								rest="{{consultaRelatorioCtrl.restUrl}}/pessoa/relatorio/findbyfilter"
+								rest-export="{{consultaRelatorioCtrl.restUrl}}/pessoa/relatorio/exportbyfilter"
+								datasource="consultaRelatorioCtrl.pessoas" paginator="true"
+								max-size="5" filter-model="consultaRelatorioCtrl.filtro"
+								on-error="consultaRelatorioCtrl.onError(msg)"
+								filter-submit="#filterLink" export-submit="#exportLink"
+								dont-search-on-load="true">
+								<thead class="thead-default">
+									<tr>
+										<th style="text-align: center;">Dados Básicos</th>
+										<th style="text-align: center;">Filiação/Cônjuge</th>
+										<th style="text-align: center;">Endereços</th>
+										<th style="text-align: center;">Dados
+											Profissionais/Atividade</th>
+										<th style="text-align: center;">Dados Bancários</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										ng-if="!consultaRelatorioCtrl.pessoas || consultaRelatorioCtrl.pessoas.length == 0">
+										<td colspan="9" class="text-center">Não foram encontrados
+											dados para os filtros selecionados</td>
+									</tr>
+									<tr ng-repeat="pessoa in consultaRelatorioCtrl.pessoas">
+										<td>
+											<span>
+												{{pessoa.nomeRazao}}
+												<br>
+											</span> 
+											<span>{{!pessoa.estrangeiro
+												? (pessoa.identificador | cpfcnpj: pessoa.tipoPessoa) :
+												pessoa.identificador}}<br>
+											</span> 
+											<span>{{pessoa.tipoPessoa == 'F' ? 'Pessoa Física' :
+												(pessoa.tipoPessoa == 'J' ? 'Pessoa Jurídica' : '')}}<br>
+											</span> 
+											<span ng-if="pessoa.tipoPessoa == 'F'">Sexo
+												{{pessoa.sexo == 'M' ? 'Masculino' : (pessoa.sexo == 'F' ?
+												'Feminino' : '') }}<br>
+											</span> 
+											<span ng-if="pessoa.tipoPessoa == 'F' && pessoa.dataNascConstituicao">Nascido
+												em
+												{{consultaRelatorioCtrl.moment(pessoa.dataNascConstituicao,
+												'DD/MM/YY').format('DD/MM/YYYY')}}<br>
+											</span> 
+											<span ng-if="pessoa.tipoPessoa != 'F' && pessoa.dataNascConstituicao">Constituída
+												em
+												{{consultaRelatorioCtrl.moment(pessoa.dataNascConstituicao,
+												'DD/MM/YY').format('DD/MM/YYYY')}}<br>
+											</span>
+											<span ng-if="pessoa.tipoPessoa != 'F' && pessoa.formaConstituicao">
+												{{pessoa.formaConstituicao}}<br>
+											</span>
+										</td>
+										<td>
+											<span ng-if="pessoa.nomeConjuge">Casado(a) com
+												{{pessoa.nomeConjuge}}<br>
+											</span> 
+											<span ng-if="pessoa.nomeMae || pessoa.nomePai">Filho
+												de:<br> {{pessoa.nomeMae}}<br ng-if="pessoa.nomeMae">{{pessoa.nomePai}}
+											</span>
+										</td>
+										<td>
+											<span ng-repeat="endereco in pessoa.enderecos track by $index">
+												<div ng-bind-html="endereco"></div> <br> <br>
+											</span>
+										</td>
+										<td>
+											<span ng-if="pessoa.tipoPessoa == 'F'">{{pessoa.nomeEmpresa
+												? (pessoa.cargo + ' em ' + pessoa.nomeEmpresa + ' - ' +
+												(pessoa.cnpjEmpresa | cpfcnpj: 'PJ')) : ''}}<br ng-if="pessoa.profissao">{{pessoa.profissao}}
+											</span> 
+											<span ng-if="pessoa.tipoPessoa == 'J'">
+												{{pessoa.cnaePrincipal ? ('CNAE principal: ' +
+												(pessoa.cnaePrincipal | cnae) + ' - ' +
+												pessoa.atividadePrincipal) : ''}} <br
+												ng-if="pessoa.cnaePrincipal"> <br
+												ng-if="pessoa.cnaePrincipal"> {{pessoa.cnaeSecundario ?
+												('CNAE secundário: ' + (pessoa.cnaeSecundario | cnae) + ' -
+												' + pessoa.atividadeSecundaria) : ''}}
+											</span>
+										</td>
+										<td>
+											<span ng-repeat="banco in pessoa.dadosBancarios track by $index">
+												<div ng-bind-html="banco"></div> <br> <br>
+											</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-12 col-md-12" align="right">
+					<button type="button" class="btn btn-primary" tooltip="Exportar"
+						id="exportLink"
+						ng-disabled="!consultaRelatorioCtrl.pessoas || consultaRelatorioCtrl.pessoas.length == 0"
+						disabled="disabled">
+						<span class="glyphicon glyphicon-download-alt"></span> Exportar
+					</button>
+				</div>
+
+			</div>
+
+
+
+		</div>
+	</div>
+</div>
+</div>

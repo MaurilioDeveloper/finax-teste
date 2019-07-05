@@ -1,0 +1,29 @@
+<meta charset="UTF-8">
+<div class="modal-body" style="height: 250px">
+	{{perfilInvestidorCtrl.descricaoQuestao}}<br/><br/>
+	<label class="radio-inline">
+		<input  type="text" name="resposta5" id="resposta5" ng-model="perfilInvestidorCtrl.questionario.questao5.texto" style="width:40px" number data-a-dec="," data-a-sep="." data-v-max="999.99" ng-blur="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao5)"
+			ng-init="perfilInvestidorCtrl.questionario.questao5.pergunta = 5; perfilInvestidorCtrl.questionario.questao5.pessoa = null;">%
+		Poupança, Fundos DI, CDB, Fundos RF
+	</label><br/>
+	<label class="radio-inline">
+		<input type="text" name="resposta6" id="resposta6" number data-a-dec="," data-a-sep="." data-v-max="999.99" style="width: 40px" ng-init="perfilInvestidorCtrl.questionario.questao6.pergunta = 6; perfilInvestidorCtrl.questionario.questao6.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao6.texto" ng-blur="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao6)">%
+		Fundos Multimercado, Títulos Públicos, LCI, LCA, Fundos Cambiais
+	</label><br/> 
+	<label class="radio-inline">
+		<input type="text" name="resposta7" id="resposta7" number data-a-dec="," data-a-sep="." data-v-max="999.99" style="width: 40px" ng-init="perfilInvestidorCtrl.questionario.questao7.pergunta = 7; perfilInvestidorCtrl.questionario.questao7.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao7.texto" ng-blur="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao7)">%
+		Fundos de Ações, Fundos Imobiliários, Fundos de Investimento em Participações, Ações
+	</label><br/>  
+	<label class="radio-inline">
+		<input type="text" name="resposta8" id="resposta8" number data-a-dec="," data-a-sep="." data-v-max="999.99" style="width: 40px" ng-init="perfilInvestidorCtrl.questionario.questao8.pergunta = 8; perfilInvestidorCtrl.questionario.questao8.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao8.texto" ng-blur="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao8)">%
+		Derivativos, Ações e Debêntures
+	</label>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+	<button type="button" class="btn btn-primary"
+		ng-click="perfilInvestidorCtrl.goQuestion6(perfilInvestidorCtrl.questionario.questao5.texto + perfilInvestidorCtrl.questionario.questao6.texto + perfilInvestidorCtrl.questionario.questao7.texto + perfilInvestidorCtrl.questionario.questao8.texto)">
+		Avançar <i class="fa fa-chevron-right"></i>
+	</button>
+</div>
+

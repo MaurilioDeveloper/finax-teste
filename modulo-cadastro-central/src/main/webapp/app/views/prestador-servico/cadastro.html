@@ -1,0 +1,325 @@
+<meta charset="UTF-8" />
+
+<style>
+@
+-moz-document
+ 
+url-prefix
+ 
+()
+{
+@media ( min-width : 1220px) and (min-width: 1225px) {
+	.col-lg-2.data {
+		width: 300px;
+	}
+}
+
+@media ( min-width : 1200px) {
+	.col-lg-2.data {
+		width: 275px;
+	}
+}
+
+}
+.nav.nav-tabs li a.erro {
+	color: #a94442;
+}
+
+div.form-group.erro input.form-control, div.form-group.erro select.form-control
+	{
+	border-color: #a94442;
+}
+
+div.form-group.erro label {
+	color: #a94442;
+}
+
+.btn-concluir {
+	background: #00b300;
+	border-color: #009900;
+	color: white;
+}
+
+.btn-concluir:hover {
+	background: #009900;
+	border-color: #009900;
+	color: white;
+}
+
+.comMargin {
+	margin-top: 25px;
+}
+
+.semMargin {
+	margin-top: 0px;
+}
+</style>
+
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+		<div class="col-lg-12 col-md-12" ng-if="prestadorServicoCtrl.acao == 'V'">
+			<div class="page-header">
+<!-- 				<button type="button" class="btn btn-primary glyphicon glyphicon-print pull-right" ng-click="prestadorServicoCtrl.gerarPdf();" tooltip="Imprimir Cadastro" style="margin-left: 5px"></button> -->
+				<button type="button" class="btn btn-primary glyphicon glyphicon-trash pull-right" ng-click="prestadorServicoCtrl.excluir();" auth-check permission="excluir-prestador-servico" tooltip="Deletar Cadastro" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-pencil pull-right" ng-click="prestadorServicoCtrl.mudarParaEdicao()" auth-check permission="editar-prestador-servico" tooltip="Editar Cadastro" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-plus pull-right" ui-sref="prestador-servico.incluir({acao:'I',identificador:undefined,tab:1})" auth-check permission="inserir-prestador-servico" tooltip="Adicionar Novo Cadastro" style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-prestador-servico" tooltip="Consultar"></button>
+				<h3 class="ng-scope">Visualizar</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="prestadorServicoCtrl.acao == 'E'">
+			<div class="page-header">
+				<div ng-if="prestadorServicoCtrl.verificaPapelHabilitacaoPortalCedente();">
+					<button type="button" 
+					class="btn btn-primary glyphicon glyphicon-user pull-right" 
+					ng-click="prestadorServicoCtrl.habilitarPortalCedente()" 
+					style="margin-left: 5px" tooltip="Habilitar usuário portal cedente"></button>
+				</div>
+<!-- 				<button type="button" class="btn btn-primary glyphicon glyphicon-arrow-left pull-right" ui-sref="prestador-servico.incluir({acao:'I',identificador:undefined})" tooltip="Voltar"></button> -->
+<!-- 				<button type="button" class="btn btn-primary glyphicon glyphicon-print pull-right" ng-click="prestadorServicoCtrl.gerarPdf();"  tooltip="Imprimir Cadastro" style="margin-left: 5px" ng-if="!prestadorServicoCtrl.pessoaRelacionada"></button> -->
+				<button type="button" class="btn btn-primary glyphicon glyphicon-trash pull-right" ng-click="prestadorServicoCtrl.excluir();" auth-check permission="excluir-prestador-servico" tooltip="Deletar Cadastro"  style="margin-left: 5px"></button>
+<!-- 				<button type="button" class="btn btn-concluir glyphicon glyphicon-refresh pull-right" ng-click="prestadorServicoCtrl.concluir()" tooltip="Sincronizar com Matera"  style="margin-left: 5px"></button> -->
+				<button type="button" class="btn btn-primary glyphicon glyphicon-plus pull-right" ui-sref="prestador-servico.incluir({acao:'I',identificador:undefined,tab:1})" auth-check permission="inserir-prestador-servico" tooltip="Adicionar Novo Cadastro"  style="margin-left: 5px"></button>
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-prestador-servico" tooltip="Consultar"></button>
+
+				<h3 class="ng-scope">Editar</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="prestadorServicoCtrl.acao == 'I'"> 
+			<div class="page-header">
+				<button type="button" class="btn btn-primary glyphicon glyphicon-arrow-left pull-right" ng-click="prestadorServicoCtrl.voltar();" tooltip="Voltar" ng-if="prestadorServicoCtrl.pessoaRelacionada"></button>
+<!-- 				<button type="button" class="btn btn-primary glyphicon glyphicon-print  pull-right" ng-click="prestadorServicoCtrl.gerarPdf();"  ng-if="prestadorServicoCtrl.pessoa.id && !prestadorServicoCtrl.pessoaRelacionada" tooltip="Imprimir Cadastro" style="margin-left: 5px"></button> -->
+				<button type="button" class="btn btn-primary glyphicon glyphicon-trash  pull-right" ng-click="prestadorServicoCtrl.excluir();" auth-check permission="excluir-prestador-servico" ng-if="prestadorServicoCtrl.id" tooltip="Deletar Cadastro"  style="margin-left: 5px"></button>
+<!-- 				<button type="button" class="btn btn-concluir glyphicon glyphicon-refresh pull-right" ng-click="prestadorServicoCtrl.concluir()" ng-if="(prestadorServicoCtrl.pessoa.id && !prestadorServicoCtrl.pessoaRelacionada && !prestadorServicoCtrl.pessoa.estrangeiro)" tooltip="Sincronizar com Matera" style="margin-left: 5px"></button> -->
+<!-- 				<button type="button" class="btn btn-primary glyphicon glyphicon-plus pull-right" ui-sref="prestador-servico.incluir({acao:'I',identificador:undefined,tab:1})" ui-sref-opts="{reload: true}" auth-check permission="inserir-prestador-servico" tooltip="Adicionar Novo Cadastro" ng-if="prestadorServicoCtrl.pessoa.id" style="margin-left: 5px"></button> -->
+				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-prestador-servico" tooltip="Consultar"></button>
+				
+<!-- 				<button type="button" class="btn btn-primary glyphicon glyphicon-search pull-right" ui-sref="cadastro-fundo" tooltip="Consultar" ng-if="!fundoCtrl.pessoaRelacionada"> -->
+				</button>
+				
+				<h3 class="ng-scope">Incluir</h3>
+			</div>
+		</div>
+		
+		<div class="col-lg-12 col-md-12">
+			<div class="tabs-wrapper table">
+				<ul class="nav nav-tabs">
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 1}" id="tabIncluir" ng-click="prestadorServicoCtrl.mudarTab(1)" style="cursor: pointer;" ng-if="!prestadorServicoCtrl.prestadorServico.id"><a>Incluir</a>
+					</li>
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 2}" ng-click="prestadorServicoCtrl.mudarTab(2)" id="" style="cursor: pointer;" ng-if="prestadorServicoCtrl.prestadorServico.id">
+						<a>Dados Básicos</a>
+					</li>
+					
+<!-- 					<li ng-class="{'active': fundoCtrl.tab == 2}" ng-click="fundoCtrl.mudarTab(2)" ng-if="fundoCtrl.pessoaFundo.pessoa.id"   id="tabEditar" -->
+<!-- 						ng-click="fundoCtrl.mudarTab(2)" style="cursor: pointer;"><a>Dados Básicos</a> -->
+<!-- 					</li> -->
+					
+					
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 3}" ng-click="prestadorServicoCtrl.mudarTab(3)" style="cursor: pointer;" ng-if="prestadorServicoCtrl.prestadorServico.id">
+						<a ng-class="{'erro':prestadorServicoCtrl.abas.enderecos.erros.length}">Endereço</a>
+					</li>
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 4}" ng-click="prestadorServicoCtrl.mudarTab(4)" style="cursor: pointer;" ng-if="prestadorServicoCtrl.prestadorServico.id">
+						<a ng-class="{'erro':prestadorServicoCtrl.abas.contatos.erros.length}">Dados de Contato</a>
+					</li>
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 5}" ng-click="prestadorServicoCtrl.mudarTab(5)" style="cursor: pointer;" ng-if="prestadorServicoCtrl.prestadorServico.id">
+						<a ng-class="{'erro':prestadorServicoCtrl.abas.responsaveis.erros.length}">Responsáveis</a>
+					</li>
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 6}" ng-click="prestadorServicoCtrl.mudarTab(6)" style="cursor: pointer;" ng-if="prestadorServicoCtrl.prestadorServico.id">
+						<a ng-class="{'erro':prestadorServicoCtrl.abas.documentos.erros.length}">Documentos</a>
+					</li>
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 7}" ng-click="prestadorServicoCtrl.mudarTab(7)" style="cursor: pointer;" ng-if="prestadorServicoCtrl.prestadorServico.id">
+						<a ng-class="{'erro':prestadorServicoCtrl.abas.papeis.erros.length}">Papéis</a>
+					</li>
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 8}" ng-click="prestadorServicoCtrl.mudarTab(8)" style="cursor: pointer;" ng-if="prestadorServicoCtrl.prestadorServico.id">
+						<a ng-class="{'erro':prestadorServicoCtrl.abas.atualizacoes.erros.length}">Atualizações</a>
+					</li>
+					<li ng-class="{'active': prestadorServicoCtrl.tab == 9}" ng-click="prestadorServicoCtrl.mudarTab(9)" style="cursor: pointer;" ng-if="prestadorServicoCtrl.prestadorServico.id">
+						<a ng-class="{'erro':prestadorServicoCtrl.abas.acessos.erros.length}">Acesso Externo</a>
+					</li>
+
+				</ul>
+				
+				<div class="tab-pane" ng-if="prestadorServicoCtrl.tab == 1">
+					<div class="tab-content">
+						<div class="form-group">
+							<div class="panel panel-default">
+								<div class="panel-body" style="margin-left: -15px">
+
+									<form name="prestadorServicoCtrl.form">
+
+										<div class="col-lg-12 col-md-12">
+											<legend>Identificação</legend>
+
+											<div class="row">
+												<div class="col-md-12">
+													<div class="col-lg-6 col-md-5">
+
+														<div class="form-group input-group form-inline">
+															<label class="btn btn-default input-group-addon"
+																ng-model="prestadorServicoCtrl.prestadorServico.tipoPessoa"
+																btn-radio="'J'"
+																ng-disabled="prestadorServicoCtrl.acao != 'I' || prestadorServicoCtrl.prestadorServico.pessoa.id || prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'J'"
+																id="labelCnpj"
+																ng-mousedown="prestadorServicoCtrl.aoClicarCNPJ();"
+																ng-change="pretadorServicoCtrl.li">CNPJ
+															</label>
+															<label class="btn btn-default input-group-addon"
+																ng-model="prestadorServicoCtrl.prestadorServico.tipoPessoa"
+																btn-radio="'F'"
+																ng-disabled="prestadorServicoCtrl.acao != 'I' || prestadorServicoCtrl.prestadorServico.pessoa.id || prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'F'"
+																id="labelCpf"
+																ng-mousedown="prestadorServicoCtrl.aoClicarCPF();">CPF
+															</label>
+															<input uppercased id="cpf"
+																ng-model="prestadorServicoCtrl.prestadorServico.pessoa.identificador"
+																ng-blur="prestadorServicoCtrl.validaCpf()"
+																ng-if="prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'F'"
+																ui-mask="999.999.999-99"
+																ui-options="{clearOnBlur: false,allowInvalidValue :true}"
+																type="text" class="form-control"
+																ng-disabled="prestadorServicoCtrl.acao != 'I' || prestadorServicoCtrl.prestadorServico.pessoa.id"/>
+															<input uppercased id="cnpj"
+																ng-model="prestadorServicoCtrl.prestadorServico.pessoa.identificador"
+																ng-blur="prestadorServicoCtrl.validaCnpj()"
+																ng-if="prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'J'"
+																ui-mask="99.999.999/9999-99"
+																ui-options="{clearOnBlur: false,allowInvalidValue:true}"
+																type="text" class="form-control"
+															 	ng-disabled="prestadorServicoCtrl.acao != 'I' || prestadorServicoCtrl.prestadorServico.pessoa.id"/> 
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="col-lg-6 col-md-5">
+														<div class="form-group">
+															<!-- ng-class="{'erro':prestadorServicoCtrl.form.nomeRazao.$invalid && prestadorServicoCtrl.form.nomeRazao.$dirty }">  -->
+															<label>{{ prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa ==  'F' ? 'Nome completo*' : 'Razão social*' }}:</label>
+															
+															<input uppercased ng-if="prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'J'" name="nomeRazao" type="text" class="form-control" style="width: 100%" maxlength="255" 
+															ng-model="prestadorServicoCtrl.prestadorServico.pessoa.nomeRazao" ng-disabled="prestadorServicoCtrl.acao == 'V'">
+															
+															<input uppercased ng-if="prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'F'" alphanumeric-input name="nomeRazao" type="text" class="form-control" style="width: 100%" maxlength="255" 
+															ng-model="prestadorServicoCtrl.prestadorServico.pessoa.nomeRazao" ng-disabled="prestadorServicoCtrl.acao == 'V'">
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group col-lg-4 col-md-3">
+														<label for="ex1">Nome Reduzido:</label> 
+														<input uppercased maxlength="150"
+															class="form-control" name="nomeFantasia"
+															style="width: 100%" type="text" ng-disabled="prestadorServicoCtrl.acao == 'V'"
+															ng-model="prestadorServicoCtrl.prestadorServico.pessoa.nomeFantasia">
+													</div>
+													<div class="form-group col-lg-2 col-md-3">
+														<label for="ex1">Código:</label> 
+														<input uppercased
+															class="form-control" style="width: 100%" type="text"
+															ng-disabled="true"
+															ng-model="prestadorServicoCtrl.prestadorServico.pessoa.id">
+													</div>
+												</div>
+											</div>
+
+
+											
+											
+											<div class="row">
+												<div class="col-lg-12 col-md-12" style="margin-top: 20px;">
+													<fieldset class="form-group">
+														<legend>Tipo de prestador de serviço</legend>
+					 										<div ng-if="prestadorServicoCtrl.acao != 'V'"> 
+																<div class="col-lg-3 col-md-3">
+																	<div class="form-group">
+																		<label>Tipo de prestador de serviço:</label> 
+																		<ui-select theme="bootstrap" ng-model="prestadorServicoCtrl.tipoPrestadorSelecionado" ng-disabled="prestadorServicoCtrl.acao == 'V'" ng-change="prestadorServicoCtrl.novoPapelPrestadorServico(); prestadorServicoCtrl.contatoExclusivoConsultora();">
+																			<ui-select-match placeholder="Selecione">
+																				{{$select.selected.descricao ? $select.selected.descricao : $select.selected }}
+																			</ui-select-match>         
+																			<ui-select-choices repeat="papel as papel in prestadorServicoCtrl.papeis | filter : $select.search">
+																				<div ng-bind-html="papel.descricao ? papel.descricao : papel | highlight: $select.search"></div>
+																			</ui-select-choices>
+																		</ui-select>
+																	</div>
+																</div>
+																<div>
+																	<div class="col-lg-1 col-md-1">
+																		<div class="form-group" style="margin-top: 25px;">
+																			<button type="button" class="btn btn-primary" ng-if="prestadorServicoCtrl.acaoTipo != 'E'" ng-click="prestadorServicoCtrl.salvarPapelPrestadorServico()" ng-disabled="!prestadorServicoCtrl.tipoPrestadorSelecionado">Incluir</button>
+																			<button type="button" class="btn btn-primary" ng-if="prestadorServicoCtrl.acaoTipo == 'E'" ng-click="prestadorServicoCtrl.salvarPapelPrestadorServico()" ng-disabled="!prestadorServicoCtrl.tipoPrestadorSelecionado">Alterar</button>
+																			<button type="button" class="btn btn-default" style="margin-left: 10px" ng-if="prestadorServicoCtrl.acaoTipo == 'E'" ng-click="prestadorServicoCtrl.cancel()">Cancelar</button>
+																		</div>
+																	</div>
+																</div>
+																<div>
+																	<div class="col-lg-3 col-md-3">
+																		<div ng-if="prestadorServicoCtrl.habilitaContatoExclusivo" class="checkbox" style="margin-top: 25px;">
+																			<label><input type="checkbox" ng-change="prestadorServicoCtrl.contatoExclusivoConsultora()" ng-true-value="'1'" ng-false-value="'0'" ng-model="prestadorServicoCtrl.prestadorServico.inContatoExclusivo">Contato exclusivo com o cliente</label>
+																		</div>
+																	</div>
+																</div>
+															</div>
+													</fieldset>
+												</div>
+												<div class="col-lg-7 col-md-8">
+													<table class="table table-striped" style="margin-top: 15px">
+														<thead>
+															<th>Tipo de prestador de serviço</th>
+															<th ng-if="prestadorServicoCtrl.habilitaListaContatoExclusivo">Contato exclusivo com o cliente</th>
+															<th ng-if="prestadorServicoCtrl.acao != 'V'"></th>
+														</thead>
+														<tbody>
+															<tr ng-if="!prestadorServicoCtrl.prestadorServico.pessoa.papeis.length">
+																<td colspan="3">Não há registros encontrados.</td>
+															</tr>
+															<tr ng-repeat="papel in prestadorServicoCtrl.prestadorServico.pessoa.papeis | filter:{ tipoCadastro: 'PRESTADOR DE SERVICO'} track by $index ">
+																<td>{{papel.descricao}}</td>
+																<td ng-if="papel.descricao == 'CONSULTORA'">{{prestadorServicoCtrl.prestadorServico.inContatoExclusivo == "1" && papel.descricao == "CONSULTORA"  ? "Sim" : "Não"}}</td>
+																<td ng-if="papel.descricao != 'CONSULTORA'"></td>
+																<td ng-if="prestadorServicoCtrl.acao != 'V'">
+<!-- 																	<button type="button" ng-disabled="prestadorServicoCtrl.habilitarAcao" class="btn btn-default btn-xs" ng-click="prestadorServicoCtrl.updateTipoPrestador(papel)"> -->
+<!-- 																		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> -->
+<!-- 																	</button> -->
+																	<button type="button" ng-disabled="prestadorServicoCtrl.habilitarAcao" class="btn btn-default btn-xs" ng-click="prestadorServicoCtrl.deleteTipoPrestador(papel)">
+																		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+																	</button>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+
+											<div class="col-lg-6 col-md-6">
+												<button type="button" class="btn btn-primary"
+													ng-click="prestadorServicoCtrl.incluir()"
+													ng-if="prestadorServicoCtrl.acao == 'I' && !prestadorServicoCtrl.prestadorServico.id"
+													ng-disabled="!prestadorServicoCtrl.prestadorServico.pessoa.identificador.length || 
+													!prestadorServicoCtrl.prestadorServico.pessoa.nomeRazao.length || 
+													!prestadorServicoCtrl.prestadorServico.pessoa.papeis.length">Incluir Prestador de Serviço</button>
+											</div>
+
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div ui-view="DadosBasicos" ng-if="prestadorServicoCtrl.tab == 2 && prestadorServicoCtrl.prestadorServico.id"></div>
+				<div ui-view="Endereco" ng-if="prestadorServicoCtrl.tab == 3 && prestadorServicoCtrl.prestadorServico.id"></div>
+				<div ui-view="DadosContatos" ng-if="prestadorServicoCtrl.tab == 4 && prestadorServicoCtrl.prestadorServico.id"></div>
+				<div ui-view="DadosResponsaveis" ng-if="prestadorServicoCtrl.tab == 5 && prestadorServicoCtrl.prestadorServico.id"></div>
+				<div ui-view="DadosDocumentos" ng-if="prestadorServicoCtrl.tab == 6 && prestadorServicoCtrl.prestadorServico.id"></div>
+				<div ui-view="DadosPapeis" ng-if="prestadorServicoCtrl.tab == 7 && prestadorServicoCtrl.prestadorServico.id"></div>
+				<div ui-view="DadosAtualizacoes" ng-if="prestadorServicoCtrl.tab == 8 && prestadorServicoCtrl.prestadorServico.id"></div>
+				<div ui-view="DadosAcessoExterno" ng-if="prestadorServicoCtrl.tab == 9 && prestadorServicoCtrl.prestadorServico.id"></div>
+			</div>
+		</div>
+	</div>
+</div>

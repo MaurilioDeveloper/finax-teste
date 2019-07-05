@@ -1,0 +1,41 @@
+<meta charset="UTF-8">
+<div class="modal-body" style="height: 250px">
+	{{perfilInvestidorCtrl.descricaoQuestao}}<br/>	
+	Nota: Consideraremos o faturamento/rendimento médio mensal dos últimos 12 meses declarados em nossa ficha cadastral.<br/>
+	<table border="1">
+		<thead>
+			<tr align="center">
+				<td>%(A)</td>
+				<td>% (B)</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr align="center">
+				<td>Liquidez</td>
+				<td>Investimentos Financeiros</td>
+			</tr>
+		</tbody>
+	</table>
+	<br/><br/>
+	<label class="radio-inline" ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao3.resposta == 'A' }">
+		<input type="radio" name="resposta3" value="A"	ng-init="perfilInvestidorCtrl.questionario.questao3.pergunta = 3; perfilInvestidorCtrl.questionario.questao3.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao3.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao3)">
+		 Liquidez + Investimentos Financeiros: 0% a 30%.
+	</label><br/> 
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao3.resposta == 'B' }">
+		<input type="radio" name="resposta3" value="B" ng-init="perfilInvestidorCtrl.questionario.questao3.pergunta = 3; perfilInvestidorCtrl.questionario.questao3.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao3.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao3)">
+		Liquidez + Investimentos Financeiros: 31% a 65%.
+	</label><br/> 
+	<label class="radio-inline" ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao3.resposta == 'C' }">
+		<input type="radio" name="resposta3" value="C" ng-init="perfilInvestidorCtrl.questionario.questao3.pergunta = 3; perfilInvestidorCtrl.questionario.questao3.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao3.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao3)">
+		Liquidez + Investimentos Financeiros: > 66%.
+	</label>		
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+	<button type="button" class="btn btn-primary"
+		ng-click="perfilInvestidorCtrl.goQuestion4(perfilInvestidorCtrl.questionario.questao3.resposta)">
+		Avançar <i class="fa fa-chevron-right"></i>
+	</button>
+</div>
+
+

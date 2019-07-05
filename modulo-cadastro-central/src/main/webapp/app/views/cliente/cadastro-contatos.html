@@ -1,0 +1,119 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724560">
+	<div class="tab-content">
+		<div class="form-group" name="contatosCtrl.contatoRsForm">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-repeat="erro in pessoaCtrl.abas.contatos.erros" ng-if="!erro.campo">
+						<span>{{erro.mensagem}}</span>
+					</div>
+					
+					<div ng-include="'app/views/cliente/modalTipoEmail.html'"></div>
+					
+					<legend>Telefone</legend>
+					<div class="col-lg-2 col-md-2">
+						<div class="form-group">
+							<label>Celular:</label> 
+							<input uppercased type="text" class="form-control" style="width: 100%" telefone-input ng-model="contatosCtrl.telefoneCelular.telefone" ng-blur="contatosCtrl.incluirTelefone(contatosCtrl.telefoneCelular)" clear-if-not-match="false">						
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2">
+						<div class="form-group">
+							<label>Residencial:</label> 
+							<input uppercased type="text" class="form-control" style="width: 100%" telefone-input ng-model="contatosCtrl.telefoneResidencial.telefone" ng-blur="contatosCtrl.incluirTelefone(contatosCtrl.telefoneResidencial)" clear-if-not-match="false">
+						</div>
+					</div>	
+					<div class="col-lg-2 col-md-2">
+						<div class="form-group">
+							<label>Comercial:</label> 
+							<input uppercased type="text" class="form-control" style="width: 100%" telefone-input ng-model="contatosCtrl.telefoneComercial.telefone" ng-blur="contatosCtrl.incluirTelefone(contatosCtrl.telefoneComercial)" clear-if-not-match="false">
+						</div>
+					</div>	
+					
+					<div class="col-lg-1 col-md-2">
+						<div class="form-group">
+							<label>Ramal:</label> 
+							<input uppercased type="text" class="form-control" style="width: 100%" ng-model="contatosCtrl.telefoneComercial.ramal" mask="999999" maxlength="6"
+								ng-disabled="!contatosCtrl.telefoneComercial.telefone || pessoaCtrl.acao == 'V'" ng-blur="contatosCtrl.incluirTelefone(contatosCtrl.telefoneComercial)">
+						</div>
+					</div>															
+	
+					<div class="col-lg-3 col-md-4 form-group" style="margin-top: 25px">
+						<button type="button" ng-click="contatosCtrl.openModal()" class="btn btn-primary">Outros</button>
+					</div>
+				</div>
+
+				<!--email-->
+				<div class="panel-body">
+					<legend>E-mail</legend>
+					<div class="col-lg-2 col-md-2" style="padding-left: 0px" ng-if="pessoaCtrl.acao != 'V'">
+						<div class="form-group">
+							<label>Tipo e-mail:</label> 
+							<select class="form-control" style="width: 100%" 
+								ng-change="contatosCtrl.validarTipoEmail()" 
+								ng-model="contatosCtrl.email.tipoEmail" 
+								ng-options="tipoEmail as tipoEmail.dsTipoEmail for tipoEmail in contatosCtrl.tipoEmails track by tipoEmail.id">
+								<option value="">Selecione</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-4" ng-if="pessoaCtrl.acao != 'V'">
+						<div class="form-group">
+							<label>E-mail:</label>
+							<input uppercased type="email" class="form-control" style="width: 100%" ng-model="contatosCtrl.email.email" maxlength="100">
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-4 form-group" style="margin-top: 25px" ng-if="pessoaCtrl.acao != 'V'">
+						<button class="btn btn-primary" ng-if="!contatosCtrl.email.id" ng-click="contatosCtrl.incluirEmail()" ng-disabled="!contatosCtrl.email.tipoEmail || !contatosCtrl.email.email.length">Incluir</button>
+						<button class="btn btn-primary" ng-if="contatosCtrl.email.id" ng-click="contatosCtrl.incluirEmail()" ng-disabled="!contatosCtrl.email.tipoEmail ||!contatosCtrl.email.email.length">Alterar</button>
+						<button class="btn btn-default" ng-if="contatosCtrl.email.id" ng-click="contatosCtrl.cancelEmail()" style="margin-left: 10px" >Cancelar</button>
+					</div>
+					<div class="col-lg-12 col-md-12" style="padding-left: 0px">
+						<table class="table table-striped" style="margin-top: 15px">
+							<thead>
+								<th>Tipo e-mail</th>
+								<th>E-mail</th>
+								<th></th>
+							</thead>
+							<tbody>
+								<tr ng-if="!contatosCtrl.pessoaContatoEmails.length">
+									<td colspan="4">Não há registros encontrados.</td>
+								</tr>
+								<tr ng-repeat="email in contatosCtrl.pessoaContatoEmails track by $index">
+									<td>{{email.tipoEmail.dsTipoEmail.toUpperCase()}}</td>
+									<td>{{email.email.toUpperCase()}}</td>
+									<td style="text-align: center">
+										<a href="" class="btn btn-default btn-xs" ng-click="contatosCtrl.updateEmail(email)" ng-if="pessoaCtrl.acao != 'V'">
+											<span class="glyphicon glyphicon-pencil"></span>
+										</a>
+										<a href="" class="btn btn-default btn-xs" ng-click="contatosCtrl.deleteEmail(email)" ng-if="pessoaCtrl.acao != 'V'">
+											<span class="glyphicon glyphicon-trash"></span>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="panel-body" ng-if="pessoaCtrl.pessoa.tipoPessoa == 'J'">
+					<div class="col-lg-3 col-md-4" style="padding-left: 0px">
+						<div class="form-group">
+							<label>Site:</label> 
+							<input uppercased type="text" class="form-control" style="width: 100%" maxlength="50" ng-model="pessoaCtrl.pessoa.site" ng-blur="contatosCtrl.salvarPessoa()" ng-disabled="pessoaCtrl.acao == 'V'">
+						</div>
+					</div>
+					
+				</div>
+				<div class="panel-body">
+				<div class="col-lg-12 col-md-12" style="padding-left: 0px">
+					<div ng-if="contatosCtrl.contatoExclusivo.length >= 1" class="text-danger">
+					    <strong>{{contatosCtrl.descricaoContatoExclusivo}}</strong>.
+					 </div>
+			 	</div>
+			 	</div>
+				
+			</div>
+		</div>
+	</div>
+	<div ng-include="'app/views/cliente/modalOutrosTelefones.html'"></div>
+</div>

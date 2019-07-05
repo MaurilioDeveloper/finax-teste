@@ -1,0 +1,96 @@
+.ui-select-toggle {
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    background-image: none !important;
+}
+
+.ui-select-toggle:focus {
+	border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+
+.ui-select-toggle.btn-default:focus, .ui-select-toggle.btn-default:hover {
+    background-color: white !important;
+    background-position: 0 -15px;
+}
+
+
+.ui-select-toggle.btn-default:hover {
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+.btn.btn-default.form-control.ui-select-toggle {
+	padding-right:20px;
+}
+
+.ui-select-match-text.pull-left {
+	width:100%;
+	display:block;
+	overflow:hidden;
+}
+
+div[data-id] > div > span {
+	width:100% !important;
+	border-radius: 4px !important;
+}
+
+div[data-id] > input[type="search"] {
+	width:100% !important;
+	border-radius: 4px !important;
+}
+
+.align-button{
+    float: right;
+}
+
+.align-button > div{
+	float: right;
+}
+
+.pt-24 {
+	padding-top: 24px !important;
+}
+
+.pt-4 {
+	padding-top: 4px !important;
+}
+
+.width-full {
+	width: 100%;
+}
+
+.mt-25 {
+	margin-top: 25px !important;
+}
+
+.ml-18 {
+	margin-left: 18px;
+}
+
+.align-bottom {
+	display: -moz-box; /* Firefox */
+	display: -webkit-box; /* Safari and Chrome */
+	display: box;
+	-webkit-box-align: end;
+}
+
+.align-bottom>div {
+	-moz-box-flex: 1.0; /* Firefox */
+	-webkit-box-flex: 1.0; /* Safari and Chrome */
+	box-flex: 1.0;
+}
+
+.no-padding {
+	padding-left: 0;
+	padding-bottom: 0;
+}
+
+.sub-legend {
+	font-size: 16px;
+	margin-top: 8px;
+}

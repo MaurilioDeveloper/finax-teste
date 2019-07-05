@@ -1,0 +1,215 @@
+<meta charset="UTF-8">
+
+<style>
+@
+-moz-document
+ 
+url-prefix
+ 
+()
+{
+@media ( min-width : 1220px) and (min-width: 1225px) {
+	.col-lg-2.data {
+		width: 300px;
+	}
+}
+
+@media ( min-width : 1200px) {
+	.col-lg-2.data {
+		width: 275px;
+	}
+}
+
+}
+.nav.nav-tabs li a.erro {
+	color: #a94442;
+}
+
+div.form-group.erro input.form-control, div.form-group.erro select.form-control
+	{
+	border-color: #a94442;
+}
+
+div.form-group.erro label {
+	color: #a94442;
+}
+
+.btn-concluir {
+	background: #00b300;
+	border-color: #009900;
+	color: white;
+}
+
+.btn-concluir:hover {
+	background: #009900;
+	border-color: #009900;
+	color: white;
+}
+
+.comMargin {
+	margin-top: 25px;
+}
+
+.semMargin {
+	margin-top: 0px;
+}
+</style>
+
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+		<div class="col-lg-12 col-md-12" ng-if="parametroCtrl.acao == 'V'">
+			<div class="page-header">
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-pencil pull-right"
+					ng-click="parametroCtrl.mudarParaEdicao()" auth-check
+					permission="editar-fundo" tooltip="Editar Cadastro"
+					style="margin-left: 5px"></button>
+
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-plus pull-right"
+					ui-sref="fundo({acao:'I',identificador: '', tab: '1'})" auth-check
+					permission="inserir-fundo" tooltip="Adicionar Novo Cadastro"
+					style="margin-left: 5px"></button>
+
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-search pull-right"
+					ui-sref="cadastro-fundo" tooltip="Consultar"></button>
+				<h3 class="ng-scope">Visualizar</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="parametroCtrl.acao == 'E'">
+			<div class="page-header">
+
+				<button type="button"
+					ui-sref="parametro({acao:'I',identificador: '', tab: '1'})"
+					auth-check permission="cadastro-parametro-writeoff"
+					class="btn btn-primary glyphicon glyphicon-plus pull-right"
+					tooltip="Adicionar Novo Cadastro" style="margin-left: 5px">
+				</button>
+
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-search pull-right"
+					ui-sref="cadastro-parametro-writeoff" tooltip="Consultar"></button>
+
+				<h3 class="ng-scope">Editar</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="parametroCtrl.acao == 'I'">
+			<div class="page-header">
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-arrow-left pull-right"
+					ng-click="parametroCtrl.voltar();" tooltip="Voltar"
+					ng-if="parametroCtrl.pessoaRelacionada"></button>
+
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-trash  pull-right"
+					ng-click="parametroCtrl.excluir(parametroCtrl.pessoaFundo.pessoa);"
+					auth-check permission="excluir-fundo"
+					ng-if="parametroCtrl.pessoa.id && !parametroCtrl.pessoaRelacionada"
+					tooltip="Deletar Cadastro" style="margin-left: 5px"></button>
+
+
+
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-plus pull-right"
+					ui-sref="root.incluir({acao:'I',identificador:undefined,tab:1})"
+					ui-sref-opts="{reload: true}" auth-check permission="inserir-fundo"
+					tooltip="Adicionar Novo Cadastro"
+					ng-if="parametroCtrl.pessoa.id && !parametroCtrl.pessoaRelacionada"
+					style="margin-left: 5px"></button>
+
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-search pull-right"
+					ui-sref="cadastro-parametro-writeoff" tooltip="Consultar"
+					ng-if="!parametroCtrl.pessoaRelacionada"></button>
+
+				<h3 class="ng-scope" ng-if="!parametroCtrl.pessoaRelacionada">Incluir</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12">
+			<div class="tabs-wrapper table">
+				<ul class="nav nav-tabs">
+					<li ng-class="{'active': parametroCtrl.tab == 1}" id="tabIncluir"
+						ng-if="parametroCtrl.tab == 1"
+						ng-click="parametroCtrl.mudarTab(1)" style="cursor: pointer;"><a>WriteOff</a>
+					</li>
+				</ul>
+				</br>
+				<div class="tab-pane" ng-if="parametroCtrl.tab == 1">
+					<div class="tab-content">
+						<div class="form-group">
+							<div class="panel panel-default">
+								<div class="panel-body">
+
+									<form name="parametroCtrl.form">
+
+										<div class="col-lg-12 col-md-12">
+											<legend>Identificação</legend>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-4 col-md-6">
+												<div class="form-group"
+													ng-class="{'erro':parametroCtrl.form.dsProWriteoff.$invalid && parametroCtrl.form.dsProWriteoff.$dirty}">
+													<label>Nome:(*)</label> <input uppercased maxlength="150"
+														name="dsProWriteoff" type="text" class="form-control"
+														ng-model="parametroCtrl.dsProWriteoff" disabled
+														ng-if="parametroCtrl.acao == 'V' && parametroCtrl.id" />
+
+
+													<input uppercased maxlength="150" name="dsProWriteoff"
+														type="text" class="form-control" required
+														ng-model="parametroCtrl.dsProWriteoff"
+														ng-if="(parametroCtrl.acao == 'E' || parametroCtrl.acao == 'I')"
+														tooltip="{{ parametroCtrl.form.dsProWriteoff.$invalid && parametroCtrl.form.dsProWriteoff.$dirty ? 'Os campos obrigatórios devem ser preenchidos.' : '' }}" />
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-4 col-md-6">
+												<div class="form-group"
+													ng-class="{'erro':parametroCtrl.form.nrDias.$invalid && parametroCtrl.form.nrDias.$dirty}">
+													<label>Quantidade de Dias:(*)</label> <input uppercased
+														maxlength="3" name="nrDias" type="text" mask="999"
+														class="form-control" ng-model="parametroCtrl.nrDias"
+														disabled
+														ng-if="parametroCtrl.acao == 'V' && parametroCtrl.id" />
+													 <input uppercased maxlength="3"
+														name="nrDias" type="text" mask="999" class="form-control"
+														required ng-model="parametroCtrl.nrDias"
+														ng-if="(parametroCtrl.acao == 'E' || parametroCtrl.acao == 'I')"
+														tooltip="{{ parametroCtrl.form.nrDias.$invalid && parametroCtrl.form.nrDias.$dirty ? 'Os campos obrigatórios devem ser preenchidos.' : '' }}" />
+												
+												</div>
+
+
+
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-lg-4 col-md-6">
+												<button type="button" class="btn btn-primary"
+													ng-click="parametroCtrl.incluir('inserir')"
+													ng-disabled="!parametroCtrl.nrDias.length 
+													|| !parametroCtrl.dsProWriteoff.length 
+													|| parametroCtrl.bloquearBotaoIncluir"
+													ng-if="parametroCtrl.acao == 'I'">Incluir
+													Parâmetro</button>
+												<button type="button" class="btn btn-primary"												
+													ng-click="parametroCtrl.incluir('editar')"													
+													ng-if="parametroCtrl.acao == 'E'">Salvar
+													Alterações</button>
+											</div>
+										</div>
+
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

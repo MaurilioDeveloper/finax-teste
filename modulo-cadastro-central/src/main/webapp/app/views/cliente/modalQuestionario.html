@@ -1,0 +1,31 @@
+<meta charset="UTF-8">
+<div id="modalQuestionario" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content" style="height: 400px;">
+    
+      <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    <h4 class="modal-title">Questionário Suitability</h4>
+			<wizard> 
+			    <wz-step wz-title="1"></wz-step>
+			    <wz-step wz-title="2"></wz-step>
+			    <wz-step wz-title="3"></wz-step>
+			    <wz-step wz-title="4"></wz-step>
+			    <wz-step wz-title="5"></wz-step>
+			    <wz-step wz-title="6"></wz-step>
+			    <wz-step wz-title="7"></wz-step>
+			    <wz-step wz-title="8"></wz-step>
+			    <wz-step wz-title="9"></wz-step>
+			    <wz-step wz-title="10"></wz-step>
+			    <wz-step wz-title=" " ng-if="!perfilInvestidorCtrl.isPessoaFisica()"></wz-step>
+			    <wz-step wz-title="11" ng-if="perfilInvestidorCtrl.isPessoaFisica()"></wz-step>
+			    <wz-step wz-title="12" ng-if="perfilInvestidorCtrl.isPessoaFisica()"></wz-step>
+			    <wz-step wz-title=" " ng-if="perfilInvestidorCtrl.isPessoaFisica()"></wz-step>
+			</wizard>
+	  </div>
+      
+      <div ui-view></div>
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

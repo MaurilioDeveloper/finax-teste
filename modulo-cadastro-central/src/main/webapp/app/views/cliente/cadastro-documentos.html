@@ -1,0 +1,125 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724547">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-if="pessoaCtrl.abas.documentos.erros.length">
+						<span ng-repeat="erro in pessoaCtrl.abas.documentos.erros" class="block">{{erro.mensagem}}</span>
+					</div>
+					<div class="form">
+						<form class="row col-lg-12" ng-if="pessoaCtrl.acao != 'V'">
+							<div class="form-group col-lg-2" style="padding-left: 0px">
+								<label>Tipo documento*:</label> 
+								<select class="form-control" style="width: 100%" ng-disabled="documentosCtrl.documento.id.pessoa.id && documentosCtrl.documento.id.tipoDocumento.id" 
+										ng-options="tipoDocumento as tipoDocumento.descricao for tipoDocumento in documentosCtrl.tiposDocumento track by tipoDocumento.id"  
+										ng-change="documentosCtrl.validarTipoDocumento()" ng-model="documentosCtrl.documento.id.tipoDocumento">
+									<option value="">Selecione</option>
+								</select>
+							</div>
+							<div class="form-group col-lg-2">
+								<label>Número documento*:</label>
+								<div>
+									<input uppercased ng-if="documentosCtrl.documento.id.tipoDocumento.id != 2" maxlength="20" type="text" class="form-control"
+										style="width: 100%; border-radius: 4px" ng-model="documentosCtrl.documento.numeroDocumento"/>
+									<input uppercased ng-if="documentosCtrl.documento.id.tipoDocumento.id == 2" maxlength="19" type="text" class="form-control" mask="AAAAAA.AAAAA.SS.999" masked-model="true"
+										style="width: 100%; border-radius: 4px" ng-model="documentosCtrl.documento.numeroDocumento" ng-blur="documentosCtrl.validarGIIN('fullPath')" ng-change="documentosCtrl.validarGIIN('upperCase')"/>
+								</div>
+							</div>
+							<div class="form-group col-lg-2">
+								<label>Data emissão:</label>
+								<div class="input-group">
+									<input type="text" class="form-control readonly-white" style="width: 100%"
+										datepicker-popup="dd/MM/yyyy" show-weeks="'false'" close-text="Fechar" clear-text="Limpar" current-text="Hoje" ng-blur="documentosCtrl.validarData()"
+										ng-model="documentosCtrl.documento.dataEmissao" is-open="dataEmissaoIsOpen" ng-click="dataEmissaoIsOpen = !dataEmissaoIsOpen"/> 
+										<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+							<div class="form-group col-lg-2">
+								<label>Orgão emissor:</label>
+								<div>
+									<input uppercased type="text" maxlength="10" class="form-control" style="width: 100%; border-radius: 4px" ng-model="documentosCtrl.documento.orgaoEmissor"/>
+								</div>
+							</div>
+							<div class="form-group col-lg-2">
+								<label>UF emissor:</label> 
+								<select class="form-control" ng-model="documentosCtrl.documento.ufEmissor"
+									ng-options="estado.nome as estado.nome for estado in documentosCtrl.estados" style="width: 100%">
+									<option value="">Selecione</option>
+								</select>
+							</div>
+							<div class="form-group col-lg-2">
+								<label>Data de vencimento:</label>
+								<div class="input-group">
+									<input type="text" class="form-control readonly-white" style="width: 100%"
+										datepicker-popup="dd/MM/yyyy" show-weeks="'false'" close-text="Fechar" clear-text="Limpar" current-text="Hoje" ng-blur="documentosCtrl.validarDataVencimento()"
+										ng-model="documentosCtrl.documento.dataVencimento" is-open="dataVencimentoIsOpen" ng-click="dataVencimentoIsOpen = !dataVencimentoIsOpen"/> 
+										<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+							<div class="form-group col-lg-3" style="padding-left: 0px">
+								<label>Anexo:</label> 
+								<div class="input-group">
+									<input type="file" class="btn btn-default ng-pristine ng-touched" id="inputFile" ng-model="documentosCtrl.documento.anexo" check-filesize app-filereader />
+								</div>
+							</div>
+							<div class="form-group col-lg-4" style="margin-top: 25px;padding-left: 50px;">
+								<button type="button"  class="btn btn-primary" ng-click="documentosCtrl.incluir()" ng-disabled="!documentosCtrl.documento.id.tipoDocumento.id || !documentosCtrl.documento.numeroDocumento || documentosCtrl.documento.id.tipoDocumento.id == 'new'">{{documentosCtrl.documento.id.pessoa.id && documentosCtrl.documento.id.tipoDocumento.id ? 'Alterar' : 'Incluir'}}</button>
+								<button type="button"  class="btn btn-default" ng-if="documentosCtrl.documento.id.pessoa.id && documentosCtrl.documento.id.tipoDocumento.id" ng-click="documentosCtrl.cancelar()">Cancelar</button>
+							</div>
+						</form>
+						
+					<div ng-include="'app/views/cliente/modalTipoDocumento.html'"></div>
+					
+					</div>
+					</br>
+					<div class="col-lg-12" style="padding-left: 0px">
+						<table class="table table-striped" style="margin-top: 15px">
+							<thead>
+								<tr>
+									<th>Tipo documento</th>
+									<th>Número documento</th>
+									<th>Data emissão</th>
+									<th>Orgão emissor</th>
+									<th>UF emissor</th>
+									<th>Data de vencimento</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="documento in documentosCtrl.documentos">
+									<td>{{documento.id.tipoDocumento.descricao.toUpperCase()}}</td>
+									<td>{{documento.numeroDocumento}}</td>
+									<td>{{documento.dataEmissao}}</td>
+									<td>{{documento.orgaoEmissor.toUpperCase()}}</td>
+									<td>{{documento.ufEmissor.toUpperCase()}}</td>
+									<td>{{documento.dataVencimento}}</td>
+									<td>
+										<button type="button" class="btn btn-default btn-xs" ng-click="documentosCtrl.editar(documento)" ng-if="pessoaCtrl.acao != 'V'">
+											<span class="glyphicon glyphicon-pencil"
+												aria-hidden="true"></span>
+										</button>
+										<button type="button" class="btn btn-default btn-xs" ng-click="documentosCtrl.excluir(documento)" ng-if="pessoaCtrl.acao != 'V'">
+											<span class="glyphicon glyphicon-trash"
+												aria-hidden="true"></span>
+										</button>
+										<button type="button" class="btn btn-default btn-xs" ng-click="documentosCtrl.baixarDocumento(documento)" ng-if="pessoaCtrl.acao != 'V' && documento.anexo">
+											<span class="glyphicon glyphicon-download"
+												aria-hidden="true"></span>
+										</button>
+									</td>
+								</tr>
+								<tr ng-if="!documentosCtrl.documentos.length">
+									<td colspan="6">Não há registros encontrados.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

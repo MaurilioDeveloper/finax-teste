@@ -1,0 +1,169 @@
+<meta charset="UTF-8">
+<style>
+
+	.datepicker-popup-wrapper.placement-top [datepicker-popup-wrap] {
+		transform:translate(0px,-318px);
+	}
+	
+</style>
+<div class="tab-pane" id="panel-724566">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="panel-content">
+						<form name="infFinanceirasPessoaJuridicaCtrl.form">
+						<div class="row">
+							<div class="col-lg-2 col-md-2" ng-if="infFinanceirasPessoaJuridicaCtrl.infFinanceira.faturamentoBrutoAnual != '0.01'">
+								<div class="form-group">
+<!-- 								ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.porteEmpresa.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.porteEmpresa.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}" -->
+									<label>Porte da empresa*:</label>
+									<input type="text" class="form-control" required name="porteEmpresa" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.porteEmpresa" ng-disabled="true" />
+<!-- 									tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.porteEmpresa.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.porteEmpresa.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" -->
+								</div>
+							</div>
+							
+							<div class="col-lg-2 col-md-2" ng-if="infFinanceirasPessoaJuridicaCtrl.infFinanceira.faturamentoBrutoAnual == '0.01'">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.porteEmpresa.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.porteEmpresa.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>Porte da empresa*:</label> 
+									<select class="form-control" required name="porteEmpresa" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.porteEmpresa" style="width: 100%" ng-options="portesEmpresa for portesEmpresa in infFinanceirasPessoaJuridicaCtrl.portesEmpresa"
+										ng-change="infFinanceirasPessoaJuridicaCtrl.salvar()"
+										tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.porteEmpresa.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.porteEmpresa.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}">
+										<option value="">Selecione</option>
+									</select>
+								</div>
+							</div>							
+							
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.vlFaturamentoBrutoAnual.$invalid && (infFinanceirasPessoaJuridicaCtrl.vlFaturamentoBrutoAnualDirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>Faturamento bruto anual*:</label>								
+									<input uppercased type="text" style="width:100%;" required name="vlFaturamentoBrutoAnual" class="form-control" id="fatBrutoAnual" ng-blur="infFinanceirasPessoaJuridicaCtrl.changeFaturamentoBrutoAnual(); infFinanceirasPessoaJuridicaCtrl.salvar()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.faturamentoBrutoAnual" number data-a-sep="." data-a-dec="," data-a-sign="R$" data-v-max="99999999999.99" 
+										tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.vlFaturamentoBrutoAnual.$invalid && (infFinanceirasPessoaJuridicaCtrl.vlFaturamentoBrutoAnualDirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}"/>
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.vlFaturamentoMensal.$invalid && (infFinanceirasPessoaJuridicaCtrl.vlFaturamentoMensalDirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>Faturamento mensal*:</label>
+									<input uppercased type="text" required name="vlFaturamentoMensal" class="form-control" id="fatMensal" ng-blur="infFinanceirasPessoaJuridicaCtrl.changeFaturamentoMensal(); infFinanceirasPessoaJuridicaCtrl.salvar()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.faturamentoMensal" number data-a-sep="." data-a-dec="," data-a-sign="R$" data-v-max="99999999999.99"
+										tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.vlFaturamentoMensal.$invalid && (infFinanceirasPessoaJuridicaCtrl.vlFaturamentoMensalDirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}"/>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.faturamentoMensal.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.faturamentoMensal.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>Data Base do Faturamento Mensal*:</label>
+									<div class="input-group">
+										<input mask-date="00/0000" type="text" class="form-control readonly-white" ng-blur="infFinanceirasPessoaJuridicaCtrl.changeDataBaseFaturamento()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.dataBaseFaturamento" 
+											datepicker-popup="MM/yyyy" datepicker-options="{minMode: 'month'}" datepicker-mode="'month'" show-weeks="'false'" required name="faturamentoMensal"
+											close-text="Fechar" clear-text="Limpar" is-open="dataBaseFatMensalOpen" ng-click="dataBaseFatMensalOpen = !dataBaseFatMensalOpen"
+											current-text="Hoje" tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.faturamentoMensal.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.faturamentoMensal.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'O campo data base do faturamento mensal deve ser informado!' : '' }}"/>
+										<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label>Faturamento médio mensal:</label>
+									<input uppercased type="text" style="width:100%;" class="form-control" id="fatMedioMensal" ng-blur="infFinanceirasPessoaJuridicaCtrl.salvar()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.faturamentoMedioMensal" number data-a-sep="." data-a-dec="," data-a-sign="R$" data-v-max="99999999999.99"/>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.mensalDe.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.mensalDe.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>De:</label>
+									<div class="input-group">
+										<input type="text" mask-date="00/0000" class="form-control readonly-white" ng-blur="infFinanceirasPessoaJuridicaCtrl.changeDataFaturamentoMedioMensalDe()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.dataFaturamentoMedioMensalDe" 
+											datepicker-popup="MM/yyyy" datepicker-options="{minMode: 'month'}" datepicker-mode="'month'" show-weeks="'false'" name="mensalDe"
+											close-text="Fechar" clear-text="Limpar" is-open="deOpen" ng-click="deOpen = !deOpen"
+											current-text="Hoje" tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.mensalDe.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.mensalDe.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'Os campos de intervalo do faturamento médio mensal devem ser informados!' : '' }}"/>
+										<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.mensalAte.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.mensalAte.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>Até:</label>
+									<div class="input-group">
+										<input type="text" mask-date="00/0000" class="form-control readonly-white" ng-blur="infFinanceirasPessoaJuridicaCtrl.changeDataFaturamentoMedioMensalAte()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.dataFaturamentoMedioMensalAte" 
+											datepicker-popup="MM/yyyy" datepicker-options="{minMode: 'month'}" datepicker-mode="'month'" show-weeks="'false'" 
+											close-text="Fechar" clear-text="Limpar" is-open="ateOpen" ng-click="ateOpen = !ateOpen" name="mensalAte"
+											current-text="Hoje" tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.mensalAte.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.mensalAte.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'Os campos de intervalo do faturamento médio mensal devem ser informados!' : '' }}"/>
+										<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-2 col-md-2">
+								<div class="form-group">
+									<label>Capital social registrado:</label>
+									<input uppercased type="text" class="form-control" id="capSocialReg" ng-blur="infFinanceirasPessoaJuridicaCtrl.salvar()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.capitalSocialRegistrado" number data-a-sep="." data-a-dec="," data-a-sign="R$" data-v-max="99999999999.99"/>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.capitalSocial.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.capitalSocial.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>Data Base do Capital Social*:</label>
+									<div class="input-group">
+										<input type="text" mask-date="00/0000" class="form-control readonly-white" ng-blur="infFinanceirasPessoaJuridicaCtrl.changeDataBaseCapitalSocial()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.dataBaseCapitalSocial" 
+											datepicker-popup="MM/yyyy" datepicker-options="{minMode: 'month'}" datepicker-mode="'month'" show-weeks="'false'" required name="capitalSocial"
+											close-text="Fechar" clear-text="Limpar" is-open="dataBaseCapitalSocialOpen" ng-click="dataBaseCapitalSocialOpen = !dataBaseCapitalSocialOpen"
+											current-text="Hoje" tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.capitalSocial.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.capitalSocial.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'O campo data base do capital social deve ser informado!' : '' }}"/>
+										<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<div class="form-group">
+									<label>Capital social aberto:</label>
+									<div class="radio">
+										<label><input name="cptSocAb" ng-change="infFinanceirasPessoaJuridicaCtrl.salvar()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.capitalSocialAberto" value="S" type="radio"/>Sim</label>
+										<label><input name="cptSocAb" ng-change="infFinanceirasPessoaJuridicaCtrl.salvar()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.capitalSocialAberto" value="N" type="radio"/>Não</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-2 col-md-2">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.vlPatrimonioLiquido.$invalid && (infFinanceirasPessoaJuridicaCtrl.vlPatrimonioLiquidoDirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>Patrimônio líquido*:</label>
+									<input uppercased type="text" required name="vlPatrimonioLiquido" class="form-control" id="patLiquido" ng-blur="infFinanceirasPessoaJuridicaCtrl.changePatrimonioLiquido(); infFinanceirasPessoaJuridicaCtrl.salvar()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.patrimonioLiquido" number data-a-sep="." data-a-dec="," data-a-sign="R$" data-v-max="99999999999.99"
+										tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.vlPatrimonioLiquido.$invalid && (infFinanceirasPessoaJuridicaCtrl.vlPatrimonioLiquidoDirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}"/>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group" ng-class="{'erro':infFinanceirasPessoaJuridicaCtrl.form.patrimonioLiquido.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.patrimonioLiquido.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted)}">
+									<label>Data base do patrimônio líquido*:</label>
+									<div class="input-group">
+										<div class="datepicker-popup-wrapper placement-top">
+											<input type="text" mask-date="00/00/0000" class="form-control readonly-white placement-top" ng-blur="infFinanceirasPessoaJuridicaCtrl.changeDataBasePatrimonioLiquido()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.dataBasePatrimonioLiquido" 
+												datepicker-popup="dd/MM/yyyy" show-weeks="'false'" required name="patrimonioLiquido"
+												close-text="Fechar" clear-text="Limpar" is-open="dataBasePatrimonioLiquidoOpen" ng-click="dataBasePatrimonioLiquidoOpen = !dataBasePatrimonioLiquidoOpen"
+												current-text="Hoje" tooltip="{{infFinanceirasPessoaJuridicaCtrl.form.patrimonioLiquido.$invalid && (infFinanceirasPessoaJuridicaCtrl.form.patrimonioLiquido.$dirty || infFinanceirasPessoaJuridicaCtrl.form.$submitted) ? 'O campo data base do patrimônio líquido deve ser informado!' : '' }}"/>
+										</div>
+										<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<div class="form-group">
+									<label>Classificação clientes:</label>
+									<input uppercased type="text" maxlength="25" class="form-control" ng-blur="infFinanceirasPessoaJuridicaCtrl.salvar()" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.classificacaoClientes"/>
+<!-- 									<select class="form-control" ng-disabled="!infFinanceirasPessoaJuridicaCtrl.isCotista()" ng-change="infFinanceirasPessoaJuridicaCtrl.salvar()" ng-options="classificacaoCliente for classificacaoCliente in infFinanceirasPessoaJuridicaCtrl.classificacoesClientes" ng-model="infFinanceirasPessoaJuridicaCtrl.infFinanceira.classificacaoClientes"> -->
+<!-- 										<option value="">Selecione</option> -->
+<!-- 									</select> -->
+								</div>
+							</div>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+				

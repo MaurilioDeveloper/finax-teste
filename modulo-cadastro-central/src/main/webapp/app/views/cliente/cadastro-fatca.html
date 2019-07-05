@@ -1,0 +1,44 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724560">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form name="prestadorServicoCtrl.form">
+						<div class="col-lg-12 col-md-12">
+							
+							
+							<legend>CLIENTE CARACTERIZADO COMO FATCA</legend>
+							
+							<div name="rodada1">
+								<div class="row">
+									<div class="form-group col-lg-6">
+										<span>1 - A empresa é uma sociedade constituída sob legislação dos EUA? </label></span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-lg-1">
+										<div class="radio" style="margin: 0px">
+											<label> 
+												<input type="radio" name="questao1" value="S" ng-model="fatcaCtrl.questionario.questao1.resposta" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Sim
+											</label>
+										</div>
+										<div class="radio" style="margin: 0px">
+											<label>
+												<input type="radio" name="questao1" value="N" ng-model="fatcaCtrl.questionario.questao1.resposta" ng-click="dadosPessoaisEmpresaCtrl.salvar()">Não
+											</label>
+										</div>
+									</div>
+									
+									<div class="form-group col-lg-11">
+										<input uppercased alphanumeric-input name="nome" type="text" class="form-control" style="width: 100%" maxlength="100" ng-model="pessoaCtrl.pessoa.nomeRazao">
+									</div>
+								</div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,177 @@
+<meta charset="UTF-8">
+<div class="tab-pane">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form name="dadosBasicosCtrl.form">
+						<div class="row">
+							<div class="col-lg-3 col-md-3">
+								<label>&nbsp;</label>
+								<div class="form-group input-group form-inline">
+									<label class="btn btn-default input-group-addon" ng-model="dadosBasicosCtrl.prestadorServico.tipoPessoa" btn-radio="'J'" ng-change="dadosBasicosCtrl.limparPessoa('J')" ng-disabled="prestadorServicoCtrl.prestadorServico.pessoa.id || prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'J'" id="labelCnpj" ng-mousedown="prestadorServicoCtrl.aoClicarCNPJ();">CNPJ</label>
+									<label class="btn btn-default input-group-addon" ng-model="dadosBasicosCtrl.prestadorServico.tipoPessoa" btn-radio="'F'" ng-change="dadosBasicosCtrl.limparPessoa('F')" ng-disabled="prestadorServicoCtrl.prestadorServico.pessoa.id || prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'F'" id="labelCpf" ng-mousedown="prestadorServicoCtrl.aoClicarCPF();">CPF</label>
+									<input uppercased id="cpf" ng-model="dadosBasicosCtrl.prestadorServico.pessoa.identificador" ng-disabled="true" ng-blur="dadosBasicosCtrl.validaCpf()" ng-if="dadosBasicosCtrl.prestadorServico.pessoa.tipoPessoa == 'F'" ui-mask="999.999.999-99" ui-options="{clearOnBlur: false,allowInvalidValue :true}" type="text" class="form-control"> <!-- ng-disabled="prestadorServicoCtrl.acao != 'I' || prestadorServicoCtrl.prestadorServico.pessoa.id"> -->
+									<input uppercased id="cnpj" ng-model="dadosBasicosCtrl.prestadorServico.pessoa.identificador" ng-disabled="true" ng-blur="dadosBasicosCtrl.validaCnpj()" ng-if="dadosBasicosCtrl.prestadorServico.pessoa.tipoPessoa == 'J'" ui-mask="99.999.999/9999-99" ui-options="{clearOnBlur: false,allowInvalidValue:true}" type="text" class="form-control"> <!--  ng-disabled="prestadorServicoCtrl.acao != 'I' || prestadorServicoCtrl.prestadorServico.pessoa.id">  -->
+								</div>
+							</div>
+							
+							<div class="col-lg-4 col-md-4">
+								<label>{{ prestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa ==  'F' ? 'Nome completo' : 'Razão social' }}:</label>
+								<div class="form-group"> <!-- ng-class="{'erro':dadosBasicosCtrl.form.nome.$invalid && (dadosBasicosCtrll.form.nome.$dirty || dadosBasicosCtrll.form.$submitted)}">  --> 
+									<input uppercased ng-if="dadosBasicosCtrl.prestadorServico.pessoa.tipoPessoa == 'J'"name="nomeRazao" type="text" class="form-control" style="width: 100%" maxlength="255" ng-model="dadosBasicosCtrl.prestadorServico.pessoa.nomeRazao" ng-blur="dadosBasicosCtrl.salvar()" ng-disabled="prestadorServicoCtrl.acao == 'V'">
+									<input uppercased alphanumeric-input ng-if="dadosBasicosCtrl.prestadorServico.pessoa.tipoPessoa == 'F'"name="nomeRazao" type="text" class="form-control" style="width: 100%" maxlength="255" ng-model="dadosBasicosCtrl.prestadorServico.pessoa.nomeRazao" ng-blur="dadosBasicosCtrl.salvar()" ng-disabled="prestadorServicoCtrl.acao == 'V'">
+								</div>
+							</div>
+							
+							<div class="col-lg-3 col-md-3">
+								<label>Nome Reduzido:</label>
+								<div class="form-group"> <!-- ng-class="{'erro':dadosBasicosCtrl.form.nome.$invalid && (dadosBasicosCtrll.form.nome.$dirty || dadosBasicosCtrll.form.$submitted)}">  --> 
+									<input uppercased name="nomeFantasia" type="text" class="form-control" style="width: 100%" maxlength="150" ng-model="dadosBasicosCtrl.prestadorServico.pessoa.nomeFantasia" ng-blur="dadosBasicosCtrl.salvar()" ng-disabled="prestadorServicoCtrl.acao == 'V'">
+								</div>
+							</div>
+							
+							<div class="col-lg-1 col-md-1">
+								<label>Código:</label>
+								<div class="form-group"> <!-- ng-class="{'erro':dadosBasicosCtrl.form.nome.$invalid && (dadosBasicosCtrll.form.nome.$dirty || dadosBasicosCtrll.form.$submitted)}">  --> 
+									<input uppercased alphanumeric-input name="codigo" type="text" class="form-control" style="width: 100%" maxlength="100" ng-model="dadosBasicosCtrl.prestadorServico.pessoa.id" ng-disabled="true">
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-lg-3 col-md-3">
+								<label>Ativo?</label>
+								<div class="form-group form-inline">
+								
+									<div class="radio" style="margin: 0px">
+										<label> <input type="radio" name="ativo" value="1"
+											ng-model="dadosBasicosCtrl.prestadorServico.inAtivo"
+											ng-click="dadosBasicosCtrl.salvar()" ng-disabled="prestadorServicoCtrl.acao == 'V'">Sim
+										</label>
+									</div>
+									<div class="radio" style="margin: 0px">
+										<label> <input type="radio" name="ativo" value="0"
+											ng-model="dadosBasicosCtrl.prestadorServico.inAtivo"
+											ng-click="dadosBasicosCtrl.salvar()" ng-disabled="prestadorServicoCtrl.acao == 'V'">Não
+										</label>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-lg-4 col-md-4 form-group">
+								<label>Data de aprovação do prestador</label>
+								
+								<div class="input-group">
+									<input 
+										required name="dataAprovacao" id="dataAprovacao" type="text" class="form-control readonly-white"
+										data-ng-disabled="prestadorServicoCtrl.acao == 'V'"
+										data-ng-change="dadosBasicosCtrl.validarData();"
+										data-datepicker-popup="dd/MM/yyyy"
+										data-show-weeks="'false'"
+										data-close-text="Fechar"
+										data-clear-text="Limpar"
+										data-current-text="Hoje"
+										data-ng-model="dadosBasicosCtrl.prestadorServico.dataAprovacao"
+										data-is-open="dataAprovacaoOpen"
+										data-ng-click="dataAprovacaoOpen = !dataAprovacaoOpen"
+									/>
+									<span class="input-group-addon" id="basic-addon2">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+							
+							<div class="col-lg-3 col-md-3">
+								<label>Aprovado por:</label>
+								<div class="form-group"> 
+									<input uppercased alphanumeric-input name="nomeAprovador" type="text" class="form-control" style="width: 100%" maxlength="150" ng-model="dadosBasicosCtrl.prestadorServico.nomeAprovador" ng-blur="dadosBasicosCtrl.salvar()" ng-disabled="prestadorServicoCtrl.acao == 'V'">
+								</div>
+							</div>
+							
+						</div>
+						
+						
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group"> 
+									<label>Observações adicionais:</label>
+									<textarea uppercased alphanumeric-input name="descricaoObservacao" type="text" class="form-control" style="width: 100%" maxlength="350" ng-model="dadosBasicosCtrl.prestadorServico.descricaoObservacao" ng-blur="dadosBasicosCtrl.salvar()" ng-disabled="prestadorServicoCtrl.acao == 'V'"></textarea>
+								</div>
+							</div>
+						</div>
+						
+						
+						<div class="row">
+							<div ng-if="prestadorServicoCtrl.acao != 'V'"> 
+								<div class="col-lg-12 col-md-12" style="margin-top: 20px;">
+									<fieldset class="form-group">
+										<legend>Tipo de prestador de serviço</legend>
+											<div class="col-lg-3 col-md-3">
+												<div class="form-group">
+													<label>Tipo de prestador de serviço:</label> 
+													<ui-select theme="bootstrap" ng-model="dadosBasicosCtrl.tipoPrestadorSelecionado" ng-disabled="prestadorServicoCtrl.acao == 'V'" ng-change="dadosBasicosCtrl.novoPapelPrestadorServico(); dadosBasicosCtrl.contatoExclusivoConsultora();">
+														<ui-select-match placeholder="Selecione">
+															{{$select.selected.descricao ? $select.selected.descricao : $select.selected }}
+														</ui-select-match>         
+														<ui-select-choices repeat="papel as papel in dadosBasicosCtrl.papeis | filter : $select.search">
+															<div ng-bind-html="papel.descricao ? papel.descricao : papel | highlight: $select.search"></div>
+														</ui-select-choices>
+													</ui-select>
+												</div>
+											</div>
+											<div>
+												<div class="col-lg-1 col-md-1">
+													<div class="form-group" style="margin-top: 25px;">
+														<button type="button" class="btn btn-primary" ng-if="dadosBasicosCtrl.acao != 'E'" ng-click="dadosBasicosCtrl.salvarPapelPrestadorServico()" ng-disabled="!dadosBasicosCtrl.tipoPrestadorSelecionado">Incluir</button>
+														<button type="button" class="btn btn-primary" ng-if="dadosBasicosCtrl.acao == 'E'" ng-click="dadosBasicosCtrl.salvarPapelPrestadorServico()" ng-disabled="!dadosBasicosCtrl.tipoPrestadorSelecionado">Alterar</button>
+														<button type="button" class="btn btn-default" style="margin-left: 10px" ng-if="dadosBasicosCtrl.acao == 'E'" ng-click="dadosBasicosCtrl.cancel()">Cancelar</button>
+													</div>
+												</div>
+												<div>
+													<div class="col-lg-3 col-md-3">
+														<div ng-if="dadosBasicosCtrl.habilitaContatoExclusivo" class="checkbox" style="margin-top: 25px;">
+															<label><input type="checkbox" ng-change="dadosBasicosCtrl.contatoExclusivoConsultora()" 
+																ng-true-value="'1'" ng-false-value="undefined" 
+																ng-model="dadosBasicosCtrl.prestadorServico.inContatoExclusivo">Contato exclusivo com o cliente</label>
+														</div>
+													</div>
+												</div>
+											</div>
+									</fieldset>
+								</div>
+							</div>
+							<div class="col-lg-7 col-md-8">
+								<table class="table table-striped" style="margin-top: 15px">
+									<thead>
+										<th>Tipo de prestador de serviço</th>
+										<th ng-if="dadosBasicosCtrl.habilitaListaContatoExclusivo">Contato exclusivo com o cliente</th>
+										<th ng-if="prestadorServicoCtrl.acao != 'V'"></th>
+									</thead>
+									<tbody>
+										<tr ng-if="!dadosBasicosCtrl.prestadorServico.pessoa.papeis.length">
+											<td colspan="3">Não há registros encontrados.</td>
+										</tr>
+										<tr ng-repeat="papel in filtered = (dadosBasicosCtrl.prestadorServico.pessoa.papeis | filter:{ tipoCadastro: 'PRESTADOR DE SERVICO'}) track by $index ">
+											<td>{{papel.descricao}}</td>
+											<td ng-if="papel.descricao == 'CONSULTORA'">{{dadosBasicosCtrl.habilitaListaContatoExclusivo && dadosBasicosCtrl.prestadorServico.inContatoExclusivo && papel.descricao == "CONSULTORA"  ? "Sim" : "Não"}}</td>
+											<td ng-if="papel.descricao != 'CONSULTORA'"></td>
+											<td ng-if="prestadorServicoCtrl.acao != 'V'">
+<!-- 												<button type="button" ng-disabled="dadosBasicosCtrl.habilitarAcao" class="btn btn-default btn-xs" ng-click="dadosBasicosCtrl.updateTipoPrestador(papel)"> -->
+<!-- 													<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> -->
+<!-- 												</button> -->
+												<button type="button" ng-disabled="dadosBasicosCtrl.habilitarAcao || filtered.length == 1" class="btn btn-default btn-xs" ng-click="dadosBasicosCtrl.deleteTipoPrestador(papel)">
+													<span class="glyphicon glyphicon-trash" aria-hidden="true" ></span>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

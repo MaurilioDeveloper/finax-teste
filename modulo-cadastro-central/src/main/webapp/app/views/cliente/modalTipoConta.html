@@ -1,0 +1,64 @@
+<meta charset="UTF-8">
+<style>
+.modal-body {
+    padding: 30px !important;
+}
+.pre-scrollable {
+    max-height: 220px !important;
+    min-height: 220px !important;
+}
+</style>
+<div id="modalTipoConta" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content" style="height: 450px;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Novo Tipo Conta</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row" ng-if="pessoaCtrl.acao != 'V'">
+					<form>
+						<div>
+							<label>Tipo de conta:</label>
+							<div>
+								<input uppercased maxlength="50" type="text"
+									class="form-control" style="width: 100%; border-radius: 4px"
+									ng-model="dadosBancariosCtrl.tipoConta.dsTipoConta" />
+							</div>
+						</div>
+					</form>
+					<button type="button" style="margin-top: 15px;"
+						ng-click="dadosBancariosCtrl.incluirTipoConta()"
+						ng-disabled="!dadosBancariosCtrl.tipoConta.dsTipoConta"
+						class="btn btn-primary">Incluir</button>
+				</div>
+			</div>
+			<div class="modal-footer pre-scrollable">
+				<table class="table table-striped" style="margin-top: 15px;">
+					<thead>
+						<tr>
+							<th>Tipo de conta</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="conta in dadosBancariosCtrl.allContasModal">
+							<td style="text-align: left;">{{conta.dsTipoConta.toUpperCase()}}</td>
+							<td>
+								<button type="button" class="btn btn-default btn-xs"
+									tooltip="Excluir"
+									ng-click="dadosBancariosCtrl.excluirTipoConta(conta)">
+									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+								</button>
+							</td>
+						</tr>
+						<tr ng-if="!dadosBancariosCtrl.allContasModal.length">
+							<td colspan="2" style="text-align: center;">Não há registros encontrados.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

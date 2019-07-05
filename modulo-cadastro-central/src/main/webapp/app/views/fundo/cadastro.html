@@ -1,0 +1,302 @@
+<meta charset="UTF-8">
+
+<style>
+@
+-moz-document url-prefix () {@media (min-width : 1220px) and (min-width:
+	1225px){.col-lg-2.data {
+	width: 300px;
+}
+
+}
+@media ( min-width : 1200px) {
+	.col-lg-2.data {
+		width: 275px;
+	}
+}
+
+}
+.nav.nav-tabs li a.erro {
+	color: #a94442;
+}
+
+div.form-group.erro input.form-control, div.form-group.erro select.form-control
+	{
+	border-color: #a94442;
+}
+
+div.form-group.erro label {
+	color: #a94442;
+}
+
+.btn-concluir {
+	background: #00b300;
+	border-color: #009900;
+	color: white;
+}
+
+.btn-concluir:hover {
+	background: #009900;
+	border-color: #009900;
+	color: white;
+}
+
+.comMargin {
+	margin-top: 25px;
+}
+
+.semMargin {
+	margin-top: 0px;
+}
+</style>
+
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+		<div class="col-lg-12 col-md-12" ng-if="fundoCtrl.acao == 'V'">
+			<div class="page-header">
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-pencil pull-right"
+					ng-click="fundoCtrl.mudarParaEdicao()" auth-check
+					permission="editar-fundo" tooltip="Editar Cadastro"
+					style="margin-left: 5px">
+				</button>
+				
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-plus pull-right"
+					ui-sref="fundo({acao:'I',identificador: '', tab: '1'})"
+					auth-check permission="inserir-fundo"
+					tooltip="Adicionar Novo Cadastro" style="margin-left: 5px">
+				</button>
+				
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-search pull-right"
+					ui-sref="cadastro-fundo" tooltip="Consultar"></button>
+				<h3 class="ng-scope">Visualizar</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="fundoCtrl.acao == 'E'">
+			<div class="page-header">
+			
+				<button type="button"
+					class="btn btn-concluir glyphicon glyphicon-refresh pull-right"
+					ng-click="fundoCtrl.concluir()" tooltip="Sincronizar com Legado"
+					auth-check permission="editar-fundo"
+					style="margin-left: 5px">
+				</button>
+				
+				<button type="button"
+					ui-sref="fundo({acao:'I',identificador: '', tab: '1'})"  auth-check permission="inserir-fundo"
+					class="btn btn-primary glyphicon glyphicon-plus pull-right"
+					tooltip="Adicionar Novo Cadastro" style="margin-left: 5px">
+				</button>
+				
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-search pull-right"
+					ui-sref="cadastro-fundo" tooltip="Consultar">
+				</button>
+				
+				<h3 class="ng-scope">Editar</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12" ng-if="fundoCtrl.acao == 'I'">
+			<div class="page-header">
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-arrow-left pull-right"
+					ng-click="fundoCtrl.voltar();" tooltip="Voltar"
+					ng-if="fundoCtrl.pessoaRelacionada">
+				</button>
+				
+<!-- 				<button type="button" -->
+<!-- 					class="btn btn-primary glyphicon glyphicon-print  pull-right" -->
+<!-- 					ng-click="fundoCtrl.gerarPdf();" -->
+<!-- 					ng-if="fundoCtrll.fundo.id && !fundoCtrl.pessoaRelacionada" -->
+<!-- 					tooltip="Imprimir Cadastro" style="margin-left: 5px"> -->
+<!-- 				</button> -->
+					
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-trash  pull-right"
+					ng-click="fundoCtrl.excluir(fundoCtrl.pessoaFundo.pessoa);" auth-check
+					permission="excluir-fundo"
+					ng-if="fundoCtrl.pessoa.id && !fundoCtrl.pessoaRelacionada"
+					tooltip="Deletar Cadastro" style="margin-left: 5px">
+				</button>
+					
+				<button type="button"
+					class="btn btn-concluir glyphicon glyphicon-refresh pull-right"
+					ng-click="fundoCtrl.concluir()"
+					ng-if="(fundoCtrl.pessoa.id && !fundoCtrl.pessoaRelacionada && !fundoCtrl.pessoa.estrangeiro)"
+					tooltip="Sincronizar com Matera" style="margin-left: 5px">
+				</button>
+					
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-plus pull-right"
+					ui-sref="root.incluir({acao:'I',identificador:undefined,tab:1})"
+					ui-sref-opts="{reload: true}" auth-check permission="inserir-fundo"
+					tooltip="Adicionar Novo Cadastro"
+					ng-if="fundoCtrl.pessoa.id && !fundoCtrl.pessoaRelacionada"
+					style="margin-left: 5px">
+				</button>
+					
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-search pull-right"
+					ui-sref="cadastro-fundo" tooltip="Consultar"
+					ng-if="!fundoCtrl.pessoaRelacionada">
+				</button>
+				
+				<h3 class="ng-scope" ng-if="!fundoCtrl.pessoaRelacionada">Incluir</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12">
+			<div class="tabs-wrapper table">
+				<ul class="nav nav-tabs">
+					<li ng-class="{'active': fundoCtrl.tab == 1}" id="tabIncluir" ng-if="fundoCtrl.tab == 1"  ng-click="fundoCtrl.mudarTab(1)" style="cursor: pointer;"><a>Incluir</a>
+					</li>
+						
+					<li ng-class="{'active': fundoCtrl.tab == 2}" ng-click="fundoCtrl.mudarTab(2)" ng-if="fundoCtrl.pessoaFundo.pessoa.id && (fundoCtrl.acao == 'E' || fundoCtrl.acao == 'V')"   id="tabEditar"
+						ng-click="fundoCtrl.mudarTab(2)" style="cursor: pointer;">
+						<a ng-class="{'erro':fundoCtrl.abas.dadosBasicosFundos.erros.length}">Dados Básicos</a>
+					</li>
+					
+					<li ng-class="{'active': fundoCtrl.tab == 3}" ng-click="fundoCtrl.mudarTab(3)" ng-if="fundoCtrl.pessoaFundo.pessoa.id && (fundoCtrl.acao == 'E' || fundoCtrl.acao == 'V')"   id="tabEditarEndereco"
+						ng-click="fundoCtrl.mudarTab(3)" style="cursor: pointer;">
+						<a ng-class="{'erro':fundoCtrl.abas.enderecoFundos.erros.length}">Endereço</a>
+					</li>
+					
+					<li ng-class="{'active': fundoCtrl.tab == 4}" ng-click="fundoCtrl.mudarTab(4)" ng-if="fundoCtrl.pessoaFundo.pessoa.id && (fundoCtrl.acao == 'E' || fundoCtrl.acao == 'V')"   id="tabEditarConfig"
+						ng-click="fundoCtrl.mudarTab(4)" style="cursor: pointer;">
+						<a ng-class="{'erro':fundoCtrl.abas.configuracaoFundos.erros.length}">Configuração</a>
+					</li>
+					
+					<li ng-class="{'active': fundoCtrl.tab == 5}" ng-click="fundoCtrl.mudarTab(5)" ng-if="fundoCtrl.pessoaFundo.pessoa.id && (fundoCtrl.acao == 'E' || fundoCtrl.acao == 'V')"   id="tabEditarDadosBanc"
+						ng-click="fundoCtrl.mudarTab(5)" style="cursor: pointer;">
+						<a ng-class="{'erro':fundoCtrl.abas.dadosBancariosFundos.erros.length}">Dados Bancários</a>
+					</li>
+					
+					<li ng-class="{'active': fundoCtrl.tab == 6}" ng-click="fundoCtrl.mudarTab(6)" ng-if="fundoCtrl.pessoaFundo.pessoa.id && (fundoCtrl.acao == 'E' || fundoCtrl.acao == 'V')"   id="tabPrestadorServico"
+						ng-click="fundoCtrl.mudarTab(6)" style="cursor: pointer;">
+						<a ng-class="{'erro':fundoCtrl.abas.prestadorServicoFundos.erros.length}">Prestadores de serviço</a>
+					</li>
+					<li ng-class="{'active':fundoCtrl.tab == 7}" ng-click="fundoCtrl.mudarTab(7)" ng-if="fundoCtrl.pessoaFundo.pessoa.id && (fundoCtrl.acao == 'E' || fundoCtrl.acao == 'V')" id="tabTermos" style="cursor: pointer;">
+						<a>Termos</a>
+					</li>
+					
+					<li ng-class="{'active': fundoCtrl.tab == 8}" ng-click="fundoCtrl.mudarTab(8)" auth-check permission="elegibilidade-fundo"
+						ng-if="fundoCtrl.pessoaFundo.pessoa.id && (fundoCtrl.acao == 'E' || fundoCtrl.acao == 'V')" id="tabElegibilidade"
+						ng-click="fundoCtrl.mudarTab(8)" style="cursor: pointer;">
+						<a>Elegibilidade</a>
+					</li>
+					
+				</ul>
+				</br>
+				<div class="tab-pane" ng-if="fundoCtrl.tab == 1">
+					<div class="tab-content">
+						<div class="form-group">
+							<div class="panel panel-default">
+								<div class="panel-body">
+
+									<form name="fundoCtrl.form">
+
+										<div class="col-lg-12 col-md-12">
+											<legend>Identificação</legend>
+										</div>
+										<div class="row">
+											<div class="col-lg-4 col-md-6">
+													<div class="form-group input-group form-inline">
+														<label class="btn btn-default input-group-addon"
+															ng-model="fundoCtrl.pessoaFundo.pessoa.tipoPessoa"
+															btn-radio="'J'" ng-change="fundoCtrl.limparFundo('J')"
+															ng-disabled="fundoCtrl.acao != 'I' || fundoCtrl.pessoaFundo.pessoa.id || fundoCtrl.pessoaFundo.pessoa.tipoPessoa == 'J'"
+															id="labelCnpj" >CNPJ
+														</label>
+															
+														<input uppercased required id="cnpj"
+															ng-blur="fundoCtrl.buscaPessoa()"
+															ng-model="fundoCtrl.pessoaFundo.pessoa.identificador"
+															ui-mask="99.999.999/9999-99"
+															type="text" class="form-control"
+															ng-disabled="fundoCtrl.acao != 'I' || fundoCtrl.pessoaFundo.pessoa.id"
+															style="width: 50%;">
+													</div>
+												</div>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-4 col-md-6">
+											<div class="form-group"
+												ng-class="{'erro':fundoCtrl.form.nomeRazao.$invalid && fundoCtrl.form.nomeRazao.$dirty}">
+												<label>Razão Social:</label>
+												<input uppercased
+													maxlength="50" name="nomeRazao" type="text"
+													class="form-control" ng-model="fundoCtrl.pessoaFundo.pessoa.nomeRazao"
+													disabled ng-if="fundoCtrl.acao == 'V' && fundoCtrl.id" />
+													
+												<!-- Quando a tela é de edição ou inclusão e a pessoa possuir um ID toda vez que sair do campo irá atualizar o nome da pessoa -->
+												<input uppercased maxlength="50" 
+													name="nomeRazao" type="text" class="form-control" required
+													ng-model="fundoCtrl.pessoaFundo.pessoa.nomeRazao"
+													ng-if="(fundoCtrl.acao == 'E' || fundoCtrl.acao == 'I')"
+													tooltip="{{ fundoCtrl.form.nomeRazao.$invalid && fundoCtrl.form.nomeRazao.$dirty ? 'Os campos obrigatórios devem ser preenchidos!' : '' }}" />
+											</div>
+										</div>
+										</div>
+
+										<div class="row">
+											<div class="form-group col-lg-2 col-md-3">
+													<label for="ex1">Nome Reduzido:</label>
+													 <input uppercased maxlength="5" required id="inNomeReduzido" ng-blur="fundoCtrl.validarNomeReduzido()"
+														class="form-control" style="width: 100%" type="text"
+														 ng-model="fundoCtrl.pessoaFundo.nomeReduzido">
+												</div>
+												<div class="form-group col-lg-2 col-md-3">
+													<label for="ex1">Código:</label> <input uppercased
+														class="form-control" style="width: 100%" type="text"
+														ng-disabled="true" ng-model="fundoCtrl.pessoaFundo.codigo">
+												</div>
+										</div>
+										<div class="row">
+											<div ng-if="!fundoCtrl.pessoaRelacionada"
+												class="col-lg-6 col-md-6">
+												<button type="button" class="btn btn-primary"
+													ng-click="fundoCtrl.cadastrarPessoaFundo()" 
+													ng-disabled="!fundoCtrl.pessoaFundo.pessoa.nomeRazao.length 
+													|| !fundoCtrl.pessoaFundo.pessoa.identificador.length 
+													|| !fundoCtrl.pessoaFundo.nomeReduzido.length"
+													ng-if="fundoCtrl.acao == 'I'">Incluir Fundo</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div ui-view="DadosBasicosFundos" ng-if="fundoCtrl.tab == 2 && fundoCtrl.pessoaFundo.pessoa.id"></div>
+				<div ui-view="EnderecoFundos" ng-if="fundoCtrl.tab == 3 && fundoCtrl.pessoaFundo.pessoa.id"></div>
+				<div ui-view="ConfiguracaoFundos" ng-if="fundoCtrl.tab == 4 && fundoCtrl.pessoaFundo.pessoa.id"></div>
+				<div ui-view="DadosBancariosFundos" ng-if="fundoCtrl.tab == 5 "></div>
+				<div ui-view="PrestadorServicoFundo" ng-if="fundoCtrl.tab == 6 "></div>
+				<div ui-view="Termos" ng-if="fundoCtrl.tab == 7 && fundoCtrl.pessoaFundo.id"></div>
+				<div ui-view="ElegibilidadeFundo" ng-if="fundoCtrl.tab == 8 "></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="rodap" ng-if="fundoCtrl.tab > 1">
+	<div
+		style="float: left; padding-top: 5px; padding-left: 10px; padding-right: 10px;">
+		<div >
+			<label for="ex1">CNPJ:</label>&nbsp;{{fundoCtrl.pessoaFundo.pessoa.identificador | cpfcnpj: 'J'}}<br>
+		</div>
+		<label for="ex1">Razão social:</label>&nbsp;{{fundoCtrl.pessoaFundo.pessoa.nomeRazao}}
+	</div>
+	
+	<div
+		style="float: left; padding-top: 5px; padding-left: 10px; padding-right: 10px; margin-left: 5%;">
+		<label for="ex1">Código:</label>&nbsp;{{fundoCtrl.pessoaFundo.codigo}}<br>
+		<label for="ex1">Nome Reduzido:</label>&nbsp;{{fundoCtrl.pessoaFundo.nomeReduzido}}
+	</div>
+	
+	<div style="float: left; padding-top: 5px; padding-left: 10px; padding-right: 10px;">
+		<label for="ex1">Status do cadastro:</label>&nbsp;{{fundoCtrl.pessoaFundo.stCadastroFundo.toUpperCase()}}<br>
+	</div>
+
+</div>

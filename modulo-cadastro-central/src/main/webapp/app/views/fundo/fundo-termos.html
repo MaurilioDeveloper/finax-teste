@@ -1,0 +1,271 @@
+<meta charset="UTF-8">
+<div class="tab-pane">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" ng-if="fundoCtrl.abas.enderecos.erros.length">
+						<span ng-repeat="erro in fundoCtrl.abas.enderecos.erros" class="block">{{erro.mensagem}}</span>
+					</div>
+					
+					<div class="row" ng-if="enderecoFundosCtrl.acao != 'V'">
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Nome do Termo</label>
+							<input  ng-model="configuracaoFundosCtrl.pessoaFundoConfig.hrFuncionamentoFim"
+								 ng-blur="configuracaoFundosCtrl.validarHoraMin('hrFuncionamentoFim', configuracaoFundosCtrl.pessoaFundoConfig.hrFuncionamentoFim)" type="text"  ui-mask="99:99" maxlength="5" style="width: 30%" class="form-control" />
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<button type="button" class="btn btn-primary" ng-click="dadosBancariosFundosCtrl.salvar()">Copiar termo de outro fundo</button>
+						</div>
+					
+					</div>
+					
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group" style="width: 200px;">
+								<label>Direitos creditórios</label>
+							</div>
+						</div>
+						<div class="col-md-12">
+					
+						
+							<div class="col-lg-2 col-md-2">
+								<form>
+									<div style="max-height: 250px; overflow: auto">
+										<table class="table table-hover table-striped table-bordered"
+											style="width: 100% px;">
+											<thead>
+												<tr>
+													<th style="width: 30px;"><input type="checkbox"
+														ng-checked="data.isAllTiposTituloSelected"
+														ng-click="selectAllTiposTitulo()" /></th>
+													<th>Todos</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="tipo in tiposTitulo">
+	
+													<td style="width: 10px;"><input type="checkbox"
+														value="{{tipo}}" ng-checked="selectedTipoTitulo(tipo)"
+														ng-click="selectLink(tipo)" /></td>
+													<td>{{tipo.tpTitulo}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</form>
+							</div>
+							
+							<div class="col-lg-1 col-md-1">
+								<div class="btn-group-vertical v-center">
+									<button type="button" class="btn btn-default" ng-click="linkSelecionados()">
+										<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									</button>
+									
+									<button type="button" class="btn btn-default" ng-click="unlinkSelecionados()">
+										<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+									</button>
+								</div>
+							</div>
+							
+							<div class="col-lg-2 col-md-2">
+								<form>
+									<div style="max-height: 260px; overflow: auto">
+										<table class="table table-hover table-striped table-bordered"
+											style="width: 100%;">
+											<thead>
+												<tr>
+													<th style="width: 30px;"><input type="checkbox"
+														ng-checked="data.isAllTiposTituloSelectedLink"
+														ng-click="selectAllTiposTituloLink()" /></th>
+													<th>Todos</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="tipo in tiposTituloAssociados">
+	
+													<td style="width: 10px;"><input type="checkbox"
+														value="{{tipo}}"
+														ng-checked="selectedTiposTituloLink(tipo)"
+														ng-click="selectUnlink(tipo)" /></td>
+													<td>{{tipo.tpTitulo}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="row" ng-if="enderecoFundosCtrl.acao != 'V'">
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Fundo:</label> 
+							<ui-select ng-b on-select="enderecoFundosCtrl.aoSelecionarPais($item,$model);enderecoFundosCtrl.updateEndereco()" theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.pais" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected }}
+								</ui-select-match>
+								<ui-select-choices repeat="pais in enderecoFundosCtrl.paises | filter : $select.search">
+									<div ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Cedente:</label> 
+							<ui-select ng-b on-select="enderecoFundosCtrl.aoSelecionarPais($item,$model);enderecoFundosCtrl.updateEndereco()" theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.pais" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected }}
+								</ui-select-match>
+								<ui-select-choices repeat="pais in enderecoFundosCtrl.paises | filter : $select.search">
+									<div ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Sacado:</label>
+							<ui-select on-select="enderecoFundosCtrl.aoSelecionarEstado($item,$model); enderecoFundosCtrl.updateEndereco()" ng-if="enderecoFundosCtrl.endereco.pais.id == 'BR' || enderecoFundosCtrl.endereco.pais == 'Brasil' " theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.estado" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match maxlength="50" placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+								</ui-select-match>
+								<ui-select-choices repeat="estado in enderecoFundosCtrl.estados | filter : $select.search">
+									<div ng-bind-html="estado.nome | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+							<input uppercased type="text" class="form-control" ng-if="enderecoFundosCtrl.endereco.pais.id != 'BR' && enderecoFundosCtrl.endereco.pais != 'Brasil'" style="width: 100%" ng-model="enderecoFundosCtrl.endereco.estado" maxlength="50">
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Termo:</label>
+							<ui-select on-select="enderecoFundosCtrl.updateEndereco()" ng-if="enderecoFundosCtrl.endereco.pais.id == 'BR' || enderecoFundosCtrl.endereco.pais == 'Brasil' " theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.cidade" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match maxlength="50" placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+								</ui-select-match>
+								<ui-select-choices repeat="cidade.nome as cidade in enderecoFundosCtrl.cidades | filter : $select.search">
+									<div ng-bind-html="cidade.nome | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+							<input uppercased type="text" class="form-control" ng-if="enderecoFundosCtrl.endereco.pais.id != 'BR' && enderecoFundosCtrl.endereco.pais != 'Brasil'" style="width: 100%" ng-model="enderecoFundosCtrl.endereco.cidade"
+									ng-blur="enderecoFundosCtrl.updateEndereco()" maxlength="50">
+						</div>
+						
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Cessão:</label>
+							<ui-select on-select="enderecoFundosCtrl.updateEndereco()" ng-if="enderecoFundosCtrl.endereco.pais.id == 'BR' || enderecoFundosCtrl.endereco.pais == 'Brasil' " theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.cidade" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match maxlength="50" placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+								</ui-select-match>
+								<ui-select-choices repeat="cidade.nome as cidade in enderecoFundosCtrl.cidades | filter : $select.search">
+									<div ng-bind-html="cidade.nome | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+							<input uppercased type="text" class="form-control" ng-if="enderecoFundosCtrl.endereco.pais.id != 'BR' && enderecoFundosCtrl.endereco.pais != 'Brasil'" style="width: 100%" ng-model="enderecoFundosCtrl.endereco.cidade"
+									ng-blur="enderecoFundosCtrl.updateEndereco()" maxlength="50">
+						</div>
+					</div>
+					
+					<div class="row" ng-if="enderecoFundosCtrl.acao != 'V'">
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Resp. Solidarios:</label> 
+							<ui-select ng-b on-select="enderecoFundosCtrl.aoSelecionarPais($item,$model);enderecoFundosCtrl.updateEndereco()" theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.pais" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected }}
+								</ui-select-match>
+								<ui-select-choices repeat="pais in enderecoFundosCtrl.paises | filter : $select.search">
+									<div ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Administrador:</label> 
+							<ui-select ng-b on-select="enderecoFundosCtrl.aoSelecionarPais($item,$model);enderecoFundosCtrl.updateEndereco()" theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.pais" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected }}
+								</ui-select-match>
+								<ui-select-choices repeat="pais in enderecoFundosCtrl.paises | filter : $select.search">
+									<div ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Gestor:</label>
+							<ui-select on-select="enderecoFundosCtrl.aoSelecionarEstado($item,$model); enderecoFundosCtrl.updateEndereco()" ng-if="enderecoFundosCtrl.endereco.pais.id == 'BR' || enderecoFundosCtrl.endereco.pais == 'Brasil' " theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.estado" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match maxlength="50" placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+								</ui-select-match>
+								<ui-select-choices repeat="estado in enderecoFundosCtrl.estados | filter : $select.search">
+									<div ng-bind-html="estado.nome | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+							<input uppercased type="text" class="form-control" ng-if="enderecoFundosCtrl.endereco.pais.id != 'BR' && enderecoFundosCtrl.endereco.pais != 'Brasil'" style="width: 100%" ng-model="enderecoFundosCtrl.endereco.estado" maxlength="50">
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Intervenientes:</label>
+							<ui-select on-select="enderecoFundosCtrl.updateEndereco()" ng-if="enderecoFundosCtrl.endereco.pais.id == 'BR' || enderecoFundosCtrl.endereco.pais == 'Brasil' " theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.cidade" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match maxlength="50" placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+								</ui-select-match>
+								<ui-select-choices repeat="cidade.nome as cidade in enderecoFundosCtrl.cidades | filter : $select.search">
+									<div ng-bind-html="cidade.nome | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+							<input uppercased type="text" class="form-control" ng-if="enderecoFundosCtrl.endereco.pais.id != 'BR' && enderecoFundosCtrl.endereco.pais != 'Brasil'" style="width: 100%" ng-model="enderecoFundosCtrl.endereco.cidade"
+									ng-blur="enderecoFundosCtrl.updateEndereco()" maxlength="50">
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Responsável Solidário:</label>
+							<ui-select on-select="enderecoFundosCtrl.updateEndereco()" ng-if="enderecoFundosCtrl.endereco.pais.id == 'BR' || enderecoFundosCtrl.endereco.pais == 'Brasil' " theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.cidade" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match maxlength="50" placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+								</ui-select-match>
+								<ui-select-choices repeat="cidade.nome as cidade in enderecoFundosCtrl.cidades | filter : $select.search">
+									<div ng-bind-html="cidade.nome | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+							<input uppercased type="text" class="form-control" ng-if="enderecoFundosCtrl.endereco.pais.id != 'BR' && enderecoFundosCtrl.endereco.pais != 'Brasil'" style="width: 100%" ng-model="enderecoFundosCtrl.endereco.cidade"
+									ng-blur="enderecoFundosCtrl.updateEndereco()" maxlength="50">
+						</div>
+						<div class="form-group col-lg-2 col-md-2">
+							<label>Tags Cessão:</label>
+							<ui-select on-select="enderecoFundosCtrl.updateEndereco()" ng-if="enderecoFundosCtrl.endereco.pais.id == 'BR' || enderecoFundosCtrl.endereco.pais == 'Brasil' " theme="bootstrap" ng-model="enderecoFundosCtrl.endereco.cidade" ng-disabled="pessoaCtrl.acao == 'V'">
+								<ui-select-match maxlength="50" placeholder="Selecione">
+									{{$select.selected.nome ? $select.selected.nome : $select.selected}}
+								</ui-select-match>
+								<ui-select-choices repeat="cidade.nome as cidade in enderecoFundosCtrl.cidades | filter : $select.search">
+									<div ng-bind-html="cidade.nome | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select> 
+							<input uppercased type="text" class="form-control" ng-if="enderecoFundosCtrl.endereco.pais.id != 'BR' && enderecoFundosCtrl.endereco.pais != 'Brasil'" style="width: 100%" ng-model="enderecoFundosCtrl.endereco.cidade"
+									ng-blur="enderecoFundosCtrl.updateEndereco()" maxlength="50">
+						</div>
+					</div>
+					
+					<div class="row" ng-if="enderecoFundosCtrl.acao != 'V'">
+							<div class="form-group col-lg-2 col-md-2">
+								<input
+									ng-model="configuracaoFundosCtrl.pessoaFundoConfig.hrFuncionamentoFim"
+									ng-blur="configuracaoFundosCtrl.validarHoraMin('hrFuncionamentoFim', configuracaoFundosCtrl.pessoaFundoConfig.hrFuncionamentoFim)"
+									type="text" ui-mask="99:99" maxlength="5" style="width: 30%"
+									class="form-control" />
+							</div>
+							<div class="form-group col-lg-2 col-md-2">
+								<button type="button" class="btn btn-primary"
+									ng-click="dadosBancariosFundosCtrl.salvar()">Incluir tag</button>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group"> 
+									<textarea uppercased alphanumeric-input name="descricaoObservacao" type="text" class="form-control" style="width: 100%" maxlength="100" ng-model="dadosBasicosCtrl.prestadorServico.descricaoObservacao" ng-blur="dadosBasicosCtrl.salvar()"></textarea>
+									</br>
+									<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" ng-click="modalTipoFundosCtrl.cancelar()">Fechar</button>
+								</div>
+							</div>
+						</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

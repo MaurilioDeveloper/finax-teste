@@ -1,0 +1,35 @@
+<meta charset="UTF-8">
+<div class="modal-body" style="height: 250px">
+	{{perfilInvestidorCtrl.descricaoQuestao}}<br/><br/>
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao6.resposta == 'A' }">
+		<input type="radio" name="resposta6" value="A" ng-init="perfilInvestidorCtrl.questionario.questao6.pergunta = 6; perfilInvestidorCtrl.questionario.questao6.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao6.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao6)">
+		Até 15% da renda
+	</label><br/>
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao6.resposta == 'B' }">
+		<input type="radio" name="resposta6" value="B" ng-init="perfilInvestidorCtrl.questionario.questao6.pergunta = 6; perfilInvestidorCtrl.questionario.questao6.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao6.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao6)">
+		Entre 16% e 30% da renda
+	</label><br/> 
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao6.resposta == 'C' }">
+		<input type="radio" name="resposta6" value="C" ng-init="perfilInvestidorCtrl.questionario.questao6.pergunta = 6; perfilInvestidorCtrl.questionario.questao6.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao6.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao6)">
+		Entre 31% e 50% da renda
+	</label><br/> 
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao6.resposta == 'D' }">
+		<input type="radio" name="resposta6" value="D" ng-init="perfilInvestidorCtrl.questionario.questao6.pergunta = 6; perfilInvestidorCtrl.questionario.questao6.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao6.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao6)">
+		Acima de 51% da renda
+	</label><br/> 
+	<label class="radio-inline"	ng-class="{ 'questionBg' : perfilInvestidorCtrl.questionario.questao6.resposta == 'E' }">
+		<input type="radio" name="resposta6" value="E" ng-init="perfilInvestidorCtrl.questionario.questao6.pergunta = 6; perfilInvestidorCtrl.questionario.questao6.pessoa = null;" ng-model="perfilInvestidorCtrl.questionario.questao6.resposta" ng-change="perfilInvestidorCtrl.insertRespostaSuitability(perfilInvestidorCtrl.questionario.questao6)">
+		Nenhuma parte da renda
+	</label>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+	<button type="button" class="btn btn-primary"
+		ng-click="perfilInvestidorCtrl.goQuestion7(perfilInvestidorCtrl.questionario.questao6.resposta)">
+		Avançar <i class="fa fa-chevron-right"></i>
+	</button>
+</div>
+
+
+
+

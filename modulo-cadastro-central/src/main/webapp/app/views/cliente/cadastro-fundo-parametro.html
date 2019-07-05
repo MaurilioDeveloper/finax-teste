@@ -1,0 +1,119 @@
+<meta charset="UTF-8">
+<div class="tab-pane" id="panel-724547">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="alert alert-danger" role="alert" data-ng-if="pessoaCtrl.abas.fundos.erros.length">
+						<span data-ng-repeat="erro in pessoaCtrl.abas.fundos.erros" class="block">{{erro.mensagem}}</span>
+					</div>
+					<div class="form">
+						<form class="row col-lg-12" ng-if="pessoaCtrl.acao != 'V'">
+							<div class="form-group col-lg-2">
+								<label>CNPJ do Fundo:</label>
+								<div>
+									<input uppercased type="text" class="form-control" ui-mask="99.999.999/9999-99" ng-blur="fundosCtrl.buscarFundo()"
+										style="width: 100%; border-radius: 4px" ng-model="fundosCtrl.fundo.cnpjFundo"/>
+								</div>
+							</div>
+							<div class="form-group col-lg-5">
+								<label>Nome do Fundo:</label>
+								<div>
+									<input uppercased type="text" class="form-control" disabled
+										style="width: 100%; border-radius: 4px" ng-model="fundosCtrl.fundo.nomeFundo"/>
+								</div>
+							</div>
+							<div class="form-group col-lg-2" style="margin-top: 25px">
+								<button type="button"  class="btn btn-primary" ng-click="fundosCtrl.vincularFundo()" ng-disabled="!fundosCtrl.fundo.nomeFundo">Vincular</button>
+								<button type="button"  class="btn btn-default" ng-if="fundosCtrl.fundo.cnpjFundo && fundosCtrl.fundo.nomeFundo" ng-click="fundosCtrl.cancelar()">Cancelar</button>
+							</div>
+						</form>
+					
+					</div>
+					
+					<br/>
+					
+					<div class="col-lg-12" style="padding-left: 0px">
+						<table class="table table-striped" style="margin-top: 15px">
+							<thead>
+								<tr>
+									<th>CNPJ do Fundo</th>
+									<th>Nome do Fundo</th>
+									<th>Descrição do Documento</th>
+									<th>Data do Documento</th>
+									<th>Ações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-ng-repeat="fundo in fundosCtrl.fundos">
+									<td>{{fundo.cnpjFundo | cpfcnpj}}</td>
+									<td>{{fundo.nomeFundo.toUpperCase()}}</td>
+									<td>
+			                            <span data-ng-repeat-start="documento in fundo.documentos" data-ng-if="$first"></span>
+			                            <br/>
+			                            <span data-ng-repeat-end>{{documento.descricao.toUpperCase()}}</span>
+			                            <br/>
+			                        </td>
+			                        <td>
+			                            <span data-ng-repeat-start="documento in fundo.documentos" data-ng-if="$first"></span>
+			                            <br/>
+			                            <span data-ng-repeat-end>{{documento.dataDocumento | date : "dd/MM/y"}}</span>
+			                            <br/>
+			                        </td>
+			                        <td>
+			                        	<!-- INICIO - BLOCO SMENTE É RENDERIZADO CASO NÃO VENHA NENHUM DOCUMENTO DO FUNDO -->
+			                        	<span data-ng-if="fundo.documentos.length == 0">
+											<button type="button" class="btn btn-default btn-xs" data-tooltip="Editar" data-ng-click="fundosCtrl.editarFundo(fundo)" data-ng-if="pessoaCtrl.acao != 'V'">
+												<span class="glyphicon glyphicon-pencil"
+													aria-hidden="true">
+												</span>
+											</button>
+											<button type="button" class="btn btn-default btn-xs" data-tooltip="Excluir" data-ng-click="fundosCtrl.excluirFundo(fundo)" data-ng-if="pessoaCtrl.acao != 'V'">
+												<span class="glyphicon glyphicon-trash"
+													aria-hidden="true">
+												</span>
+											</button>
+										</span>
+										<!-- INICIO - BLOCO SMENTE É RENDERIZADO CASO NÃO VENHA NENHUM DOCUMENTO DO FUNDO -->
+										
+			                            <span data-ng-repeat-start="documento in fundo.documentos" data-ng-if="$first">
+			                            	
+											<button type="button" class="btn btn-default btn-xs" data-tooltip="Editar" data-ng-click="fundosCtrl.editarFundo(fundo)" data-ng-if="pessoaCtrl.acao != 'V'">
+												<span class="glyphicon glyphicon-pencil"
+													aria-hidden="true"></span>
+											</button>
+											<button type="button" class="btn btn-default btn-xs" data-tooltip="Excluir" data-ng-click="fundosCtrl.excluirFundo(fundo)" data-ng-if="pessoaCtrl.acao != 'V'">
+												<span class="glyphicon glyphicon-trash"
+													aria-hidden="true"></span>
+											</button>
+
+										</span>
+										<br/> 
+			                            <span data-ng-repeat-end>
+			                         
+											<button type="button" class="btn btn-default btn-xs" data-ng-click="fundosCtrl.baixarDocumento(documento)" data-ng-if="pessoaCtrl.acao != 'V' || documento.anexo">
+												<span class="glyphicon glyphicon-download"
+													aria-hidden="true"></span>
+											</button>
+											<button type="button" class="btn btn-default btn-xs" data-ng-click="fundosCtrl.excluirDocumento(documento, fundo)" data-ng-if="pessoaCtrl.acao != 'V'">
+												<span class="glyphicon glyphicon-trash"
+													aria-hidden="true"></span>
+											</button>
+			                            	
+			                            </span>
+			                        </td>
+								</tr>
+								<tr data-ng-if="!fundosCtrl.fundos.length">
+									<td colspan="6">Não há registros encontrados.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div data-ng-include="'app/views/cliente/modalFundoDocumento.html'"></div>
+	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,168 @@
+<meta charset="UTF-8">
+<div class="container-fluid" style="margin-bottom: 30px">
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<div class="page-header">
+				<button type="button"
+					class="btn btn-primary glyphicon glyphicon-plus pull-right"
+					ui-sref="prestador-servico" auth-check permission="inserir-prestador-servico"
+					tooltip="Adicionar Novo Cadastro"></button>
+				<h3 class="ng-scope">Consulta</h3>
+			</div>
+		</div>
+
+		<div class="col-md-12">
+			<div class="tabs-wrapper table">
+				<div class="tab-pane">
+					<div class="panel panel-default">
+						<div class="panel-heading" ng-click="hideFilter = !hideFilter"
+							style="cursor: pointer;">
+							<span class="glyphicon glyphicon-plus" ng-show="hideFilter"></span>
+							<span class="glyphicon glyphicon-minus" ng-show="!hideFilter"></span>
+							Filtros
+						</div>
+						<div collapse="hideFilter">
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group form-inline">
+										<div class="col-lg-3 col-md-3">
+											<label>&nbsp;</label>
+											<div class="input-group" style="width: 100%">
+												<label class="btn btn-default input-group-addon"
+													ng-model="consultaPrestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa"
+													btn-radio="'J'"
+													ng-mousedown="consultaPrestadorServicoCtrl.aoClicarCNPJ();">CNPJ</label>
+												<label class="btn btn-default input-group-addon"
+													ng-model="consultaPrestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa"
+													btn-radio="'F'"
+													ng-mousedown="consultaPrestadorServicoCtrl.aoClicarCPF();">CPF</label>
+												<input uppercased id="cpf"
+													ng-model="consultaPrestadorServicoCtrl.prestadorServico.pessoa.identificador"
+													ng-blur="consultaPrestadorServicoCtrl.validaCpf()"
+													style="width: 100%"
+													ng-if="consultaPrestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'F'"
+													ui-mask="999.999.999-99" type="text" class="form-control">
+												<input uppercased id="cnpj"
+													ng-model="consultaPrestadorServicoCtrl.prestadorServico.pessoa.identificador"
+													ng-blur="consultaPrestadorServicoCtrl.validaCnpj()"
+													style="width: 100%"
+													ng-if="consultaPrestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa == 'J'"
+													ui-mask="99.999.999/9999-99" type="text"
+													class="form-control">
+											</div>
+										</div>
+
+										<div class="col-lg-3 col-md-3">
+											<label>{{ consultaPrestadorServicoCtrl.prestadorServico.pessoa.tipoPessoa ==  'F' ? 'Nome completo' : 'Razão social' }}:</label>
+											<input uppercased id="nomeRazao"
+												ng-model="consultaPrestadorServicoCtrl.prestadorServico.pessoa.nomeRazao"
+												style="width: 100%" type="text" class="form-control"
+												maxlength="255">
+										</div>
+
+										<div class="col-lg-2 col-md-2">
+											<label>Nome Reduzido:</label>
+											<input uppercased id="nomeFantasia"
+												ng-model="consultaPrestadorServicoCtrl.prestadorServico.pessoa.nomeFantasia"
+												style="width: 100%" type="text" class="form-control"
+												maxlength="150">
+										</div>
+
+										<div class="col-lg-1 col-md-1">
+											<label>Código:</label>
+											<input id="id"
+												ng-model="consultaPrestadorServicoCtrl.prestadorServico.pessoa.id"
+												style="width: 100%" type="text" class="form-control"
+												maxlength="100" mask="99999999">
+										</div>
+
+										<div class="col-lg-3 col-md-3">
+											<label>Tipo:</label>
+											<select class="form-control"
+												ng-model="consultaPrestadorServicoCtrl.prestadorServico.pessoa.papeis[0]"
+												style="width: 100%"
+												ng-options="papel as papel.descricao for papel in consultaPrestadorServicoCtrl.papeis">
+												<option value="">Selecione</option>
+											</select>
+										</div>
+										<div class="col-lg-2 col-md-2 align-button">
+											<div class="form-group form-inline">
+												
+												<button id="filterLink" type="button" class="btn btn-primary glyphicon glyphicon-search"
+													ng-disabled="consultaPrestadorServicoCtrl.validateIdentificador()">
+												</button>
+												
+												<button ng-click="consultaPrestadorServicoCtrl.resetForm()"
+													class="btn btn-default" style="margin-top: 1px">Limpar
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<br />
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 col-md-12">
+							<div class="table-responsive">
+								<table datatable rows="15" lazy="true"
+									class="table table-striped"
+									rest="{{consultaPrestadorServicoCtrl.restUrl}}/prestador-servico/findbyfilter"
+									datasource="consultaPrestadorServicoCtrl.prestadores"
+									paginator="true" max-size="5"
+									filter-model="consultaPrestadorServicoCtrl.prestadorServico"
+									filter-submit="#filterLink" dont-search-on-load="false">
+									<thead class="thead-default">
+										<tr>
+											<th sortable="pessoa.id">Código</th>
+											<th sortable="pessoa.identificador">CNPJ/CPF</th>
+											<th sortable="pessoa.nomeRazao">Nome/Razão Social</th>
+											<th sortable="pessoa.nomeFantasia">Nome Reduzido</th>
+											<th>Tipo</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr
+											ng-if="!consultaPrestadorServicoCtrl.prestadores || consultaPrestadorServicoCtrl.prestadores.length == 0">
+											<td colspan="9" class="text-center">Não foram
+												encontrados dados para os filtros selecionados</td>
+										</tr>
+										<tr
+											ng-repeat="prestadorServico in consultaPrestadorServicoCtrl.prestadores">
+											<td>{{prestadorServico.pessoa.id}}</td>
+											<td>{{prestadorServico.pessoa.identificador | cpfcnpj: prestadorServico.pessoa.tipoPessoa}}</td>
+											<td>{{prestadorServico.pessoa.nomeRazao.toUpperCase()}}</td>
+											<td>{{prestadorServico.pessoa.nomeFantasia.toUpperCase()}}</td>
+											<td>{{consultaPrestadorServicoCtrl.buscaPapel(prestadorServico.pessoa.papeis)}}</td>
+											<td>
+												<button type="button" class="btn btn-default btn-xs"
+													ui-sref="prestador-servico.visualizar({'identificador':prestadorServico.pessoa.identificador, 'acao':'V', 'tab':'2'})"
+													tooltip="Detalhes">
+													<span class="glyphicon glyphicon-eye-open"></span>
+												</button>
+												<button type="button" class="btn btn-default btn-xs"
+													auth-check permission="editar-prestador-servico"
+													ui-sref="prestador-servico.editar({'identificador':prestadorServico.pessoa.identificador, 'acao':'E', 'tab':'2', 'tipoPessoa':prestadorServico.pessoa.tipoPessoa})"
+													tooltip="Editar">
+													<span class="glyphicon glyphicon-pencil"></span>
+												</button>
+												<button type="button" class="btn btn-default btn-xs"
+													tooltip="Excluir" auth-check permission="excluir-prestador-servico"
+													ng-click="consultaPrestadorServicoCtrl.excluirPrestadorServico(prestadorServico);">
+													<span class="glyphicon glyphicon-trash"></span>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

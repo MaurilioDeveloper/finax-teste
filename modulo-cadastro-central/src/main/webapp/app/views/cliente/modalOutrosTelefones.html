@@ -1,0 +1,86 @@
+<meta charset="UTF-8">
+<div id="modalOutrosTelefones" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content" style="height: auto;">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<!-- 		    <h4 class="modal-title">Questionário Suitability</h4> -->
+			</div>
+
+			<div class="modal-body">
+				<div class="row" ng-if="pessoaCtrl.acao != 'V'">
+					<div class="col-lg-7 col-md-7">
+						<div class="form-group">
+							<label>Tipo telefone:</label> <input uppercased type="text"
+								class="form-control" style="width: 100%"
+								ng-model="contatosCtrl.telefone.tipoTelefone"
+								clear-if-not-match="false" maxlength="25">
+						</div>
+					</div>
+				</div>
+
+				<div class="row" ng-if="pessoaCtrl.acao != 'V'">
+					<div class="col-lg-7 col-md-7">
+						<div class="form-group">
+							<label>Número telefone:</label> <input uppercased type="text"
+								class="form-control" style="width: 100%" telefone-input
+								ng-model="contatosCtrl.telefone.telefone"
+								ng-blur="contatosCtrl.validaTelefone(contatosCtrl.telefone)"
+								clear-if-not-match="false">
+						</div>
+					</div>
+
+					<div class="col-lg-4 col-md-4 form-group" style="margin-top: 25px"
+						ng-if="pessoaCtrl.acao != 'V'">
+						<button class="btn btn-primary" ng-if="!contatosCtrl.telefone.id"
+							ng-click="contatosCtrl.incluirTelefone(contatosCtrl.telefone)"
+							ng-disabled="!contatosCtrl.telefone.telefone.toString().length || !contatosCtrl.telefone.tipoTelefone.length">Incluir</button>
+						<button class="btn btn-primary" ng-if="contatosCtrl.telefone.id"
+							ng-click="contatosCtrl.incluirTelefone(contatosCtrl.telefone)"
+							ng-disabled="!contatosCtrl.telefone.telefone.toString().length || !contatosCtrl.telefone.tipoTelefone.length">Alterar</button>
+						<button class="btn btn-default" ng-if="contatosCtrl.telefone.id"
+							ng-click="contatosCtrl.cancelTelefone()"
+							style="margin-left: 10px">Cancelar</button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer pre-scrollable"
+				style='height: 200px; max-height: 200px; overflow-y: scroll;'>
+
+				<div class="col-lg-12 col-md-12" style="padding-left: 0px">
+					<table class="table table-striped" style="margin-top: 15px">
+						<thead>
+							<th>Tipo telefone</th>
+							<th>Número telefone</th>
+							<th ng-if="pessoaCtrl.acao != 'V'">Ações</th>
+						</thead>
+						<tbody>
+							<tr ng-if="!contatosCtrl.pessoaContatoTelefones.length">
+								<td colspan="4">Não há registros encontrados.</td>
+							</tr>
+							<tr
+								ng-repeat="telefone in contatosCtrl.pessoaContatoTelefones track by $index">
+								<td>{{telefone.tipoTelefone.toUpperCase()}}</td>
+								<td>{{telefone.telefone | telefone}}</td>
+								<td><a href="" class="btn btn-default btn-xs"
+									ng-click="contatosCtrl.updateTelefone(telefone)"
+									ng-if="pessoaCtrl.acao != 'V'"> <span
+										class="glyphicon glyphicon-pencil"></span>
+								</a> <a href="" class="btn btn-default btn-xs"
+									ng-click="contatosCtrl.deleteTelefone(telefone)"
+									ng-if="pessoaCtrl.acao != 'V'"> <span
+										class="glyphicon glyphicon-trash"></span>
+								</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -1,0 +1,210 @@
+<meta charset="UTF-8">
+<div class="tab-pane">
+	<div class="tab-content">
+		<div class="form-group">
+			<div class="panel panel-default">
+				<div class="panel-body">
+				
+					<div ng-include="'app/views/cliente/modalTipoBem.html'"></div>
+					<div ng-include="'app/views/cliente/modalTipoImovel.html'"></div>
+				
+					<div class="row">
+						<fieldset class="form-group">
+							<div class="col-lg-12 col-md-12">
+								<legend>Declaração do Cliente</legend>
+							</div>
+							<div class="row col-lg-12 col-md-12">
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label>Tipo:</label>
+										<select ng-disabled="pessoaCtrl.acao == 'V'" class="form-control" ng-model="patrimonioCtrl.pessoa.tipoDeclaracao" ng-change="patrimonioCtrl.aoSelecionarDeclaracao()" ng-options="tipoDeclaracao for tipoDeclaracao in patrimonioCtrl.declaracoes">
+											<option value="">Selecione</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="row">
+						<fieldset class="form-group">
+							<div class="col-lg-12 col-md-12">
+								<legend>Bens imóveis</legend>
+							</div>
+							<div class="row col-lg-12 col-md-12">
+								<div class="col-lg-2 col-md-2" ng-if="pessoaCtrl.acao != 'V'">
+									<div class="form-group">
+										<label>Tipo:</label>
+										<select class="form-control" ng-model="patrimonioCtrl.imovel.tipoImovel" 
+											ng-options="tipoImovel as tipoImovel.dsTipoImovel for tipoImovel in patrimonioCtrl.tipoImoveis track by tipoImovel.id"
+											ng-change="patrimonioCtrl.validarTipoImovel()">
+											<option value="">Selecione</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2" ng-if="pessoaCtrl.acao != 'V'">
+									<div class="form-group">
+										<label>País:</label>
+										<ui-select on-select="patrimonioCtrl.aoSelecionarPais($item,$model)" theme="bootstrap" ng-model="patrimonioCtrl.imovel.pais" ng-disabled="pessoaCtrl.acao == 'V'">
+											<ui-select-match placeholder="Selecione">
+												{{$select.selected.nome ? $select.selected.nome : $select.selected }}
+											</ui-select-match>
+											<ui-select-choices repeat="pais in patrimonioCtrl.paises | filter : $select.search">
+												<div ng-bind-html="pais.nome ? pais.nome : pais | highlight: $select.search"></div>
+											</ui-select-choices>
+										</ui-select>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2" ng-if="pessoaCtrl.acao != 'V'">
+									<div class="form-group">
+										<label>UF:</label>
+										<ui-select ng-if="patrimonioCtrl.imovel.pais.id == 'BR' || patrimonioCtrl.imovel.pais == 'Brasil' " theme="bootstrap" ng-model="patrimonioCtrl.imovel.uf" ng-disabled="pessoaCtrl.acao == 'V'">
+											<ui-select-match maxlength="2" placeholder="Selecione">
+												{{$select.selected.id ? $select.selected.id : $select.selected}}
+											</ui-select-match>
+											<ui-select-choices repeat="estado in patrimonioCtrl.estados | filter : $select.search">
+												<div ng-bind-html="estado.nome | highlight: $select.search"></div>
+											</ui-select-choices>
+										</ui-select>
+										<input uppercased type="text" ng-if="patrimonioCtrl.imovel.pais.id != 'BR' && patrimonioCtrl.imovel.pais != 'Brasil' " class="form-control" ng-model="patrimonioCtrl.imovel.uf" maxlength="2">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2" ng-if="pessoaCtrl.acao != 'V'">
+									<div class="form-group">
+										<label>Cidade:</label>
+										<!-- <select class="form-control" style="width:100%" ng-model="patrimonioCtrl.imovel.cidade">
+											<option value="Curitiba">Curitiba</option>
+										</select> -->
+										<input uppercased type="text" class="form-control" ng-model="patrimonioCtrl.imovel.cidade" maxlength="50">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2" ng-if="pessoaCtrl.acao != 'V'">
+									<div class="form-group">
+										<label>Valor de mercado:</label>
+										<input uppercased type="text" class="form-control" ng-model="patrimonioCtrl.imovel.valorMercado" number data-a-dec="," data-a-sep="." data-a-sign="R$" data-v-max="99999999999.99">
+									</div>
+								</div>
+							</div>
+							
+							<div class="row col-lg-12 col-md-12" ng-if="pessoaCtrl.acao != 'V'">
+								<div class="col-lg-7 col-md-7">
+									<label>Logradouro:</label>
+									<input uppercased type="text" class="form-control" ng-model="patrimonioCtrl.imovel.logradouro" maxlength="50">
+								</div>
+								
+								<div class="form-inline col-lg-2 col-md-2" style="margin-top:25px">
+									<button type="submit" ng-if="!patrimonioCtrl.imovel.id" class="btn btn-primary" ng-click="patrimonioCtrl.incluirImovel()" ng-disabled="!patrimonioCtrl.imovel.tipoImovel || !patrimonioCtrl.imovel.valorMercado">Incluir</button>
+									<button type="submit" ng-if="patrimonioCtrl.imovel.id" class="btn btn-primary" ng-click="patrimonioCtrl.incluirImovel()" ng-disabled="!patrimonioCtrl.imovel.tipoImovel || !patrimonioCtrl.imovel.valorMercado">Alterar</button>
+									<button type="submit" ng-if="patrimonioCtrl.imovel.id" class="btn btn-default" style="margin-left: 10px" ng-click="patrimonioCtrl.cancelImovel()">Cancelar</button>
+								</div>
+							</div>
+						
+							<br/>
+							<div class="col-lg-12 col-md-12">
+								<table class="table table-striped" style="margin-top: 15px">
+									<thead>
+										<tr>
+											<th>Tipo</th>
+											<th>Logradouro</th>
+											<th>Pais</th>
+											<th>UF</th>
+											<th>Cidade</th>
+											<th>Valor de mercado</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-if="!patrimonioCtrl.pessoaImoveis.length">
+											<td colspan="7">Não há registros encontrados.</td>
+										</tr>	
+										<tr ng-repeat="imovel in patrimonioCtrl.pessoaImoveis track by $index">
+											<td>{{imovel.tipoImovel.dsTipoImovel.toUpperCase()}}</td>
+											<td>{{imovel.logradouro.toUpperCase()}}</td>
+											<td>{{imovel.pais.toUpperCase()}}</td>
+											<td>{{imovel.uf.toUpperCase()}}</td>
+											<td>{{imovel.cidade.toUpperCase()}}</td>
+											<td>{{imovel.valorMercado | currency}}</td>
+											<td>
+												<button type="button" class="btn btn-default btn-xs" ng-click="patrimonioCtrl.updateImovel(imovel)" ng-if="pessoaCtrl.acao != 'V'">
+													<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+												</button>
+												<button type="button" class="btn btn-default btn-xs" ng-click="patrimonioCtrl.deleteImovel(imovel)" ng-if="pessoaCtrl.acao != 'V'">
+													<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</fieldset>
+					</div>
+
+					<div class="row">
+						<fieldset class="form-group">
+							<div class="col-lg-12 col-md-12">
+								<legend>Outros bens</legend>
+							</div>
+							<div class="col-lg-3 col-md-4" ng-if="pessoaCtrl.acao != 'V'">
+								<div class="form-group">
+									<label>Tipo:</label>
+									<select class="form-control" ng-model="patrimonioCtrl.bem.tipoBem" 
+											ng-options="tipoBem as tipoBem.dsTipoBem for tipoBem in patrimonioCtrl.tipoBens track by tipoBem.id"
+											ng-change="patrimonioCtrl.validarTipoBem()">
+										<option value="">Selecione</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-4" ng-if="pessoaCtrl.acao != 'V'">
+								<div class="form-group">
+									<label>Descrição:</label>
+									<input uppercased type="text" class="form-control" style="width:100%" ng-model="patrimonioCtrl.bem.descricao" maxlength="50">
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-2" ng-if="pessoaCtrl.acao != 'V'">
+								<div class="form-group">
+									<label>Valor de mercado:</label>
+									<input uppercased type="text" class="form-control" style="width:100%" ng-model="patrimonioCtrl.bem.valorMercado" number data-a-dec="," data-a-sep="." data-a-sign="R$" data-v-max="99999999999.99">
+								</div>
+							</div>
+							<div class="form-inline col-lg-3 col-md-3" style="margin-top:25px" ng-if="pessoaCtrl.acao != 'V'">
+								<button type="submit" ng-if="!patrimonioCtrl.bem.id" class="btn btn-primary" ng-click="patrimonioCtrl.incluirBem()" ng-disabled="!patrimonioCtrl.bem.tipoBem || !patrimonioCtrl.bem.valorMercado">Incluir</button>
+								<button type="submit" ng-if="patrimonioCtrl.bem.id" class="btn btn-primary" ng-click="patrimonioCtrl.incluirBem()" ng-disabled="!patrimonioCtrl.bem.tipoBem || !patrimonioCtrl.bem.valorMercado">Alterar</button>
+								<button type="submit" ng-if="patrimonioCtrl.bem.id" class="btn btn-default" ng-click="patrimonioCtrl.cancelBem()" style="margin-left: 10px">Cancelar</button>
+							</div>
+							<br/>
+							<div class="col-lg-12 col-md-12">
+								<table class="table table-striped" style="margin-top: 15px">
+									<thead>
+										<tr>
+											<th>Tipo</th>
+											<th>Descrição</th>
+											<th>Valor de mercado</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-if="!patrimonioCtrl.pessoaBens.length">
+											<td colspan="4">Não há registros encontrados.</td>
+										</tr>
+										<tr ng-repeat="bem in patrimonioCtrl.pessoaBens track by $index">
+											<td>{{bem.tipoBem.dsTipoBem.toUpperCase()}}</td>
+											<td>{{bem.descricao.toUpperCase()}}</td>
+											<td>{{bem.valorMercado | currency}}</td>
+											<td>
+												<button type="button" class="btn btn-default btn-xs" ng-click="patrimonioCtrl.updateBem(bem)" ng-if="pessoaCtrl.acao != 'V'">
+													<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+												</button>
+												<button type="button" class="btn btn-default btn-xs" ng-click="patrimonioCtrl.deleteBem(bem)" ng-if="pessoaCtrl.acao != 'V'">
+													<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,123 @@
+.spinner > div {
+    background: transparent;
+    width: 0;
+    height: 0;
+}
+
+.dropdown-menu {
+	width: 288px;
+}
+
+.tableResp>tbody>tr>td, .tableResp>tbody>tr>th, .tableResp>tfoot>tr>td, .tableResp>tfoot>tr>th, .tableResp>thead>tr>td, .tableResp>thead>tr>th{
+	padding: 0px;
+	vertical-align: middle;
+}
+
+@media all and (max-width: 959px) {
+
+     .x700{display:block;}
+     .x490{display:none;}
+     .x290{display:none;}
+
+}
+
+@media all and (max-width: 720px) {
+
+     .x700{display:none;}
+     .x490{display:block;}
+     .x290{display:none;}
+
+}
+
+@media all and (max-width: 479px) {
+
+     .x700{display:none;}
+     .x490{display:none;}
+     .x290{display:block;}
+
+}
+
+.campoFiltro{
+	margin-top: 5px;
+	margin-bottos: 5px;
+	font-size: 11px;
+}
+
+input[readonly].readonly-white:enabled {
+   background-color: white;
+}
+
+.campoFiltro input{
+	font-size: 11px;
+}
+
+.panelFiltro{
+	margin-top: 5px;
+	font-size: 11px;
+}
+
+.inputFiltro{
+	font-size: 11px;
+}
+
+.filtroGroup{
+	margin: 0px;
+	font-size: 10px;
+	width: 100%;
+}
+
+.filtroGroup label{
+	font-size: 10px;
+}
+
+
+.selectFiltro{
+	font-size: 12px;
+}
+
+.columnGroup{
+	margin: 0px;
+	font-size: 10px;	
+}
+.tableVinculo{
+	font-size: 9px;
+	font-family: "Times New Roman";
+}
+
+.tdResp{
+	white-space: nowrap;
+	width: 100%;                   
+	overflow: hidden;
+	text-overflow:  ellipsis;
+//	padding: 8px;
+}
+.dropdown-menu, .ng-isolate-scope{
+	width: auto;
+}
+
+.popover, .popover-content{
+	max-width: none;
+}
+
+.rodap {
+	position: fixed;
+    bottom: 0px; 
+    width: 100%; 
+    height: 60px; 
+    background-color: #A9A9A9;
+	border : 2px;
+	font-size: 15px;
+	color: #FFFFFF;
+	z-index: 5000;
+	left: 0px;
+}
+
+.questionBg {
+	color: #fff;
+   background-color: #a49657;
+   -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
+}
+
+ .modal-lg {
+	width:1300px;
+ }
